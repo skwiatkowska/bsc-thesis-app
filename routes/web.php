@@ -11,4 +11,19 @@
 |
 */
 
-Route::get('/', 'MyController@index');
+Route::get('/', 'IndexController@index');
+Route::get('/logowanie', 'IndexController@login');
+Route::get('/rejestracja', 'IndexController@register');
+Route::get('/kontakt', 'IndexController@contact');
+Route::get('/pierwsze-kroki', 'IndexController@firstSteps');
+Route::get('/godziny-otwarcia', 'IndexController@workingHours');
+
+
+
+Route::get('/zasoby', 'BookController@index');
+
+
+
+Route::get('/pracownik/dodaj-ksiazke', 'BookController@create');
+Route::post('/pracownik/dodaj-ksiazke', 'BookController@store');
+

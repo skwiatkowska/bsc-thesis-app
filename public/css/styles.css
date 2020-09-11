@@ -1,0 +1,28 @@
+/* 
+colors:
+#024059
+#027373
+#F2CA99
+#F2766B
+#F24444
+
+*/
+
+.page-footer{
+    background-color: #024059;
+}
+
+.navbar{
+    background-color: #024059;
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    color: white;
+}
+.navbar-orange { 
+    background-color:#F2CA99;
+    height: 35px;
+    padding-top: 1px;
+    color: #024059;
+}
+
