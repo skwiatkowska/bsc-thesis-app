@@ -9,6 +9,9 @@
     <meta name="author" content="">
     <title>@yield('title')</title>
 
+      <!-- jQuery -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Bootstrap Core CSS -->
     <link href="{{PUBLIC_URL}}css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Core JavaScript -->
@@ -16,16 +19,15 @@
     <!-- Custom CSS -->
     <link href="{{PUBLIC_URL}}css/app.css" rel="stylesheet">
 
-    <!-- jQuery -->
-    <script src="{{PUBLIC_URL}}js/jquery.js"></script>
-
-   
+  
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
         media="screen" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"
         type="text/css" />
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{{PUBLIC_URL}}js/script.js"></script>
+
 
 
 </head>
@@ -67,12 +69,16 @@
             
             </ul>
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item px-2">
-                  <a class="nav-link font-weight-bold" href="logowanie">Logowanie</a>
-                </li>
-                <li class="nav-item px-2">
-                  <a class="nav-link" href="rejestracja">Załóż konto</a>
-                </li>
+                <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbardrop" data-toggle="dropdown">
+        Moje konto
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item py-2" href="logowanie">Logowanie</a>
+        <a class="dropdown-item py-2" href="rejestracja">Rejestracja</a>
+      </div>
+    </li>
+         
               </ul>
     
         

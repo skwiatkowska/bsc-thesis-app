@@ -4,13 +4,11 @@
 
 @section('content')
 
-<div class="container">
-    <form action="pracownik/dodaj-ksiazke" method="POST">
-        @csrf
-        <input type="text" name="title">
-        <input type="text" name="author">
-        <input type="submit" value="Add">
-    </form>
+<div class="container ">
+    <div class="row my-5 py-5">
+        <h1 class="ml-auto mr-auto my-5 py-5"> Strona w budowie
+        </h1>
+    </div>
 </div>
 
 @endsection
