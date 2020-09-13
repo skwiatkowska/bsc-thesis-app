@@ -58,18 +58,16 @@ span {
     display: inline-block;
 }
 
-#msform .action-button-red {
-    width: 100px;
-    background: #d90429;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px;
-  }
+.btn-primary{
+    background: #ef233c;
+    border: none;
+    
+}
 
+.btn-primary:hover{
+    background: #d90429;
+    
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -90,8 +88,8 @@ span {
 }
 
 #sidebar.active {
-    min-width: 100px;
-    max-width: 100px;
+    min-width: 120px;
+    max-width: 120px;
     text-align: center;
 }
 
@@ -339,4 +337,15 @@ ul.CTAs a {
 .login-body {
   background: #2b2d42; 
  
+}
+
+
+.card{
+    margin-top: 30px;
+    margin-bottom: 30px;
+    min-height: 240px;
+}
+
+.container{
+    padding: 30px;
 }

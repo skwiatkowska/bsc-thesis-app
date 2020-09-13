@@ -55,7 +55,7 @@ type="text/css" />
 
             <ul class="list-unstyled components">
                 <li class>
-                    <a href="#homeSubmenu" >
+                    <a href="/pracownik" >
                         <i class="fas fa-home"></i>
                         Strona startowa
                     </a>
@@ -77,6 +77,9 @@ type="text/css" />
                             <a href="#">Aktualne wypożyczenia</a>
                         </li>
                         <li>
+                            <a href="#">Nowe wypożyczenie</a>
+                        </li>
+                        <li>
                             <a href="#">Zarejestruj zwrot</a>
                         </li>
                         
@@ -93,7 +96,7 @@ type="text/css" />
                             <a href="/pracownik/czytelnik/rejestracja">Dodaj Czytelnika</a>
                         </li>
                         <li>
-                            <a href="#">Znajdź Czytelnika</a>
+                            <a href="/pracownik/czytelnik/znajdz">Znajdź Czytelnika</a>
                         </li>
                         
                     </ul>
@@ -111,7 +114,7 @@ type="text/css" />
                     </a>
                     <ul class="collapse list-unstyled" id="manageSubmenu">
                         <li>
-                            <a href="#">Dodaj książkę</a>
+                            <a href="/pracownik/ksiazka/nowa">Dodaj książkę</a>
                             
                         </li>
                         <li>
@@ -124,7 +127,7 @@ type="text/css" />
                
                
                 <li>
-                    <a href="#">
+                    <a href="/pracownik/info">
                         <i class="fas fa-info-circle"></i>
                         Informacje
                     </a>

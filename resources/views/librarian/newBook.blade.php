@@ -1,6 +1,6 @@
 @extends('layouts.layout-librarian')
 
-@section('title', 'Nowe konto Czytelnika')
+@section('title', 'Nowa książka')
 
 @section('content')
 
@@ -8,42 +8,44 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">Nowy Czytelnik</div>
+                    <div class="card-header">Nowa książka</div>
                     <div class="card-body">
                         <form name="my-form" action="" method="POST">
                             <div class="form-group row">
-                                <label for="fname" class="col-md-4 col-form-label text-md-right">Imię</label>
+                                <label for="title" class="col-md-4 col-form-label text-md-right">Tytuł</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="fname" class="form-control" name="fname" required>
+                                    <input type="text" id="title" class="form-control" name="title" required>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="lname" class="col-md-4 col-form-label text-md-right">Nazwisko</label>
+                                <label for="author" class="col-md-4 col-form-label text-md-right">Autor</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="lname" class="form-control" name="lname" required>
+                                    <input type="text" id="author" class="form-control" name="author" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="pesel" class="col-md-4 col-form-label text-md-right">PESEL</label>
+                                <label for="publisher" class="col-md-4 col-form-label text-md-right">Wydawnictwo</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="pesel" class="form-control" name="pesel" required>
+                                    <input type="text" id="publisher" class="form-control" name="publisher" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail</label>
+                                <label for="year" class="col-md-4 col-form-label text-md-right">Rok wydania</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="email" class="form-control" name="email" required>
+                                    <input type="text" id="year" class="form-control" name="year" required>
                                 </div>
                             </div>
 
                             <div class="form-group row">
-                                <label for="phone" class="col-md-4 col-form-label text-md-right">Numer telefonu</label>
+                                <label for="numverOfItems" class="col-md-4 col-form-label text-md-right">Ilość egzemplarzy</label>
                                 <div class="col-md-6">
-                                    <input type="text" id="phone" name="phone" class="form-control" required>
+                                    <input type="number" id="numverOfItems" class="form-control" name="numverOfItems" required>
                                 </div>
                             </div>
+
+           
 
                                 <div class="row d-flex justify-content-center">
                                     

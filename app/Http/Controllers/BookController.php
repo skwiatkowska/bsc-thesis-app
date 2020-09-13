@@ -13,7 +13,7 @@ class BookController extends Controller {
     public function create() {
         //$book = Book::create(['title' => 'aa']);
 
-        return view('addNewBook');
+        return view('/librarian/newBook');
     }
 
 
