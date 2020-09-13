@@ -22,7 +22,10 @@ Route::get('/godziny-otwarcia', 'IndexController@workingHours');
 
 Route::get('/zasoby', 'BookController@index');
 
+
 Route::get('/pracownik', 'LibrarianController@index');
+Route::get('/pracownik/logowanie', 'LibrarianController@login');
+Route::get('/pracownik/czytelnik/rejestracja', 'LibrarianController@registerMember');
 
 
 Route::get('/pracownik/dodaj-ksiazke', 'BookController@create');

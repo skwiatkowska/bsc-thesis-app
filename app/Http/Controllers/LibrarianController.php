@@ -4,13 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class LibrarianController extends Controller
-{
+class LibrarianController extends Controller {
     public function index() {
+        return view('/librarian/home');
+    }
 
-        //$books = Book::all();
 
-    //return view('/showBooks', ['books' => $books]);
-    return view('/librarian/home');
-}
+    public function login() {
+
+        return view('/librarian/login');
+    }
+
+    public function registerMember() {
+        return view('/librarian/newMember');
+    }
 }

@@ -4,7 +4,7 @@
 
 @section('content')
 
-{{-- source:https://bbbootstrap.com/snippets/multi-step-form-wizard-30467045 --}}
+{{-- source: https://bbbootstrap.com/snippets/multi-step-form-wizard-30467045 --}}
 <div class="container">
     <!-- MultiStep Form -->
     <div class="container-fluid" id="grad1">
