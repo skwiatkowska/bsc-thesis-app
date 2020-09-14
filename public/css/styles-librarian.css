@@ -381,3 +381,7 @@ ul.CTAs a {
     list-style-type: none;
     margin: 0px;
   }
+
+  .input-hidden{
+      display: none;
+  }

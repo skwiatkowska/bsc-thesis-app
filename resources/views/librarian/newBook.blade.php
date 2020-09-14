@@ -49,7 +49,13 @@
                         <div class="form-group row">
                             <label for="category" class="col-md-4 col-form-label text-md-right">Kategoria</label>
                             <div class="col-md-6">
-                                <input type="text" id="category" class="form-control" name="category">
+                                @foreach ($categories as $category)
+                                <span class="button-checkbox">
+                                    <button type="button" class="btn" data-color="primary">{{$category->name}}</button>
+                                    <input type="checkbox" id="{{$category->name}}" value="{{$category->name}}" name="{{$category->name}}" class="input-hidden" />
+                                </span>
+                               
+                                @endforeach
                             </div>
                         </div>
 
@@ -111,5 +117,73 @@
     
 });
 
+
+
+// checkboxes
+$(function () {
+    $('.button-checkbox').each(function () {
+
+        // Settings
+        var $widget = $(this),
+            $button = $widget.find('button'),
+            $checkbox = $widget.find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        // Event Handlers
+        $button.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
+        });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $button.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $button
+                    .removeClass('btn-default')
+                    .addClass('btn-' + color + ' active');
+            }
+            else {
+                $button
+                    .removeClass('btn-' + color + ' active')
+                    .addClass('btn-default');
+            }
+        }
+
+        // Initialization
+        function init() {
+
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($button.find('.state-icon').length == 0) {
+                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+            }
+        }
+        init();
+    });
+});
 </script>
 @endsection

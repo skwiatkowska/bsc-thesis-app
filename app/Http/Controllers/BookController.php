@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Entities\Author;
 use App\Entities\Book;
-
+use App\Entities\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -12,9 +12,8 @@ class BookController extends Controller {
 
 
     public function create() {
-        //$book = Book::create(['title' => 'aa']);
-
-        return view('/librarian/newBook');
+       $categories = Category::all();
+        return view('/librarian/newBook', ['categories' => $categories]);
     }
 
 
@@ -28,7 +27,7 @@ class BookController extends Controller {
         ]);
         $book->authors()->save($author);
 
-        return redirect('/pracownik');
+        return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: '.$request->input('title')]);
     }
 
     public function index() {
