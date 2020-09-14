@@ -11,8 +11,7 @@ class Author extends NeoEloquent {
 
     protected $fillable = [
         'id',
-        'first_name',
-        'last_name',
+        'name',
         'created_at',
         'updated_at'
     ];
@@ -23,4 +22,6 @@ class Author extends NeoEloquent {
         'updated_at'
     ];
 
+
+    
 }

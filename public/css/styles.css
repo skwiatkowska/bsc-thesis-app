@@ -244,13 +244,10 @@ select.list-dt:focus {
     min-height: 280px;
 }
 
-
-
-
-
-
-
-
+.ul-alert{
+  list-style-type: none;
+  margin: 0px;
+}
 
 
 

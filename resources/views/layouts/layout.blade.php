@@ -91,27 +91,23 @@
         <div class="row">
             {{--<div class="box">--}}
 
-            @if (session('errors'))
-            <div class="alert alert-dismissible alert-danger">
-                Błędy:<br />
-                <ul>
-                    @foreach(session('errors') as $error)
-                    <li>{!!$error!!}</li>
-                    @endforeach
-                </ul>
-            </div>
-            @endif
-
-
-            @if (session('info'))
-            <div class="container2">
+            
+                @if (\Session::has('success'))
                 <div class="alert alert-success">
-                    <ul>
-                        <li><strong>{{session('info')}}</strong></li>
+                    <ul class="ul-alert">
+                        <li><i class="fas fa-check-circle mr-2"></i>{!! \Session::get('success') !!}</li>
                     </ul>
                 </div>
-            </div>
-            @endif
+                @endif
+                @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="ul-alert">
+                        {!! implode('', $errors->all('<li><i class="fas fa-exclamation-triangle mr-2"></i>:message</li>')) !!}
+                    </ul>
+                </div>
+    
+                @endif
+    
 
             {{--</div>--}}
         </div>

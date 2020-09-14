@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Author;
 use App\Entities\Book;
 
 use Illuminate\Http\Request;
@@ -18,13 +19,16 @@ class BookController extends Controller {
 
 
     public function store(Request $request) {
-        Book::create([
+        $book = Book::create([
             'title' => $request->input('title'),
-            'author' => $request->input('author'),
         ]);
 
+        $author = Author::create([
+            'name' => $request->input('author'),
+        ]);
+        $book->authors()->save($author);
 
-        return redirect('/');
+        return redirect('/pracownik');
     }
 
     public function index() {

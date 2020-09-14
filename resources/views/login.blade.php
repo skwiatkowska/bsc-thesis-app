@@ -14,7 +14,8 @@
                     <div class="row">
                         <div class="col-md-12 mx-0">
                             <form id="msform" method="POST">
-                            
+                                {{ csrf_field() }}
+
                                 <fieldset>
                                     <div class="form-card pt-5">
       

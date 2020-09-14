@@ -11,7 +11,6 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script><!-- Custom CSS -->
     <link href="{{ asset('css/styles-librarian.css') }}" rel="stylesheet" type="text/css">
 
     <!-- Font Awesome JS -->
@@ -35,10 +34,11 @@
         integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous">
     </script>
 
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
-media="screen" />
-<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"
-type="text/css" />
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
+        media="screen" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css" />
 
 </head>
 
@@ -55,11 +55,11 @@ type="text/css" />
 
             <ul class="list-unstyled components">
                 <li class>
-                    <a href="/pracownik" >
+                    <a href="/pracownik">
                         <i class="fas fa-home"></i>
                         Strona startowa
                     </a>
-                    
+
                 </li>
                 <li>
                     <a href="#">
@@ -82,7 +82,7 @@ type="text/css" />
                         <li>
                             <a href="#">Zarejestruj zwrot</a>
                         </li>
-                        
+
                     </ul>
                 </li>
 
@@ -93,12 +93,12 @@ type="text/css" />
                     </a>
                     <ul class="collapse list-unstyled" id="membersSubmenu">
                         <li>
-                            <a href="/pracownik/czytelnik/rejestracja">Dodaj Czytelnika</a>
+                            <a href="/pracownik/czytelnik/rejestracja/nowy">Dodaj Czytelnika</a>
                         </li>
                         <li>
                             <a href="/pracownik/czytelnik/znajdz">Znajdź Czytelnika</a>
                         </li>
-                        
+
                     </ul>
                 </li>
                 <li>
@@ -114,18 +114,18 @@ type="text/css" />
                     </a>
                     <ul class="collapse list-unstyled" id="manageSubmenu">
                         <li>
-                            <a href="/pracownik/ksiazka/nowa">Dodaj książkę</a>
-                            
+                            <a href="/pracownik/kategorie">Kategorie</a>
+                        </li>
+                        <li>
+                            <a href="/pracownik/ksiazki/nowa">Dodaj książkę</a>
                         </li>
                         <li>
                             <a href="#">Edytuj książkę</a>
-                            
                         </li>
-                        
                     </ul>
                 </li>
-               
-               
+
+
                 <li>
                     <a href="/pracownik/info">
                         <i class="fas fa-info-circle"></i>
@@ -145,12 +145,12 @@ type="text/css" />
 
                     </button>
                     <div class="title-nav">
-                    <p class="font-weight-bold">@yield('title')</p>
+                        <p class="font-weight-bold">@yield('title')</p>
                     </div>
                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                        <i class="fas fa-align-justify"></i>
+                        <i class="fas fa-align-right"></i>
                     </button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -159,12 +159,31 @@ type="text/css" />
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Wyloguj</a>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </div>
             </nav>
-            
+
+
+
+            @if (\Session::has('success'))
+            <div class="alert alert-success">
+                <ul class="ul-alert">
+                    <li><i class="fas fa-check-circle mr-2"></i>{!! \Session::get('success') !!}</li>
+                </ul>
+            </div>
+            @endif
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="ul-alert">
+
+                    {!! implode('', $errors->all('<li><i class="fas fa-exclamation-triangle mr-2"></i>:message</li>')) !!}
+                </ul>
+            </div>
+
+            @endif
+
             @yield('content')
 
         </div>
@@ -175,6 +194,17 @@ type="text/css" />
         $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#categoryListSearch").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#categoryList li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         });
     </script>

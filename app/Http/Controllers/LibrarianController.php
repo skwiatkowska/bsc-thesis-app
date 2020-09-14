@@ -15,9 +15,14 @@ class LibrarianController extends Controller {
         return view('/librarian/login');
     }
 
-    public function registerMember() {
+    public function createMember() {
         return view('/librarian/newMember');
     }
+
+    public function storeMember() {
+        return view('/librarian/newMember');
+    }
+
 
     public function findMember() {
         return view('/librarian/findMember');

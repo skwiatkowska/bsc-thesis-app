@@ -25,15 +25,18 @@ Route::get('/zasoby', 'BookController@index');
 
 Route::get('/pracownik', 'LibrarianController@index');
 Route::get('/pracownik/logowanie', 'LibrarianController@login');
-Route::get('/pracownik/czytelnik/rejestracja', 'LibrarianController@registerMember');
+Route::get('/pracownik/czytelnik/nowy', 'LibrarianController@createMember');
+// Route::post('/pracownik/czytelnik/nowy', 'LibrarianController@storeMember');
 Route::get('/pracownik/czytelnik/znajdz', 'LibrarianController@findMember');
+
+Route::get('/pracownik/kategorie', 'CategoryController@index');
+Route::post('/pracownik/kategorie', 'CategoryController@store');
 
 Route::get('/pracownik/info', 'LibrarianController@info');
 
 
 
 
-
-Route::get('/pracownik/ksiazka/nowa', 'BookController@create');
-Route::post('/pracownik/ksiazka/nowa', 'BookController@store');
+Route::get('/pracownik/ksiazki/nowa', 'BookController@create');
+Route::post('/pracownik/ksiazki/nowa', 'BookController@store');
 

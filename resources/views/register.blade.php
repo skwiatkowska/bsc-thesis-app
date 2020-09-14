@@ -15,6 +15,8 @@
                     <div class="row">
                         <div class="col-md-12 mx-0">
                             <form id="msform">
+                                {{ csrf_field() }}
+
                                 <!-- progressbar -->
                                 <ul id="progressbar">
                                     <li class="active" id="account"><strong>Konto</strong></li>

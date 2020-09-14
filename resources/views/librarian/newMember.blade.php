@@ -10,7 +10,9 @@
                 <div class="card">
                     <div class="card-header">Nowy Czytelnik</div>
                     <div class="card-body">
-                        <form name="my-form" action="" method="POST">
+                        <form name="newMemberForm" action="/pracownik/ksiazki/nowa" method="POST">
+                            {{ csrf_field() }}
+
                             <div class="form-group row">
                                 <label for="fname" class="col-md-4 col-form-label text-md-right">Imię</label>
                                 <div class="col-md-6">

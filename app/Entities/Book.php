@@ -27,11 +27,11 @@ class Book extends NeoEloquent{
         'updated_at'
     ];
 
-    public function category(){
-        return $this->belongsTo(Category::class,'BELONGS_TO');
+    public function categories(){
+        return $this->belongsToMany(Category::class,'CONSISTS_OF');
     }
 
-    public function author(){
-        return $this->hasMany(Author::class,'WRITTEN_BY');
+    public function authors(){
+        return $this->belongsToMany(Author::class,'WRITE');
     }
 }
