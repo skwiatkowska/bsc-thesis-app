@@ -23,28 +23,44 @@
                         <div class="form-group row">
                             <label for="author" class="col-md-4 col-form-label text-md-right">Autor</label>
                             <div class="col-md-6">
-                                <div class="control-group form-group mb-1">
+                                <div class="control-group form-group mb-0">
+                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora spośród bazy danych: </small></label>
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
-                                            <option value="" selected disabled>Wybierz z bazy</option>
+                                            <option value="" selected disabled>Nie wybrano</option>
                                             <option value="1">Guia</option>
                                    
-                                        </select>          
+                                        </select> 
+                                                 
+                                    </div>
+                                    
+                                        <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj nowego autora:</small></label>
+                                        <div class="input-group col-xs-3">
+                                          <input type="text" placeholder="Imiona" class="form-control">
+                                          <input type="text" placeholder="Nazwisko" class="form-control"> 
                                     </div>
                                 </div>
                                 <!-- DYNAMIC ELEMENT TO CLONE -->
-                                <div class="control-group form-group mb-0 dynamic-element" style="display:none">
+                                <div class="control-group form-group mt-1 mb-0 dynamic-element" style="display:none">
+                                    <hr>
+                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora spośród bazy danych: </small></label>
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
-                                            <option value="" selected disabled>Wybierz z bazy</option>
+                                            <option value="" selected disabled>Nie wybrano</option>
                                             <option value="1">Guia</option>
-                                         
-                                        </select>
-                                        <span class="input-group-btn">
+                                   
+                                        </select>    
+                                        <span class="input-group-btn ml-1">
                                             <button id="b1" class="btn btn-danger delete" type="button">X</button>
-                                        </span>
+                                        </span>      
+                                    </div>
+                                    
+                                        <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj nowego autora:</small></label>
+                                        <div class="input-group col-xs-3">
+                                          <input type="text" placeholder="Imiona" class="form-control">
+                                          <input type="text" placeholder="Nazwisko" class="form-control"> 
                                     </div>
                                 </div>
                                 <!-- END OF DYNAMIC ELEMENT -->
@@ -53,16 +69,12 @@
                                     <div class="dynamic-stuff">
                                     </div>
                                     <!-- Button -->
-                                    <div class="form-group pb-0 mb-1">
+                                    <div class="form-group pb-0 mt-4 mb-1">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <p class="h6 add-one pb-0 mb-0 text-danger" >+ kolejny autor</p>
                                             </div>
-                                            <div class="col-md-12 mt-3">
-                                                <p>Brak autora w bazie? <a class="a-link" href="/pracownik/kategorie">Dodaj teraz</a>
-                                                </p>
-                                            </div>
-
+            
                                         </div>
                                 </fieldset>
                             </div>
