@@ -385,3 +385,8 @@ ul.CTAs a {
   .input-hidden{
       display: none;
   }
+
+  .a-link{
+      color: blue;
+
+  }

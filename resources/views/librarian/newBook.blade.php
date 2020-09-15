@@ -23,18 +23,51 @@
                         <div class="form-group row">
                             <label for="author" class="col-md-4 col-form-label text-md-right">Autor</label>
                             <div class="col-md-6">
-                                <div class="col-md-12">
+                                <div class="control-group form-group">
 
-                                    <input autocomplete="off" class="input" id="field1" name="prof1" type="text"
-                                        placeholder="Type something" data-items="8" /><button id="b1"
-                                        class="btn add-more" type="button">+</button>
+                                    <div class="input-group col-xs-3">
+                                        <select data-live-search="true" id="authors" name="authors[]" class="form-control">
+                                            <option value="" selected disabled>Wybierz</option>
+                                            <option value="1">Guia</option>
+                                   
+                                        </select>          
+                                    </div>
                                 </div>
+                                <!-- DYNAMIC ELEMENT TO CLONE -->
+                                <div class="control-group form-group dynamic-element" style="display:none">
+
+                                    <div class="input-group col-xs-3">
+                                        <select data-live-search="true" id="authors" name="authors[]" class="form-control">
+                                            <option value="" selected disabled>Wybierz</option>
+                                            <option value="1">Guia</option>
+                                         
+                                        </select>
+                                        <span class="input-group-btn">
+                                            <button id="b1" class="btn btn-danger delete" type="button">X</button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <!-- END OF DYNAMIC ELEMENT -->
+
+                                <fieldset class="pb-0 mb-0">
+                                    <div class="dynamic-stuff">
+                                    </div>
+                                    <!-- Button -->
+                                    <div class="form-group pb-0 mb-0">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <p class="add-one pb-0 mb-0">+ kolejny autor</p>
+                                            </div>
+
+                                        </div>
+                                </fieldset>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="publisher" class="col-md-4 col-form-label text-md-right">Wydawnictwo</label>
                             <div class="col-md-6">
+
                                 <input type="text" id="publisher" class="form-control" name="publisher">
                             </div>
                         </div>
@@ -49,13 +82,20 @@
                         <div class="form-group row">
                             <label for="category" class="col-md-4 col-form-label text-md-right">Kategoria</label>
                             <div class="col-md-6">
+                                @if($categories->isEmpty())
+
+                                <p class="mt-1">Brak kategorii. <a class="a-link" href="/pracownik/kategorie">Kliknij i
+                                        dodaj nową</a></p>
+                                @else
                                 @foreach ($categories as $category)
-                                <span class="button-checkbox">
-                                    <button type="button" class="btn" data-color="primary">{{$category->name}}</button>
-                                    <input type="checkbox" id="{{$category->name}}" value="{{$category->name}}" name="{{$category->name}}" class="input-hidden" />
+                                <span class="button-checkbox pb-1">
+                                    <button type="button" class="btn btn-sm"
+                                        data-color="secondary">{{$category->name}}</button>
+                                    <input type="checkbox" id="{{$category->name}}" value="{{$category->name}}"
+                                        name="{{$category->name}}" class="input-hidden" />
                                 </span>
-                               
                                 @endforeach
+                                @endif
                             </div>
                         </div>
 
@@ -76,7 +116,7 @@
                             </button>
                         </div>
                 </div>
-
+                
 
                 </form>
 
@@ -87,36 +127,32 @@
 </div>
 
 
-<script>
-    $(document).ready(function(){
-    var next = 1;
-    $(".add-more").click(function(e){
-        e.preventDefault();
-        var addto = "#field" + next;
-        var addRemove = "#field" + (next);
-        next = next + 1;
-        var newIn = '<input autocomplete="off" class="input form-control" id="field' + next + '" name="field' + next + '" type="text">';
-        var newInput = $(newIn);
-        var removeBtn = '<button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" >-</button></div><div id="field">';
-        var removeButton = $(removeBtn);
-        $(addto).after(newInput);
-        $(addRemove).after(removeButton);
-        $("#field" + next).attr('data-source',$(addto).attr('data-source'));
-        $("#count").val(next);  
-        
-            $('.remove-me').click(function(e){
-                e.preventDefault();
-                var fieldNum = this.id.charAt(this.id.length-1);
-                var fieldID = "#field" + fieldNum;
-                $(this).remove();
-                $(fieldID).remove();
-            });
-    });
-    
 
-    
+<script>
+
+    // dynamic input for authors
+    // source: https://codepen.io/llooll/pen/eVMvGR
+
+    //Clone the hidden element and shows it
+$('.add-one').click(function(){
+  $('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
+  attach_delete();
 });
 
+
+//Attach functionality to delete buttons
+function attach_delete(){
+  $('.delete').off();
+  $('.delete').click(function(){
+    console.log("click");
+    $(this).closest('.form-group').remove();
+  });
+}
+
+
+
+
+  
 
 
 // checkboxes
@@ -129,12 +165,7 @@ $(function () {
             $checkbox = $widget.find('input:checkbox'),
             color = $button.data('color'),
             settings = {
-                on: {
-                    icon: 'glyphicon glyphicon-check'
-                },
-                off: {
-                    icon: 'glyphicon glyphicon-unchecked'
-                }
+               
             };
 
         // Event Handlers
@@ -154,16 +185,12 @@ $(function () {
             // Set the button's state
             $button.data('state', (isChecked) ? "on" : "off");
 
-            // Set the button's icon
-            $button.find('.state-icon')
-                .removeClass()
-                .addClass('state-icon ' + settings[$button.data('state')].icon);
-
-            // Update the button's color
+                 // Update the button's color
             if (isChecked) {
                 $button
                     .removeClass('btn-default')
-                    .addClass('btn-' + color + ' active');
+                    .addClass('btn-' + color + ' active')
+
             }
             else {
                 $button
@@ -177,10 +204,6 @@ $(function () {
 
             updateDisplay();
 
-            // Inject the icon if applicable
-            if ($button.find('.state-icon').length == 0) {
-                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
-            }
         }
         init();
     });
