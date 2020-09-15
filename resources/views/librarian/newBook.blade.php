@@ -23,22 +23,22 @@
                         <div class="form-group row">
                             <label for="author" class="col-md-4 col-form-label text-md-right">Autor</label>
                             <div class="col-md-6">
-                                <div class="control-group form-group">
+                                <div class="control-group form-group mb-1">
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
-                                            <option value="" selected disabled>Wybierz</option>
+                                            <option value="" selected disabled>Wybierz z bazy</option>
                                             <option value="1">Guia</option>
                                    
                                         </select>          
                                     </div>
                                 </div>
                                 <!-- DYNAMIC ELEMENT TO CLONE -->
-                                <div class="control-group form-group dynamic-element" style="display:none">
+                                <div class="control-group form-group mb-0 dynamic-element" style="display:none">
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
-                                            <option value="" selected disabled>Wybierz</option>
+                                            <option value="" selected disabled>Wybierz z bazy</option>
                                             <option value="1">Guia</option>
                                          
                                         </select>
@@ -53,10 +53,14 @@
                                     <div class="dynamic-stuff">
                                     </div>
                                     <!-- Button -->
-                                    <div class="form-group pb-0 mb-0">
+                                    <div class="form-group pb-0 mb-1">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <p class="add-one pb-0 mb-0">+ kolejny autor</p>
+                                                <p class="h6 add-one pb-0 mb-0 text-danger" >+ kolejny autor</p>
+                                            </div>
+                                            <div class="col-md-12 mt-3">
+                                                <p>Brak autora w bazie? <a class="a-link" href="/pracownik/kategorie">Dodaj teraz</a>
+                                                </p>
                                             </div>
 
                                         </div>
