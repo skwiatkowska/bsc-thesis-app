@@ -24,12 +24,15 @@
                             <label for="author" class="col-md-4 col-form-label text-md-right">Autor</label>
                             <div class="col-md-6">
                                 <div class="control-group form-group mb-0">
-                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora spośród bazy danych: </small></label>
+                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora z bazy danych: </small></label>
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
                                             <option value="" selected disabled>Nie wybrano</option>
-                                            <option value="guia">Guia</option>
+                                            @foreach ($authors as $author)
+                                                <option value="{{$author->id}}">{{$author->last_name}}, {{$author->first_names}}</option>
+                                            @endforeach
+                                            
                                    
                                         </select> 
                                                  
@@ -37,19 +40,21 @@
                                     
                                         <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj nowego autora:</small></label>
                                         <div class="input-group col-xs-3">
-                                          <input type="text" placeholder="Imiona" class="form-control" name="newAuthorNames[]">
+                                          <input type="text" placeholder="Imiona" class="form-control" name="newAuthorName[]">
                                           <input type="text" placeholder="Nazwisko" class="form-control" name="newAuthorLastName[]"> 
                                     </div>
                                 </div>
                                 <!-- DYNAMIC ELEMENT TO CLONE -->
                                 <div class="control-group form-group mt-1 mb-0 dynamic-element" style="display:none">
                                     <hr>
-                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora spośród bazy danych: </small></label>
+                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora z bazy danych: </small></label>
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
                                             <option value="" selected disabled>Nie wybrano</option>
-                                            <option value="1">Guia</option>
+                                            @foreach ($authors as $author)
+                                                <option value="{{$author->id}}">{{$author->last_name}}, {{$author->first_names}}</option>
+                                            @endforeach
                                    
                                         </select>    
                                         <span class="input-group-btn ml-1">
@@ -59,7 +64,7 @@
                                     
                                         <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj nowego autora:</small></label>
                                         <div class="input-group col-xs-3">
-                                          <input type="text" placeholder="Imiona" class="form-control" name="newAuthorNames[]">
+                                          <input type="text" placeholder="Imiona" class="form-control" name="newAuthorName[]">
                                           <input type="text" placeholder="Nazwisko" class="form-control" name="newAuthorLastName[]"> 
                                     </div>
                                 </div>
@@ -97,17 +102,17 @@
 
                         <div class="form-group row">
                             <label for="category" class="col-md-4 col-form-label text-md-right">Kategoria</label>
-                            <div class="col-md-6">
+                            <div class="col-md-6 sorted">
                                 @if($categories->isEmpty())
 
                                 <p class="mt-1">Brak kategorii. <a class="a-link" href="/pracownik/kategorie">Kliknij i
                                         dodaj nową</a></p>
                                 @else
                                 @foreach ($categories as $category)
-                                <span class="button-checkbox pb-1">
-                                    <button type="button" class="btn btn-sm"
+                                <span class="button-checkbox m-1">
+                                    <button type="button" class="btn btn-sm category-btn"
                                         data-color="secondary">{{$category->name}}</button>
-                                    <input type="checkbox" id="{{$category->name}}" value="{{$category->name}}"
+                                    <input type="checkbox" id="{{$category->id}}" value="{{$category->id}}"
                                         name="categories[]" class="input-hidden" />
                                 </span>
                                 @endforeach

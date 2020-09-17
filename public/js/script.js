@@ -61,6 +61,15 @@ $(document).ready(function () {
     );
   });
 
+  $(".sorted-list li").sort(asc_sort).appendTo('.sorted-list');
+
+  $(".sorted span ").sort(asc_sort).appendTo('.sorted');
+
+  function asc_sort(a, b){
+      return ($(b).text()) < ($(a).text()) ? 1 : -1;    
+  }
+  
+
   $(".radio-group .radio").click(function () {
     $(this).parent().find(".radio").removeClass("selected");
     $(this).addClass("selected");

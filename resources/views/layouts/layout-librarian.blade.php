@@ -23,6 +23,7 @@
     </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="{{PUBLIC_URL}}js/script.js"></script>
 
 
     <!-- Popper.JS -->
@@ -97,7 +98,7 @@
                     </a>
                     <ul class="collapse list-unstyled" id="membersSubmenu">
                         <li>
-                            <a href="/pracownik/czytelnik/rejestracja/nowy">Dodaj Czytelnika</a>
+                            <a href="/pracownik/czytelnik/nowy">Dodaj Czytelnika</a>
                         </li>
                         <li>
                             <a href="/pracownik/czytelnik/znajdz">Znajdź Czytelnika</a>

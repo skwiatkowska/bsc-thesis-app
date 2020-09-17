@@ -13,47 +13,58 @@ class BookController extends Controller {
 
     public function create() {
         $categories = Category::all();
-        return view('/librarian/newBook', ['categories' => $categories]);
+        $authors = Author::all();
+        return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors]);
     }
 
 
     public function store(Request $request) {
         //print_r($request->post());
-        //Array ( [_token] => zU6M9DtxHgTwHBdyNEBzySqrJAecH8OdqBjHM4yp [title] => tytuł1 [authors] => Array ( [0] => guia ) [newAuthorNames] => Array ( [0] => nowy1 [1] => ) [newAuthorLastName] => Array ( [0] => nowy2 [1] => ) [publisher] => aa [year] => 1998 [categories] => Array ( [0] => a [1] => b ) [numberOfItems] => 4 )
-        $nAuthorNames = $request->newAuthorNames;
+        //Array ( [_token] => zU6M9DtxHgTwHBdyNEBzySqrJAecH8OdqBjHM4yp [title] => tytuł1 [authors] => Array ( [0] => guia ) [newAuthorName] => Array ( [0] => nowy1 [1] => ) [newAuthorLastName] => Array ( [0] => nowy2 [1] => ) [publisher] => aa [year] => 1998 [categories] => Array ( [0] => a [1] => b ) [numberOfItems] => 4 )
+        $nAuthorName = $request->newAuthorName;
         $nAuthorLastName = $request->newAuthorLastName;
+        $existingAuthors = $request->authors;
+        $categories = $request->categories;
 
-        // if (!empty($nAuthorNames) && !empty($nAuthorLastName)) {
-        //     foreach ($nAuthorNames as $index => $names) {
-        //         if (!empty($names)) {
-        //             echo $index;
-        //             $newAuthor = Author::create(['first_names' => $names, 'last_name' => $nAuthorLastName[$index]]);
-        //         }
-        //     }
-        // }
+        $categoriesToAssign = array();
+        $authorsToAssign = array();
+
+        //retrieve categories for db
+        if (!empty($categories)) {
+
+            foreach ($categories as $category) {
+                $cat = Category::find($category);
+                array_push($categoriesToAssign, $cat);
+            }
+        }
+
+        //retrieve existing authors from db
+        if (!empty($existingAuthors)) {
+            foreach ($existingAuthors as $existAuthor) {
+                $author = Author::find($existAuthor);
+                array_push($authorsToAssign, $author);
+            }
+        }
+
+        if (!empty($nAuthorName) && !empty($nAuthorLastName)) {
+            //new authors
+            foreach ($nAuthorName as $index => $name) {
+                if (!empty($name)) {
+                    $newAuthor = array(
+                        "first_names" => $name,
+                        "last_name" =>  $nAuthorLastName[$index]
+                    );
+                    array_push($authorsToAssign, $newAuthor);
+                }
+            }
+        }
 
         $book = Book::createWith(['title' => $request->title, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
-            'authors' => [
-                [
-                    'first_names' => 'fn',
-                    'last_name'  => 'ln',
-                ]
-               
-            ],
-        
-          
+            'authors' => $authorsToAssign,
+            'categories' => $categoriesToAssign,
         ]);
 
-        // $book = Book::create([
-        //     'title' => $request->input('title'),
-        // ]);
-
-        // $author = Author::create([
-        //     'name' => $request->input('author'),
-        // ]);
-        // $book->authors()->save($author);
-
-        // return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: '.$request->input('title')]);
+      return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: '.$request->input('title')]);
     }
 
     public function index() {

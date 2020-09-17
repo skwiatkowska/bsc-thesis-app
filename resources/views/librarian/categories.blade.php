@@ -26,7 +26,7 @@
   </div>
   <br>
 
-  <ul class="list-group" id="categoryList">
+  <ul class="list-group sorted-list" id="categoryList">
     @if($categories->isEmpty())
 
     <p class="h6 text-center py-5" id="emptyCategoriesInfo">Brak kategorii. Kliknij <i class="fas fa-plus"></i> i dodaj
@@ -65,11 +65,6 @@
 
   });
 
-  $("#categoryList li").sort(asc_sort).appendTo('#categoryList');
-
-    function asc_sort(a, b){
-        return ($(b).text()) < ($(a).text()) ? 1 : -1;    
-    }
 
   $(document).ready(function(){
       $( "#categoryList" ).append('<p class="h6 text-center py-5" id="noSuchCategoryInfo">Nie ma takiej kategorii. Kliknij <i class="fas fa-plus"></i> i dodaj nową</p>');           
