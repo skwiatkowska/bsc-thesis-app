@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">Nowa książka</div>
                 <div class="card-body">
-                    <form name="newBookForm" action="/pracownik/ksiazki" method="POST">
+                    <form name="newBookForm" action="/pracownik/ksiazki/nowa" method="POST">
                         {{ csrf_field() }}
 
                         <div class="form-group row">
@@ -29,7 +29,7 @@
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]" class="form-control">
                                             <option value="" selected disabled>Nie wybrano</option>
-                                            <option value="1">Guia</option>
+                                            <option value="guia">Guia</option>
                                    
                                         </select> 
                                                  
@@ -37,8 +37,8 @@
                                     
                                         <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj nowego autora:</small></label>
                                         <div class="input-group col-xs-3">
-                                          <input type="text" placeholder="Imiona" class="form-control">
-                                          <input type="text" placeholder="Nazwisko" class="form-control"> 
+                                          <input type="text" placeholder="Imiona" class="form-control" name="newAuthorNames[]">
+                                          <input type="text" placeholder="Nazwisko" class="form-control" name="newAuthorLastName[]"> 
                                     </div>
                                 </div>
                                 <!-- DYNAMIC ELEMENT TO CLONE -->
@@ -59,8 +59,8 @@
                                     
                                         <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj nowego autora:</small></label>
                                         <div class="input-group col-xs-3">
-                                          <input type="text" placeholder="Imiona" class="form-control">
-                                          <input type="text" placeholder="Nazwisko" class="form-control"> 
+                                          <input type="text" placeholder="Imiona" class="form-control" name="newAuthorNames[]">
+                                          <input type="text" placeholder="Nazwisko" class="form-control" name="newAuthorLastName[]"> 
                                     </div>
                                 </div>
                                 <!-- END OF DYNAMIC ELEMENT -->
@@ -91,7 +91,7 @@
                         <div class="form-group row">
                             <label for="year" class="col-md-4 col-form-label text-md-right">Rok wydania</label>
                             <div class="col-md-6">
-                                <input type="text" id="year" class="form-control" name="year">
+                                <input type="number" min="1900" max="2021" step="1" value="2020" id="year" class="form-control" name="year">
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                                     <button type="button" class="btn btn-sm"
                                         data-color="secondary">{{$category->name}}</button>
                                     <input type="checkbox" id="{{$category->name}}" value="{{$category->name}}"
-                                        name="{{$category->name}}" class="input-hidden" />
+                                        name="categories[]" class="input-hidden" />
                                 </span>
                                 @endforeach
                                 @endif
@@ -119,7 +119,7 @@
                             <label for="numverOfItems" class="col-md-4 col-form-label text-md-right">Ilość
                                 egzemplarzy</label>
                             <div class="col-md-6">
-                                <input type="number" id="numverOfItems" class="form-control" name="numverOfItems">
+                                <input type="number" id="numverOfItems" class="form-control" name="numberOfItems">
                             </div>
                         </div>
 
