@@ -10,12 +10,9 @@ class CreateAuthorLabel extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Neo4jSchema::label('Author', function(Blueprint $label)
-        {
+    public function up() {
+        Neo4jSchema::label('Author', function (Blueprint $label) {
             $label->unique(array('first_names', 'last_name'));
-
         });
     }
 
@@ -24,9 +21,7 @@ class CreateAuthorLabel extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Neo4jSchema::dropIfExists('Author');
     }
-
 }

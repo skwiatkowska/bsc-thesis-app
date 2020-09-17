@@ -5,8 +5,10 @@ namespace App\Entities;
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 use App\Entities\Category;
 use App\Entities\Author;
+use App\Entities\Publisher;
 
 class Book extends NeoEloquent{
+
     protected $label = 'Book';
 
     protected $fillable = [
@@ -33,5 +35,9 @@ class Book extends NeoEloquent{
 
     public function authors(){
         return $this->belongsToMany(Author::class,'WRITE');
+    }
+
+    public function publisher(){
+        return $this->belongsTo(Publisher::class,'PUBLISH');
     }
 }

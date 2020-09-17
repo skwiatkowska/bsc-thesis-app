@@ -3,7 +3,7 @@
 use Vinelab\NeoEloquent\Schema\Blueprint;
 use Vinelab\NeoEloquent\Migrations\Migration;
 
-class CreateBookLabel extends Migration {
+class CreatePublisherLabel extends Migration {
 
     /**
      * Run the migrations.
@@ -11,9 +11,8 @@ class CreateBookLabel extends Migration {
      * @return void
      */
     public function up() {
-        Neo4jSchema::label('Book', function (Blueprint $label) {
-            //$label->unique(array('title', 'publication_year', 'publisher'));
-
+        Neo4jSchema::label('Publisher', function (Blueprint $label) {
+            //
         });
     }
 
@@ -23,6 +22,6 @@ class CreateBookLabel extends Migration {
      * @return void
      */
     public function down() {
-        Neo4jSchema::dropIfExists('Book');
+        Neo4jSchema::dropIfExists('Publisher');
     }
 }

@@ -1,16 +1,15 @@
 <?php
+
 namespace App\Entities;
 
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 use App\Entities\Book;
 
 
-class Category extends NeoEloquent{
-    
-    protected $label = 'Category';
+class Publisher extends NeoEloquent {
 
+    protected $label = 'Publisher';
     protected $fillable = [
-        'id',
         'name',
         'created_at',
         'updated_at'
@@ -21,5 +20,10 @@ class Category extends NeoEloquent{
         'created_at',
         'updated_at'
     ];
+
+    
+    public function books(){
+        return $this->hasMany(Book::class,'PUBLISHED');
+    }
 
 }
