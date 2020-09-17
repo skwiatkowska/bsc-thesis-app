@@ -22,12 +22,13 @@ class CategoryController extends Controller {
         try{
             Category::create([
             'name' => $request->input('name'),
-        ]);
-    } catch (\Exception $e) {
+         ]);
+     } catch (\Exception $e) {
+        return response()->json(['error' => 'Kategoria '.$request->input('name') .' już istnieje'],409);
 
-        return back()->withErrors('Kategoria '.$request->input('name').' już istnieje');
-    }
+     }
 
-        return back()->with(['success' => 'Utworzono nową kategorię: '.$request->input('name')]);
-    }
+    return response()->json(['success'=>'Kategoria '.$request->input('name') .' utworzona']);
+
+}
 }

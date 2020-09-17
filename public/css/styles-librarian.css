@@ -390,3 +390,8 @@ ul.CTAs a {
       color: blue;
 
   }
+
+  #categoryList li:hover{
+    background-color: #edf2f4;
+
+  }
