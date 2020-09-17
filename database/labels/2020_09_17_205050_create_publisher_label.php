@@ -12,7 +12,7 @@ class CreatePublisherLabel extends Migration {
      */
     public function up() {
         Neo4jSchema::label('Publisher', function (Blueprint $label) {
-            //
+            $label->unique('name');
         });
     }
 

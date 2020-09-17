@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Entities\Author;
 use App\Entities\Book;
 use App\Entities\Category;
+use App\Entities\Publisher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -59,12 +60,22 @@ class BookController extends Controller {
             }
         }
 
+        $publisherToAssign = array();
+        if (!empty($request->newPublisher)) {
+            $publisherToAssign = array(
+                "name" => $request->newPublisher
+            );
+        } else {
+            $publisherToAssign = Publisher::find($request->publisher);
+        }
+
         $book = Book::createWith(['title' => $request->title, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
+            'publisher' =>$publisherToAssign
         ]);
 
-      return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: '.$request->input('title')]);
+        return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: ' . $request->input('title')]);
     }
 
     public function index() {
