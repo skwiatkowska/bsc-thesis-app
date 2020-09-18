@@ -29,8 +29,7 @@
     <ul class="list-group sorted-list item-list">
       @if($categories->isEmpty())
       <p class="h6 text-center py-5 emptyDBInfo">Baza danych jest pusta. Kliknij <i class="fas fa-plus"></i> i
-        dodaj
-        nową</p>
+        dodaj nową</p>
       @else
 
 

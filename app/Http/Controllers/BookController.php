@@ -15,9 +15,7 @@ class BookController extends Controller {
     public function create() {
         $categories = Category::all();
         $authors = Author::all();
-        $book = Book::find(414);
-        $publ = Publisher::find(451);
-$publ->books()->save($book);
+ 
         return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors]);
     }
 
@@ -82,10 +80,11 @@ $publ->books()->save($book);
     }
 
     public function index() {
+        $categories = Category::all();
 
         //$books = Book::all();
 
         //return view('/showBooks', ['books' => $books]);
-        return view('/librarian/catalog');
+        return view('/librarian/catalog', ['categories' => $categories]);
     }
 }

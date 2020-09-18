@@ -51,13 +51,7 @@
   </div>
 </div>
 
-<script>
-  $(document).ready(function(){
- 
-});
-
-
-  
+<script> 
 
   $(document).ready(function(){
       $( ".col-md-8" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie znaleziono. Dodaj książkę z takim autorem <a class="a-link" href="/pracownik/ksiazki/nowa">tutaj</a></p>');           

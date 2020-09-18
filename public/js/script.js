@@ -70,16 +70,36 @@ $(document).ready(function () {
   }
   
 
-  $(".radio-group .radio").click(function () {
-    $(this).parent().find(".radio").removeClass("selected");
-    $(this).addClass("selected");
-  });
 
-  $(".submit").click(function () {
-    return false;
-  });
+
+  $(".noSuchInfo").hide();
+  
+
+  $(".listSearch").on("keyup", function() {
+    $(".emptyDBInfo").hide();
+      var value = $(this).val().toLowerCase();
+      
+      $(".item-list li").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+     
+      var numOfVisibleRows = $(".item-list li:visible").length;
+       
+      if(numOfVisibleRows == 0){
+        $(".noSuchInfo").show();
+      }
+      if(value.length == 0){
+          $(".noSuchInfo").hide();
+        }
+ 
+  })
+
+  })
+  
 });
 
+
+
+//carousel
     $('.carousel').carousel({
         interval: 5000 //changes the speed
     })
