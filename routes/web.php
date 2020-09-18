@@ -20,7 +20,7 @@ Route::get('/godziny-otwarcia', 'IndexController@workingHours');
 
 
 
-Route::get('/zasoby', 'BookController@index');
+//Route::get('/zasoby', 'BookController@indexMember');
 
 
 Route::get('/pracownik', 'LibrarianController@index');
@@ -31,8 +31,11 @@ Route::get('/pracownik/czytelnik/znajdz', 'LibrarianController@findMember');
 
 Route::get('/pracownik/kategorie', 'CategoryController@index');
 Route::post('/pracownik/kategorie', 'CategoryController@store');
+Route::get('/pracownik/autorzy', 'AuthorController@index');
+Route::get('/pracownik/wydawnictwa', 'PublisherController@index');
 
 Route::get('/pracownik/info', 'LibrarianController@info');
+Route::get('/pracownik/katalog', 'BookController@index');
 
 
 

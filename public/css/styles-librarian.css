@@ -391,8 +391,13 @@ ul.CTAs a {
 
   }
 
-  #categoryList li:hover{
+  .item-list li:hover{
     background-color: #edf2f4;
+  }
+
+  .item-table tr:hover{
+    background-color: #edf2f4;
+
   }
 
 .category-btn:hover{

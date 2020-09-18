@@ -193,28 +193,24 @@
     // source: https://codepen.io/llooll/pen/eVMvGR
 
     //Clone the hidden element and shows it
-$('.add-one').click(function(){
-  $('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
-  attach_delete();
-});
+    $('.add-one').click(function(){
+    $('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
+    attach_delete();
+    });
 
 
-//Attach functionality to delete buttons
-function attach_delete(){
-  $('.delete').off();
-  $('.delete').click(function(){
-    console.log("click");
-    $(this).closest('.form-group').remove();
-  });
-}
-
-
+    function attach_delete(){
+    $('.delete').off();
+    $('.delete').click(function(){
+        console.log("click");
+        $(this).closest('.form-group').remove();
+    });
+    }
 
 
   
 
-
-// checkboxes
+// categories checkboxes
 $(function () {
     $('.button-checkbox').each(function () {
 
@@ -237,19 +233,13 @@ $(function () {
             updateDisplay();
         });
 
-        // Actions
         function updateDisplay() {
             var isChecked = $checkbox.is(':checked');
-
-            // Set the button's state
             $button.data('state', (isChecked) ? "on" : "off");
-
-                 // Update the button's color
             if (isChecked) {
                 $button
                     .removeClass('btn-default')
                     .addClass('btn-' + color + ' active')
-
             }
             else {
                 $button
@@ -258,11 +248,8 @@ $(function () {
             }
         }
 
-        // Initialization
         function init() {
-
             updateDisplay();
-
         }
         init();
     });

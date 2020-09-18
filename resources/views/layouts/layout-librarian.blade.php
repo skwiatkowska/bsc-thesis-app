@@ -107,26 +107,31 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/pracownik/katalog">
                         <i class="fas fa-book"></i>
                         <strong>e-Katalog</strong>
                     </a>
                 </li>
                 <li>
+                    <a href="/pracownik/ksiazki/nowa"><i class="fas fa-plus"></i> 
+                        Dodaj książkę</a>
+                </li>
+                <li>
                     <a href="#manageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-database"></i>
-                        Zarządzaj zbiorami
+                        Zbiory
                     </a>
                     <ul class="collapse list-unstyled" id="manageSubmenu">
                         <li>
                             <a href="/pracownik/kategorie">Kategorie</a>
                         </li>
                         <li>
-                            <a href="/pracownik/ksiazki/nowa">Dodaj książkę</a>
+                            <a href="/pracownik/autorzy">Autorzy</a>
                         </li>
                         <li>
-                            <a href="#">Edytuj książkę</a>
+                            <a href="/pracownik/wydawnictwa">Wydawnictwa</a>
                         </li>
+                        
                     </ul>
                 </li>
 

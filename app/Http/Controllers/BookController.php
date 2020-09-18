@@ -15,6 +15,9 @@ class BookController extends Controller {
     public function create() {
         $categories = Category::all();
         $authors = Author::all();
+        $book = Book::find(414);
+        $publ = Publisher::find(451);
+$publ->books()->save($book);
         return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors]);
     }
 
@@ -29,10 +32,11 @@ class BookController extends Controller {
 
         $categoriesToAssign = array();
         $authorsToAssign = array();
+        $publisherToAssign = array();
+
 
         //retrieve categories for db
         if (!empty($categories)) {
-
             foreach ($categories as $category) {
                 $cat = Category::find($category);
                 array_push($categoriesToAssign, $cat);
@@ -47,8 +51,8 @@ class BookController extends Controller {
             }
         }
 
+        //new authors
         if (!empty($nAuthorName) && !empty($nAuthorLastName)) {
-            //new authors
             foreach ($nAuthorName as $index => $name) {
                 if (!empty($name)) {
                     $newAuthor = array(
@@ -60,7 +64,6 @@ class BookController extends Controller {
             }
         }
 
-        $publisherToAssign = array();
         if (!empty($request->newPublisher)) {
             $publisherToAssign = array(
                 "name" => $request->newPublisher
@@ -72,7 +75,7 @@ class BookController extends Controller {
         $book = Book::createWith(['title' => $request->title, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
-            'publisher' =>$publisherToAssign
+            'publisher' => $publisherToAssign
         ]);
 
         return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: ' . $request->input('title')]);
@@ -83,6 +86,6 @@ class BookController extends Controller {
         //$books = Book::all();
 
         //return view('/showBooks', ['books' => $books]);
-        return view('/showBooks');
+        return view('/librarian/catalog');
     }
 }

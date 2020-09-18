@@ -38,6 +38,6 @@ class Book extends NeoEloquent{
     }
 
     public function publisher(){
-        return $this->belongsTo(Publisher::class,'PUBLISH');
+        return $this->belongsTo(Publisher::class,'PUBLISHED');
     }
 }
