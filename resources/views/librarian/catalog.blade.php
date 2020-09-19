@@ -9,9 +9,9 @@
         <div class="col-sm-12 "> <button type="button" class="btn btn-secondary btn-rounded">Nowa książka</button>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <form class="form-inline">
-            <div class="input-group mb-2 mr-sm-2">
+    <div class="row ">
+        <form class="form-inline col-12 justify-content-center" method="POST" action="/pracownik/szukaj">
+            <div class="input-group mb-2 col-sm-12 col-lg-4 px-1">
                 <div class="input-group-prepend">
                     <div class="input-group-text">Szukaj w:</div>
                 </div>
@@ -24,11 +24,11 @@
 
                 </select>
             </div>
-            <div class="input-group mb-2 mr-sm-2">
+            <div class="input-group mb-2 col-sm-12 col-lg-6 px-1">
                 <div class="input-group-prepend">
-                    <div class="input-group-text">Szukana fraza:</div>
+                    <div class="input-group-text">Fraza:</div>
                 </div>
-                <input type="text" class="form-control" id="search-phrase-input">
+                <input type="text" class="form-control" name="phrase" id="search-phrase-input">
                 <select class="form-control" id="choose-category-select">
                     @foreach ($categories as $category)
 
@@ -36,11 +36,10 @@
                    
                     @endforeach
                 </select>
+                <button type="submit" class="btn btn-primary ml-4 px-lg-4">Szukaj</button>
+
             </div>
-
-
-
-            <button type="submit" class="btn btn-primary mb-2">Szukaj</button>
+           
         </form>
     </div>
 
