@@ -403,3 +403,14 @@ ul.CTAs a {
 .category-btn:hover{
     background-color: #8d99ae;
   }
+
+  .btn-primary.disabled, .btn-primary:disabled{
+    background-color: #8d99ae;
+    color: white;
+    cursor: no-drop;
+  }
+
+  .form-group.required .control-label:after {
+    content:"*";
+    color:red;
+  }

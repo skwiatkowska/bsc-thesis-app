@@ -7,21 +7,21 @@
 <div class="cotainer">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
+            <div class="card mt-0">
                 <div class="card-header">Nowa książka</div>
                 <div class="card-body">
                     <form name="newBookForm" action="/pracownik/ksiazki/nowa" method="POST">
                         {{ csrf_field() }}
 
-                        <div class="form-group row">
-                            <label for="title" class="col-md-4 col-form-label text-md-right">Tytuł</label>
+                        <div class="form-group row required">
+                            <label for="title" class="col-md-4 col-form-label  control-label text-md-right">Tytuł</label>
                             <div class="col-md-6">
                                 <input type="text" id="title" class="form-control" name="title" required>
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="author" class="col-md-4 col-form-label text-md-right">Autor</label>
+                        <div class="form-group row required">
+                            <label for="author" class="col-md-4 col-form-label control-label text-md-right">Autor</label>
                             <div class="col-md-6">
                                 <div class="control-group form-group mb-0">
                                     <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora z
@@ -97,8 +97,8 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="publisher" class="col-md-4 col-form-label text-md-right">Wydawnictwo</label>
+                        <div class="form-group row required">
+                            <label for="publisher" class="col-md-4 col-form-label control-label text-md-right">Wydawnictwo</label>
                             <div class="col-md-6">
 
                                 <div class="control-group form-group mb-0">
@@ -120,7 +120,7 @@
 
                                     </div>
 
-                                    <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj
+                                    <label for="author" class="col-form-label control-label mb-0 ml-auto mr-auto"><small>lub dodaj
                                             nowe wydawnictwo:</small></label>
                                     <div class="input-group col-xs-3">
                                         <input type="text" placeholder="Nazwa wydawnictwa" class="form-control"
@@ -131,16 +131,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mt-5">
-                            <label for="year" class="col-md-4 col-form-label text-md-right">Rok wydania</label>
+                        <div class="form-group row  mt-5">
+                            <label for="year" class="col-md-4 col-form-label control-label text-md-right">Rok wydania</label>
                             <div class="col-md-6">
-                                <input type="number" min="1900" max="2021" step="1" value="2020" id="year"
+                                <input type="number" min="1900" max="2021" step="1" id="year"
                                     class="form-control" name="year">
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="category" class="col-md-4 col-form-label text-md-right">Kategoria</label>
+                        <div class="form-group required row">
+                            <label for="category" class="col-md-4 col-form-label control-label text-md-right">Kategoria</label>
                             <div class="col-md-6 sorted">
                                 @if($categories->isEmpty())
 
@@ -159,11 +159,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
-                            <label for="numverOfItems" class="col-md-4 col-form-label text-md-right">Ilość
+                        <div class="form-group row required">
+                            <label for="numverOfItems" class="col-md-4 col-form-label control-label text-md-right">Ilość
                                 egzemplarzy</label>
                             <div class="col-md-6">
-                                <input type="number" id="numverOfItems" class="form-control" name="numberOfItems">
+                                <input type="number" id="numverOfItems" class="form-control" name="numberOfItems" required>
                             </div>
                         </div>
 
@@ -171,7 +171,7 @@
 
                         <div class="row d-flex justify-content-center">
 
-                            <button type="submit" class="btn btn-lg btn-primary">
+                            <button type="submit" class="btn btn-lg btn-primary" id="confirm-btn">
                                 Dodaj
                             </button>
                         </div>
@@ -207,6 +207,10 @@
     });
     }
 
+
+    if($(".button-checkbox").length == 0){
+        $("#confirm-btn").attr('disabled', true);
+    }
 
   
 

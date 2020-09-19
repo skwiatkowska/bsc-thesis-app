@@ -6,7 +6,7 @@
 
 <div class="container ">
     <div class="row text-right mb-3">
-        <div class="col-sm-12 "> <button type="button" class="btn btn-secondary btn-rounded">Nowa książka</button>
+        <div class="col-sm-12 "> <button type="button" class="btn btn-secondary btn-rounded"><a href="/pracownik/ksiazki/nowa">Nowa książka</a></button>
         </div>
     </div>
     <div class="row ">
@@ -30,10 +30,10 @@
                 </div>
                 <input type="text" class="form-control" name="phrase" id="search-phrase-input">
                 <select class="form-control" id="choose-category-select">
-                    @foreach ($categories as $category)
+                    <option value="" selected disabled>Nie wybrano</option>
 
+                    @foreach ($categories as $category)
                     <option value="{{$category->id}}">{{$category->name}}</option>
-                   
                     @endforeach
                 </select>
                 <button type="submit" class="btn btn-primary ml-4 px-lg-4">Szukaj</button>

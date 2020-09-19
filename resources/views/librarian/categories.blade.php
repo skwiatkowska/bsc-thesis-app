@@ -15,7 +15,7 @@
             </span>
           </div>
 
-          <input class="form-control my-0 py-1 listSearch" type="text" placeholder="Znajdź kategorię..."
+          <input class="form-control my-0 py-1 listSearch" type="text" placeholder="Znajdź lub dodaj kategorię..."
             aria-label="Search" name="name" required>
           <div class="input-group-prepend">
             <button type="submit" class="btn btn-primary btn-submit">
@@ -28,7 +28,7 @@
 
     <ul class="list-group sorted-list item-list">
       @if($categories->isEmpty())
-      <p class="h6 text-center py-5 emptyDBInfo">Baza danych jest pusta. Kliknij <i class="fas fa-plus"></i> i
+      <p class="h6 text-center py-5 emptyDBInfo">Brak kategorii. Wpisz nową nazwę powyżej, kliknij <i class="fas fa-plus"></i> i
         dodaj nową</p>
       @else
 
@@ -47,7 +47,10 @@
   $(".btn-submit").click(function(e){
       e.preventDefault();
       var name = $("input[name=name]").val();
-
+      if(!name.length){
+        alert("Podaj nazwę kategorii");
+        return false;
+      }
       $.ajax({
          type:'POST',
          dataType : 'json',
@@ -66,7 +69,7 @@
 
 
   $(document).ready(function(){
-      $( ".item-list" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie ma takiej kategorii. Kliknij <i class="fas fa-plus"></i> i dodaj nową</p>');           
+      $( ".item-list" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie ma takiej kategorii. Wpisz nową nazwę powyżej, kliknij <i class="fas fa-plus"></i> i dodaj nową</p>');           
       $(".noSuchInfo").hide();
   
 
