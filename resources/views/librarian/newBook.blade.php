@@ -63,26 +63,24 @@
                                             @endforeach
 
                                         </select>
-                                        <span class="input-group-btn ml-1">
-                                            <button id="b1" class="btn btn-danger btn-sm delete"
+                                            <button id="b1" class="btn btn-danger delete ml-2"
                                                 type="button">X</button>
-                                        </span>
                                     </div>
 
 
                                 </div>
                                 <!-- END OF DYNAMIC ELEMENT -->
 
-                                <fieldset class="pb-0 mb-0">
+                                <fieldset class="pb-0 mb-0 mt-1">
                                     <div class="dynamic-stuff">
                                     </div>
                                     <div class="input-group col-xs-3">
-                                        <button type="button" class="btn btn-sm btn-secondary mr-auto mb-2"
+                                        <button type="button" class="btn btn-light mr-auto mb-2"
                                             data-toggle="modal" data-target="#newAuthorModal">
                                             <i class="fas fa-plus"></i> nowy autor
                                         </button>
                                         <button type="button"
-                                            class="btn btn-sm add-one btn-danger mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
+                                            class="btn add-one btn-danger mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
                                             data-toggle="modal">
                                             <i class="fas fa-plus"></i> kolejny autor
 
@@ -108,17 +106,12 @@
 
 
                                         </select>
+                                        <button type="button" class="btn btn-sm btn-light  ml-2 py-0" data-toggle="modal"
+                                        data-target="#newPublisherModal">
+                                        <i class="fas fa-plus"></i> nowe wydawnictwo
 
+                                    </button>
                                     </div>
-                                    <div class="input-group col-xs-3">
-
-                                        <button type="button" class="btn btn-sm btn-secondary py-1" data-toggle="modal"
-                                            data-target="#newPublisherModal">
-                                            <i class="fas fa-plus"></i> nowe wydawnictwo
-
-                                        </button>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -140,7 +133,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group required row">
+                        <div class="form-group required row mb-1">
                             <label for="category"
                                 class="col-md-4 col-form-label control-label text-md-right">Kategorie</label>
                             <div class="col-md-6 sorted">

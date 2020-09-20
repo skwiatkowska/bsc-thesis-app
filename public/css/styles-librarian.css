@@ -415,3 +415,13 @@ ul.CTAs a {
     color:red;
   }
 
+.selectize-input{
+    height: 100%;
+}
+
+.btn-light{
+    background-color: lightgray;
+    color:   #2b2d42
+
+    ;
+}
