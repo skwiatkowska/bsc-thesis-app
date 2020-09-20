@@ -22,6 +22,14 @@
                         </div>
 
                         <div class="form-group row required">
+                            <label for="title"
+                                class="col-md-4 col-form-label  control-label text-md-right">ISBN</label>
+                            <div class="col-md-6">
+                                <input type="text" id="isbn" class="form-control" name="isbn" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row required">
                             <label for="author"
                                 class="col-md-4 col-form-label control-label text-md-right">Autor</label>
                             <div class="col-md-6">
@@ -56,7 +64,8 @@
 
                                         </select>
                                         <span class="input-group-btn ml-1">
-                                            <button id="b1" class="btn btn-danger btn-sm delete" type="button">X</button>
+                                            <button id="b1" class="btn btn-danger btn-sm delete"
+                                                type="button">X</button>
                                         </span>
                                     </div>
 
@@ -68,11 +77,12 @@
                                     <div class="dynamic-stuff">
                                     </div>
                                     <div class="input-group col-xs-3">
-                                        <button type="button" class="btn btn-sm btn-secondary mr-auto mb-2" data-toggle="modal"
-                                            data-target="#newAuthorModal">
+                                        <button type="button" class="btn btn-sm btn-secondary mr-auto mb-2"
+                                            data-toggle="modal" data-target="#newAuthorModal">
                                             <i class="fas fa-plus"></i> nowy autor
                                         </button>
-                                        <button type="button" class="btn btn-sm add-one btn-danger mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
+                                        <button type="button"
+                                            class="btn btn-sm add-one btn-danger mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
                                             data-toggle="modal">
                                             <i class="fas fa-plus"></i> kolejny autor
 
@@ -89,13 +99,11 @@
 
                                 <div class="control-group form-group mb-0">
                                     <div class="input-group col-xs-3">
-
                                         <select data-live-search="true" id="publisher" name="publisher"
                                             class="form-control">
                                             <option value="" selected disabled>Wybierz</option>
-                                            @foreach ($authors as $author)
-                                            <option value="{{$author->id}}">{{$author->last_name}},
-                                                {{$author->first_names}}</option>
+                                            @foreach ($publishers as $publisher)
+                                            <option value="{{$publisher->id}}">{{$publisher->name}}</option>
                                             @endforeach
 
 
@@ -115,31 +123,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group row  mt-3">
+                        <div class="form-group row  mt-2 mb-0">
                             <label for="year" class="col-md-4 col-form-label control-label text-md-right">Rok
                                 wydania</label>
                             <div class="col-md-6 col-lg-2 ">
-                                <select id="year" name="year"
-                                            class="form-control py-1">
-                                            <option value="" selected disabled>Wybierz</option>
-                                        </select>
+                                <select id="year" name="year" class="form-control py-1">
+                                    <option value="" selected disabled>Wybierz</option>
+                                </select>
                             </div>
-                            <label for="numverOfItems" class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
-                               </label>
+                            <label for="numverOfItems"
+                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
+                            </label>
                             <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
                                 <input type="number" id="numverOfItems" class="form-control" name="numberOfItems"
                                     required>
                             </div>
-                            
-                            
-                            
-
-                            
                         </div>
 
                         <div class="form-group required row">
                             <label for="category"
-                                class="col-md-4 col-form-label control-label text-md-right">Kategoria</label>
+                                class="col-md-4 col-form-label control-label text-md-right">Kategorie</label>
                             <div class="col-md-6 sorted">
                                 @if($categories->isEmpty())
 
@@ -177,9 +180,9 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" action="/pracownik/kategorie" name="newPublisherForm">
+            <form name="newPublisherForm">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="newPublisherModalLabel"><i class="fas fa-plus"></i> Nowe wydawnictwo
+                    <h5 class="modal-title" id="newPublisherModalLabel">Nowe wydawnictwo
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -195,7 +198,7 @@
                 </div>
                 <div class="modal-footer p-3">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                    <button type="submit" id="new-publisher-btn-submit" class="btn btn-primary">Dodaj</button>
                 </div>
             </form>
         </div>
@@ -205,7 +208,7 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="POST" action="/pracownik/kategorie" name="newAuthorForm">
+            <form name="newAuthorForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newAuthorModalLabel">Nowy autor</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -228,7 +231,7 @@
                 </div>
                 <div class="modal-footer p-3">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                    <button type="submit" id="new-author-btn-submit" class="btn btn-primary">Dodaj</button>
                 </div>
             </form>
         </div>
@@ -238,6 +241,52 @@
 
 
 <script>
+    //submit new author form in modal
+    $("#new-author-btn-submit").click(function(e){
+      e.preventDefault();
+      var fname = $("input[name=fname]").val();
+      var lname = $("input[name=lname]").val();
+     
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/pracownik/autorzy',
+         data: {_token:"{{csrf_token()}}", fname: fname, lname:lname},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+    });
+
+  });
+
+
+//submit new publisher form in modal
+$("#new-publisher-btn-submit").click(function(e){
+      e.preventDefault();
+      var name = $("input[name=name]").val();
+     
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/pracownik/wydawnictwa',
+         data: {_token:"{{csrf_token()}}", name: name},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+    });
+
+  });
+
+
+    //publication year
     var html = '';
  for (var i = 1900; i <= (new Date).getFullYear(); i++) {
    html += '<option>' + i + '</option>';

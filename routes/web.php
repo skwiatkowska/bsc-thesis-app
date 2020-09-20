@@ -31,8 +31,12 @@ Route::get('/pracownik/czytelnik/znajdz', 'LibrarianController@findMember');
 
 Route::get('/pracownik/kategorie', 'CategoryController@index');
 Route::post('/pracownik/kategorie', 'CategoryController@store');
+
 Route::get('/pracownik/autorzy', 'AuthorController@index');
+Route::post('/pracownik/autorzy', 'AuthorController@store');
+
 Route::get('/pracownik/wydawnictwa', 'PublisherController@index');
+Route::post('/pracownik/wydawnictwa', 'PublisherController@store');
 
 Route::get('/pracownik/info', 'LibrarianController@info');
 Route::get('/pracownik/katalog', 'BookController@index');
