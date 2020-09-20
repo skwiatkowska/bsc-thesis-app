@@ -22,8 +22,7 @@
                         </div>
 
                         <div class="form-group row required">
-                            <label for="title"
-                                class="col-md-4 col-form-label  control-label text-md-right">ISBN</label>
+                            <label for="title" class="col-md-4 col-form-label  control-label text-md-right">ISBN</label>
                             <div class="col-md-6">
                                 <input type="text" id="isbn" class="form-control" name="isbn" required>
                             </div>
@@ -33,54 +32,29 @@
                             <label for="author"
                                 class="col-md-4 col-form-label control-label text-md-right">Autor</label>
                             <div class="col-md-6">
+
                                 <div class="control-group form-group mb-0">
-
-                                    <div class="input-group col-xs-3">
-                                        <select data-live-search="true" id="authors" name="authors[]"
-                                            class="form-control">
-                                            <option value="" selected disabled>Wybierz</option>
-                                            @foreach ($authors as $author)
-                                            <option value="{{$author->id}}">{{$author->last_name}},
-                                                {{$author->first_names}}</option>
-                                            @endforeach
-
-
-                                        </select>
-
+                                    <div class="input-group col-xs-3 field_wrapper">
+                                                <select data-live-search="true" id="authors" name="authors[]"
+                                                    class="form-control">
+                                                    <option value="" selected disabled>Wybierz</option>
+                                                    @foreach ($authors as $author)
+                                                    <option value="{{$author->id}}">{{$author->last_name}},
+                                                        {{$author->first_names}}</option>
+                                                    @endforeach
+                                                </select> 
                                     </div>
-
-
                                 </div>
-                                <!-- DYNAMIC ELEMENT TO CLONE -->
-                                <div class="control-group form-group mt-1 mb-2 dynamic-element" style="display:none">
+                             
+
+                                <fieldset class="pb-0 mb-0 mt-2">
                                     <div class="input-group col-xs-3">
-                                        <select data-live-search="true" id="authors" name="authors[]"
-                                            class="form-control">
-                                            <option value="" selected disabled>Wybierz</option>
-                                            @foreach ($authors as $author)
-                                            <option value="{{$author->id}}">{{$author->last_name}},
-                                                {{$author->first_names}}</option>
-                                            @endforeach
-
-                                        </select>
-                                            <button id="b1" class="btn btn-danger delete ml-2"
-                                                type="button">X</button>
-                                    </div>
-
-
-                                </div>
-                                <!-- END OF DYNAMIC ELEMENT -->
-
-                                <fieldset class="pb-0 mb-0 mt-1">
-                                    <div class="dynamic-stuff">
-                                    </div>
-                                    <div class="input-group col-xs-3">
-                                        <button type="button" class="btn btn-light mr-auto mb-2"
-                                            data-toggle="modal" data-target="#newAuthorModal">
+                                        <button type="button" class="btn btn-light mr-auto mb-2" data-toggle="modal"
+                                            data-target="#newAuthorModal">
                                             <i class="fas fa-plus"></i> nowy autor
                                         </button>
                                         <button type="button"
-                                            class="btn add-one btn-danger mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
+                                            class="btn add-one btn-danger add_button mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
                                             data-toggle="modal">
                                             <i class="fas fa-plus"></i> kolejny autor
 
@@ -106,11 +80,11 @@
 
 
                                         </select>
-                                        <button type="button" class="btn btn-sm btn-light  ml-2 py-0" data-toggle="modal"
-                                        data-target="#newPublisherModal">
-                                        <i class="fas fa-plus"></i> nowe wydawnictwo
+                                        <button type="button" class="btn btn-sm btn-light  ml-2 py-0"
+                                            data-toggle="modal" data-target="#newPublisherModal">
+                                            <i class="fas fa-plus"></i> nowe wydawnictwo
 
-                                    </button>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -231,9 +205,37 @@
     </div>
 </div>
 
+<script >
+    $(document).ready(function(){
+        var maxField = 6; 
+        var addButton = $('.add_button'); //Add button selector
+        var wrapper = $('.field_wrapper'); //Input field wrapper
+        
+        var fieldHTML = '<div class="input-group col-xs-3 mt-2 field_wrapper">'
+        +'<select data-live-search="true" id="authors" name="authors[]" class="form-control">'
+        +'<option value="" selected disabled>Wybierz</option>'
+        +'@foreach ($authors as $author)'
+        +'<option value="{{$author->id}}">{{$author->last_name}},{{$author->first_names}}</option>'
+        +'@endforeach'
+        +'</select>'
+        +'<button type="button" class="btn btn-sm btn-danger remove_button ml-2 py-0"><i class="fas fa-minus"></i></button>';
+       
+        var x = 1; 
+        
+        $(addButton).click(function(){
+            if(x < maxField){ 
+                x++; 
+                $(wrapper).append(fieldHTML); //Add field html
+            }
+        });
+        
+        $(wrapper).on('click', '.remove_button', function(e){
+            e.preventDefault();
+            $(this).parent('div').remove(); 
+            x--; 
+        });
+    });
 
-
-<script>
     //submit new author form in modal
     $("#new-author-btn-submit").click(function(e){
       e.preventDefault();
@@ -292,31 +294,9 @@ $("#new-publisher-btn-submit").click(function(e){
           sortField: 'text'
       });
   
+    
 
-    // dynamic input for authors
-    // source: https://codepen.io/llooll/pen/eVMvGR
-
-    //Clone the hidden element and shows it
-    $('.add-one').click(function(){
-    $('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
-    attach_delete();
-    });
-
-
-    function attach_delete(){
-    $('.delete').off();
-    $('.delete').click(function(){
-        console.log("click");
-        $(this).closest('.form-group').remove();
-    });
-    }
-
-
-    if($(".button-checkbox").length == 0){
-        $("#confirm-btn").attr('disabled', true);
-    }
-
-  
+   
 
 // categories checkboxes
 $(function () {
