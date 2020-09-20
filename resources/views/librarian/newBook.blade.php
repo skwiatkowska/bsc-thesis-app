@@ -90,11 +90,11 @@
                             </div>
                         </div>
 
-                        <div class="form-group row  mt-2 mb-0">
+                        <div class="form-group row required  mt-2 mb-0">
                             <label for="year" class="col-md-4 col-form-label control-label text-md-right">Rok
                                 wydania</label>
                             <div class="col-md-6 col-lg-2 ">
-                                <select id="year" name="year" class="form-control py-1">
+                                <select id="year" name="year" class="form-control py-1 required">
                                     <option value="" selected disabled>Wybierz</option>
                                 </select>
                             </div>
@@ -113,7 +113,7 @@
                             <div class="col-md-6 sorted">
                                 @if($categories->isEmpty())
 
-                                <p class="mt-1">Brak kategorii. <a class="a-link" href="/pracownik/kategorie">Kliknij i
+                                <p class="mt-1"><i class="fas fa-exclamation-triangle mr-2"></i>Brak kategorii. <a class="a-link" href="/pracownik/kategorie">Kliknij i
                                         dodaj nową</a></p>
                                 @else
                                 @foreach ($categories as $category)
@@ -130,7 +130,7 @@
 
                         <div class="row d-flex justify-content-center">
 
-                            <button type="submit" class="btn btn-lg btn-primary" id="confirm-btn">
+                            <button type="submit" class="btn btn-lg btn-primary" id="new-book-btn-submit">
                                 Dodaj
                             </button>
                         </div>
@@ -156,8 +156,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="name" class="col-md-4 col-form-label text-md-right">Nazwa</label>
+                    <div class="form-group required row">
+                        <label for="name" class="col-md-4 col-form-label control-label text-md-right">Nazwa</label>
                         <div class="col-md-6">
                             <input type="text" id="name" class="form-control" name="name" required>
                         </div>
@@ -183,14 +183,14 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="fname" class="col-md-4 col-form-label text-md-right">Imiona</label>
+                    <div class="form-group row required">
+                        <label for="fname" class="col-md-4 col-form-label control-label text-md-right">Imiona</label>
                         <div class="col-md-6">
                             <input type="text" id="fname" class="form-control" name="fname" required>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="lname" class="col-md-4 col-form-label text-md-right">Nazwisko</label>
+                    <div class="form-group required row">
+                        <label for="lname" class="col-md-4 col-form-label control-label text-md-right">Nazwisko</label>
                         <div class="col-md-6">
                             <input type="text" id="lname" class="form-control" name="lname" required>
                         </div>
@@ -218,7 +218,7 @@
         +'<option value="{{$author->id}}">{{$author->last_name}},{{$author->first_names}}</option>'
         +'@endforeach'
         +'</select>'
-        +'<button type="button" class="btn btn-sm btn-danger remove_button ml-2 py-0"><i class="fas fa-minus"></i></button>';
+        +'<a type="button" class=" remove_button ml-2 my-auto"><strong><i class="fas fa-trash-alt"></i></strong></a>';
        
         var x = 1; 
         
@@ -235,9 +235,34 @@
             x--; 
         });
     });
+    
 
     //submit new author form in modal
     $("#new-author-btn-submit").click(function(e){
+      e.preventDefault();
+      var title = $("input[name=title]").val();
+      var isbn = $("input[name=isbn]").val();
+     
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/pracownik/autorzy',
+         data: {_token:"{{csrf_token()}}", title: title, isbn:isbn},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+    });
+
+  });
+
+
+
+//submit new author form in modal
+$("#new-author-btn-submit").click(function(e){
       e.preventDefault();
       var fname = $("input[name=fname]").val();
       var lname = $("input[name=lname]").val();
@@ -245,7 +270,7 @@
       $.ajax({
          type:'POST',
          dataType : 'json',
-         url:'/pracownik/autorzy',
+         url:'/pracownik/ksiazki/nowa',
          data: {_token:"{{csrf_token()}}", fname: fname, lname:lname},
          success:function(data){
             location.reload();
@@ -257,6 +282,7 @@
     });
 
   });
+
 
 
 //submit new publisher form in modal
@@ -295,8 +321,7 @@ $("#new-publisher-btn-submit").click(function(e){
       });
   
     
-
-   
+ 
 
 // categories checkboxes
 $(function () {

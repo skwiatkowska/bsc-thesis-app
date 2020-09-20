@@ -17,6 +17,10 @@ class BookController extends Controller {
         $authors = Author::all();
         $publishers = Publisher::all();
 
+        if(count($categories) == 0){
+            return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors, 'publishers' => $publishers])->withErrors("Brak kategorii w bazie danych. Dodaj najpierw kategorie, aby móc dodawać książki");
+
+        }
         return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors, 'publishers' => $publishers]);
     }
 
@@ -24,15 +28,18 @@ class BookController extends Controller {
     public function store(Request $request) {
         //print_r($request->post());
         //Array ( [_token] => zU6M9DtxHgTwHBdyNEBzySqrJAecH8OdqBjHM4yp [title] => tytuł1 [authors] => Array ( [0] => guia ) [newAuthorName] => Array ( [0] => nowy1 [1] => ) [newAuthorLastName] => Array ( [0] => nowy2 [1] => ) [publisher] => aa [year] => 1998 [categories] => Array ( [0] => a [1] => b ) [numberOfItems] => 4 )
-        $nAuthorName = $request->newAuthorName;
-        $nAuthorLastName = $request->newAuthorLastName;
-        $existingAuthors = $request->authors;
+        $authors = $request->authors;
         $categories = $request->categories;
 
         $categoriesToAssign = array();
         $authorsToAssign = array();
-        $publisherToAssign = array();
+        $publisherToAssign = Publisher::find($request->publisher);
 
+        $isbn = $request->isbn;
+        if(Book::where('isbn', $isbn)->count() > 0){
+            return back()->withErrors("W bazie istnieje już książka o podanym numerze ISBN");
+
+        }
 
         //retrieve categories for db
         if (!empty($categories)) {
@@ -42,36 +49,18 @@ class BookController extends Controller {
             }
         }
 
-        //retrieve existing authors from db
-        if (!empty($existingAuthors)) {
-            foreach ($existingAuthors as $existAuthor) {
-                $author = Author::find($existAuthor);
-                array_push($authorsToAssign, $author);
+        //retrieve authors from db
+        if (!empty($authors)) {
+            foreach ($authors as $author) {
+                $a = Author::find($author);
+                array_push($authorsToAssign, $a);
             }
         }
 
-        //new authors
-        if (!empty($nAuthorName) && !empty($nAuthorLastName)) {
-            foreach ($nAuthorName as $index => $name) {
-                if (!empty($name)) {
-                    $newAuthor = array(
-                        "first_names" => $name,
-                        "last_name" =>  $nAuthorLastName[$index]
-                    );
-                    array_push($authorsToAssign, $newAuthor);
-                }
-            }
-        }
+      
+        
 
-        if (!empty($request->newPublisher)) {
-            $publisherToAssign = array(
-                "name" => $request->newPublisher
-            );
-        } else {
-            $publisherToAssign = Publisher::find($request->publisher);
-        }
-
-        $book = Book::createWith(['title' => $request->title, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
+        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
             'publisher' => $publisherToAssign

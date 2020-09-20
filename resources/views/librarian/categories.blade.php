@@ -69,7 +69,7 @@
 
 
   $(document).ready(function(){
-      $( ".item-list" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie ma takiej kategorii. Wpisz nową nazwę powyżej, kliknij <i class="fas fa-plus"></i> i dodaj nową</p>');           
+      $( ".item-list" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie ma takiej kategorii. Kliknij <i class="fas fa-plus"></i> i dodaj nową</p>');           
       $(".noSuchInfo").hide();
   
 

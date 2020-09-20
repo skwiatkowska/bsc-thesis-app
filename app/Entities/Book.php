@@ -14,7 +14,7 @@ class Book extends NeoEloquent{
     protected $fillable = [
         'id',
         'title',
-        'ISBN',
+        'isbn',
         'pages_number',
         'publisher',
         'publication_year',
@@ -30,11 +30,11 @@ class Book extends NeoEloquent{
     ];
 
     public function categories(){
-        return $this->belongsToMany(Category::class,'CONSISTS_OF');
+        return $this->belongsToMany(Category::class,'CATEGORY_CONSISTS_OF');
     }
 
     public function authors(){
-        return $this->belongsToMany(Author::class,'WRITE');
+        return $this->belongsToMany(Author::class,'WROTE');
     }
 
     public function publisher(){

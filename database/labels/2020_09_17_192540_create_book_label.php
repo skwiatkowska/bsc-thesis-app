@@ -12,7 +12,7 @@ class CreateBookLabel extends Migration {
      */
     public function up() {
         Neo4jSchema::label('Book', function (Blueprint $label) {
-            //$label->unique(array('title', 'publication_year', 'publisher'));
+            $label->unique('isbn');
 
         });
     }
