@@ -15,7 +15,6 @@ class BookController extends Controller {
     public function create() {
         $categories = Category::all();
         $authors = Author::all();
- 
         return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors]);
     }
 

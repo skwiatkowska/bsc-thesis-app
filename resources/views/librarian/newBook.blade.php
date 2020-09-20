@@ -6,7 +6,7 @@
 
 <div class="cotainer">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card mt-0">
                 <div class="card-header">Nowa książka</div>
                 <div class="card-body">
@@ -14,23 +14,23 @@
                         {{ csrf_field() }}
 
                         <div class="form-group row required">
-                            <label for="title" class="col-md-4 col-form-label  control-label text-md-right">Tytuł</label>
+                            <label for="title"
+                                class="col-md-4 col-form-label  control-label text-md-right">Tytuł</label>
                             <div class="col-md-6">
                                 <input type="text" id="title" class="form-control" name="title" required>
                             </div>
                         </div>
 
                         <div class="form-group row required">
-                            <label for="author" class="col-md-4 col-form-label control-label text-md-right">Autor</label>
+                            <label for="author"
+                                class="col-md-4 col-form-label control-label text-md-right">Autor</label>
                             <div class="col-md-6">
                                 <div class="control-group form-group mb-0">
-                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora z
-                                            bazy danych: </small></label>
 
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]"
                                             class="form-control">
-                                            <option value="" selected disabled>Nie wybrano</option>
+                                            <option value="" selected disabled>Wybierz</option>
                                             @foreach ($authors as $author)
                                             <option value="{{$author->id}}">{{$author->last_name}},
                                                 {{$author->first_names}}</option>
@@ -41,25 +41,14 @@
 
                                     </div>
 
-                                    <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj
-                                            nowego autora:</small></label>
-                                    <div class="input-group col-xs-3">
-                                        <input type="text" placeholder="Imiona" class="form-control"
-                                            name="newAuthorName[]">
-                                        <input type="text" placeholder="Nazwisko" class="form-control"
-                                            name="newAuthorLastName[]">
-                                    </div>
+
                                 </div>
                                 <!-- DYNAMIC ELEMENT TO CLONE -->
-                                <div class="control-group form-group mt-1 mb-0 dynamic-element" style="display:none">
-                                    <hr>
-                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz autora z
-                                            bazy danych: </small></label>
-
+                                <div class="control-group form-group mt-1 mb-2 dynamic-element" style="display:none">
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="authors" name="authors[]"
                                             class="form-control">
-                                            <option value="" selected disabled>Nie wybrano</option>
+                                            <option value="" selected disabled>Wybierz</option>
                                             @foreach ($authors as $author)
                                             <option value="{{$author->id}}">{{$author->last_name}},
                                                 {{$author->first_names}}</option>
@@ -67,49 +56,43 @@
 
                                         </select>
                                         <span class="input-group-btn ml-1">
-                                            <button id="b1" class="btn btn-danger delete" type="button">X</button>
+                                            <button id="b1" class="btn btn-danger btn-sm delete" type="button">X</button>
                                         </span>
                                     </div>
 
-                                    <label for="author" class="col-form-label mb-0 ml-auto mr-auto"><small>lub dodaj
-                                            nowego autora:</small></label>
-                                    <div class="input-group col-xs-3">
-                                        <input type="text" placeholder="Imiona" class="form-control"
-                                            name="newAuthorName[]">
-                                        <input type="text" placeholder="Nazwisko" class="form-control"
-                                            name="newAuthorLastName[]">
-                                    </div>
+
                                 </div>
                                 <!-- END OF DYNAMIC ELEMENT -->
 
                                 <fieldset class="pb-0 mb-0">
                                     <div class="dynamic-stuff">
                                     </div>
-                                    <!-- Button -->
-                                    <div class="form-group pb-0 mt-4 mb-1">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <p class="h6 add-one pb-0 mb-0 text-danger">+ kolejny autor</p>
-                                            </div>
+                                    <div class="input-group col-xs-3">
+                                        <button type="button" class="btn btn-sm btn-secondary mr-auto mb-2" data-toggle="modal"
+                                            data-target="#newAuthorModal">
+                                            <i class="fas fa-plus"></i> nowy autor
+                                        </button>
+                                        <button type="button" class="btn btn-sm add-one btn-danger mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
+                                            data-toggle="modal">
+                                            <i class="fas fa-plus"></i> kolejny autor
 
-                                        </div>
+                                        </button>
+                                    </div>
                                 </fieldset>
                             </div>
                         </div>
 
                         <div class="form-group row required">
-                            <label for="publisher" class="col-md-4 col-form-label control-label text-md-right">Wydawnictwo</label>
+                            <label for="publisher"
+                                class="col-md-4 col-form-label control-label text-md-right">Wydawnictwo</label>
                             <div class="col-md-6">
 
                                 <div class="control-group form-group mb-0">
-                                    <label for="author" class="col-form-label ml-auto mr-auto"><small>Wybierz
-                                            wydawnictwo z
-                                            bazy danych: </small></label>
-
                                     <div class="input-group col-xs-3">
+
                                         <select data-live-search="true" id="publisher" name="publisher"
                                             class="form-control">
-                                            <option value="" selected disabled>Nie wybrano</option>
+                                            <option value="" selected disabled>Wybierz</option>
                                             @foreach ($authors as $author)
                                             <option value="{{$author->id}}">{{$author->last_name}},
                                                 {{$author->first_names}}</option>
@@ -119,28 +102,44 @@
                                         </select>
 
                                     </div>
-
-                                    <label for="author" class="col-form-label control-label mb-0 ml-auto mr-auto"><small>lub dodaj
-                                            nowe wydawnictwo:</small></label>
                                     <div class="input-group col-xs-3">
-                                        <input type="text" placeholder="Nazwa wydawnictwa" class="form-control"
-                                            name="newPublisher">
 
+                                        <button type="button" class="btn btn-sm btn-secondary py-1" data-toggle="modal"
+                                            data-target="#newPublisherModal">
+                                            <i class="fas fa-plus"></i> nowe wydawnictwo
+
+                                        </button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group row  mt-5">
-                            <label for="year" class="col-md-4 col-form-label control-label text-md-right">Rok wydania</label>
-                            <div class="col-md-6">
-                                <input type="number" min="1900" max="2021" step="1" id="year"
-                                    class="form-control" name="year">
+                        <div class="form-group row  mt-3">
+                            <label for="year" class="col-md-4 col-form-label control-label text-md-right">Rok
+                                wydania</label>
+                            <div class="col-md-6 col-lg-2 ">
+                                <select id="year" name="year"
+                                            class="form-control py-1">
+                                            <option value="" selected disabled>Wybierz</option>
+                                        </select>
                             </div>
+                            <label for="numverOfItems" class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
+                               </label>
+                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
+                                <input type="number" id="numverOfItems" class="form-control" name="numberOfItems"
+                                    required>
+                            </div>
+                            
+                            
+                            
+
+                            
                         </div>
 
                         <div class="form-group required row">
-                            <label for="category" class="col-md-4 col-form-label control-label text-md-right">Kategoria</label>
+                            <label for="category"
+                                class="col-md-4 col-form-label control-label text-md-right">Kategoria</label>
                             <div class="col-md-6 sorted">
                                 @if($categories->isEmpty())
 
@@ -159,16 +158,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group row required">
-                            <label for="numverOfItems" class="col-md-4 col-form-label control-label text-md-right">Ilość
-                                egzemplarzy</label>
-                            <div class="col-md-6">
-                                <input type="number" id="numverOfItems" class="form-control" name="numberOfItems" required>
-                            </div>
-                        </div>
-
-
-
                         <div class="row d-flex justify-content-center">
 
                             <button type="submit" class="btn btn-lg btn-primary" id="confirm-btn">
@@ -184,11 +173,84 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newPublisherModal" tabindex="-1" role="dialog" aria-labelledby="newPublisherModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" action="/pracownik/kategorie" name="newPublisherForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newPublisherModalLabel"><i class="fas fa-plus"></i> Nowe wydawnictwo
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="name" class="col-md-4 col-form-label text-md-right">Nazwa</label>
+                        <div class="col-md-6">
+                            <input type="text" id="name" class="form-control" name="name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-3">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="newAuthorModal" tabindex="-1" role="dialog" aria-labelledby="newAuthorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="POST" action="/pracownik/kategorie" name="newAuthorForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newAuthorModalLabel">Nowy autor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="fname" class="col-md-4 col-form-label text-md-right">Imiona</label>
+                        <div class="col-md-6">
+                            <input type="text" id="fname" class="form-control" name="fname" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lname" class="col-md-4 col-form-label text-md-right">Nazwisko</label>
+                        <div class="col-md-6">
+                            <input type="text" id="lname" class="form-control" name="lname" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-3">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="submit" class="btn btn-primary">Dodaj</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 
 
 <script>
+    var html = '';
+ for (var i = 1900; i <= (new Date).getFullYear(); i++) {
+   html += '<option>' + i + '</option>';
+ }
+ $('#year').append(html);
+
+
+    //select search init
+    $('select').selectize({
+          sortField: 'text'
+      });
+  
+
     // dynamic input for authors
     // source: https://codepen.io/llooll/pen/eVMvGR
 
