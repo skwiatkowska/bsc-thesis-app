@@ -30,7 +30,7 @@ class Book extends NeoEloquent{
     ];
 
     public function categories(){
-        return $this->belongsToMany(Category::class,'CATEGORY_CONSISTS_OF');
+        return $this->belongsToMany(Category::class,'CONSISTS_OF');
     }
 
     public function authors(){

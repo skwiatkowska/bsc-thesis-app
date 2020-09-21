@@ -40,6 +40,7 @@ Route::post('/pracownik/wydawnictwa', 'PublisherController@store');
 
 Route::get('/pracownik/info', 'LibrarianController@info');
 Route::get('/pracownik/katalog', 'BookController@index');
+Route::post('/pracownik/katalog', 'BookController@findBook');
 
 
 

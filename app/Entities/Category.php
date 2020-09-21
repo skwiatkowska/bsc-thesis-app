@@ -22,4 +22,9 @@ class Category extends NeoEloquent{
         'updated_at'
     ];
 
+
+    public function books(){
+        return $this->hasMany(Book::class,'CONSISTS_OF');
+    }
+
 }

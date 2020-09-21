@@ -238,26 +238,26 @@
     
 
     //submit new author form in modal
-    $("#new-author-btn-submit").click(function(e){
-      e.preventDefault();
-      var title = $("input[name=title]").val();
-      var isbn = $("input[name=isbn]").val();
+//     $("#new-author-btn-submit").click(function(e){
+//       e.preventDefault();
+//       var title = $("input[name=title]").val();
+//       var isbn = $("input[name=isbn]").val();
      
-      $.ajax({
-         type:'POST',
-         dataType : 'json',
-         url:'/pracownik/autorzy',
-         data: {_token:"{{csrf_token()}}", title: title, isbn:isbn},
-         success:function(data){
-            location.reload();
-            alert(data.success);
-         },
-         error: function(data){
-            alert(data.responseJSON.error);
-          }
-    });
+//       $.ajax({
+//          type:'POST',
+//          dataType : 'json',
+//          url:'/pracownik/autorzy',
+//          data: {_token:"{{csrf_token()}}", title: title, isbn:isbn},
+//          success:function(data){
+//             location.reload();
+//             alert(data.success);
+//          },
+//          error: function(data){
+//             alert(data.responseJSON.error);
+//           }
+//     });
 
-  });
+//   });
 
 
 
@@ -270,7 +270,7 @@ $("#new-author-btn-submit").click(function(e){
       $.ajax({
          type:'POST',
          dataType : 'json',
-         url:'/pracownik/ksiazki/nowa',
+         url:'/pracownik/autorzy',
          data: {_token:"{{csrf_token()}}", fname: fname, lname:lname},
          success:function(data){
             location.reload();

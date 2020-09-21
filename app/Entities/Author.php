@@ -23,6 +23,9 @@ class Author extends NeoEloquent {
         'updated_at'
     ];
 
+    public function books(){
+        return $this->hasMany(Book::class,'WROTE');
+    }
 
     
 }
