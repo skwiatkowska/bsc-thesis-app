@@ -10,7 +10,7 @@
                     href="/pracownik/ksiazki/nowa">Nowa książka</a></button>
         </div>
     </div>
-    <div class="row ">
+    <div class="row">
         <form class="form-inline col-12 justify-content-center" action="/pracownik/katalog" method="POST">
             {{ csrf_field() }}
 
@@ -44,17 +44,21 @@
 
         </form>
     </div>
-    @foreach ($books as $book)
-    {{$book[0]}}<br> <br>
-    @endforeach
-    <div class="row">
-        <table id="dynatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    @if (!empty($phrase))
+    <div class="row mt-4">
+        <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
+    </div>
+    @endif
+    @if (!empty($books))
+    <div class="row mt-2">
+        <div class="col-10 mx-auto">
+        <table id="dynatable" class="table table-striped table-bordered mt-1">
             <thead>
                 <tr>
-                    <th>Tytuł</th>
-                    <th>Autorzy</th>
-                    <th>Wydawnictwo</th>
-                    <th>ISBN</th>
+                    <th style="width: 30%">Tytuł</th>
+                    <th style="width: 45%">Autorzy</th>
+                    <th style="width: 15%">Wydawnictwo</th>
+                    <th style="width: 10%">ISBN</th>
                 </tr>
             </thead>
             <tfoot>
@@ -70,7 +74,7 @@
                 @foreach ($books as $index => $book)
                 <tr>
                     <td>
-                        <stong>{{$book->title}}</stong>
+                    <a href="/pracownik/ksiazki/{{$book->id}}"><strong class="book-title">{{$book->title}}</strong></a>
                     </td>
                     <td>@foreach ($book->authors as $author)
                         {{$author->last_name}}, {{$author->first_names}}
@@ -82,7 +86,9 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
+    @endif
 </div>
 
 <script>
@@ -90,11 +96,9 @@
 
     $(".dynatable-search").hide();
     $("tfoot").hide();
+    $(".dynatable-per-page-label").css( "margin-right", "8px" );
+    $("th").css( "padding", "5px" );
 
-    $("thead").css("background-color", "red");
-
-
-    
     //submit search a book form
 //     $("#find-book-submit-btn").click(function(e){
 //       e.preventDefault();
