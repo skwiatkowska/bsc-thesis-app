@@ -120,7 +120,6 @@ class BookController extends Controller {
                     }
                 }
             }
-            //dd($books);
 
         } elseif ($searchIn == "publisher") {
             $publisher = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get()->first();
