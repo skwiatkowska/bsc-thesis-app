@@ -19,7 +19,7 @@
                 </div>
                 <select class="form-control search-in-select" name="searchIn">
                     <option value="title">Tytuł</option>
-                    <option value="author">Autor</option>
+                    <option value="author">Autor (nazwiska)</option>
                     <option value="publisher">Wydawnictwo</option>
                     <option value="category">Kategoria</option>
 
@@ -43,13 +43,11 @@
            
         </form>
     </div>
-    {{-- @foreach ($books as $bookss)
         
     
-    @foreach ($bookss as $book)
-    {{$book}}<br/>
-    @endforeach
-    @endforeach --}}
+    @foreach ($books as $book)
+    {{$book}}<br/><br/>
+    @endforeach 
 
    
 </div>

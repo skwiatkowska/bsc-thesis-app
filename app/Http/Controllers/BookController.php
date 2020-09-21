@@ -88,6 +88,7 @@ class BookController extends Controller {
             $id = $phrase;
 
             $books = Category::find($id)->books()->with('authors')->with('publisher')->get();
+
         } elseif ($searchIn == "author") {
             $words = explode(" ", $phrase);
             if (count($words) > 1) {
@@ -119,11 +120,16 @@ class BookController extends Controller {
                     }
                 }
             }
-            dd($books);
+            //dd($books);
+
         } elseif ($searchIn == "publisher") {
             $publisher = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get()->first();
             $books = Publisher::find($publisher->id)->books()->with('authors')->with('categories')->with('publisher')->get();
-        }
+        
+        } elseif ($searchIn == "title") {
+            $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('authors')->with('categories')->with('publisher')->get();
+        
+        } 
 
         return view('/librarian/catalog', ['books' => $books, 'categories' => $categories]);
     }
