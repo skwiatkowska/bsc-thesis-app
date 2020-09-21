@@ -70,10 +70,10 @@ class BookController extends Controller {
     public function index() {
         $categories = Category::all();
 
-        $books = Book::all();
+        $books = array();
 
         //return view('/showBooks', ['books' => $books]);
-        return view('/librarian/catalog', ['categories' => $categories, 'books' => '']);
+        return view('/librarian/catalog', ['categories' => $categories, 'books' => $books]);
     }
 
 
@@ -127,9 +127,16 @@ class BookController extends Controller {
         
         } elseif ($searchIn == "title") {
             $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('authors')->with('categories')->with('publisher')->get();
+        } elseif ($searchIn == "isbn") {
+            $books = Book::where('isbn', $phrase)->with('authors')->with('categories')->with('publisher')->get();
         
         } 
 
-        return view('/librarian/catalog', ['books' => $books, 'categories' => $categories]);
+        $publishers = array();
+        foreach($books as $book){
+            array_push($publishers, Publisher::find($book->publisher));
+        }
+
+        return view('/librarian/catalog', ['books' => $books, 'publishers' => $publishers, 'categories' => $categories]);
     }
 }

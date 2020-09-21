@@ -6,7 +6,8 @@
 
 <div class="container ">
     <div class="row text-right mb-3">
-        <div class="col-sm-12 "> <button type="button" class="btn btn-secondary btn-rounded"><a href="/pracownik/ksiazki/nowa">Nowa książka</a></button>
+        <div class="col-sm-12 "> <button type="button" class="btn btn-secondary btn-rounded"><a
+                    href="/pracownik/ksiazki/nowa">Nowa książka</a></button>
         </div>
     </div>
     <div class="row ">
@@ -40,19 +41,60 @@
                 <button type="submit" id="find-book-submit-btn" class="btn btn-primary ml-4 px-lg-4">Szukaj</button>
 
             </div>
-           
+
         </form>
     </div>
-        
-    
     @foreach ($books as $book)
-    {{$book}}<br/><br/>
-    @endforeach 
+    {{$book[0]}}<br> <br>
+    @endforeach
+    <div class="row">
+        <table id="dynatable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Autorzy</th>
+                    <th>Wydawnictwo</th>
+                    <th>ISBN</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Autorzy</th>
+                    <th>Wydawnictwo</th>
+                    <th>ISBN</th>
+                </tr>
+            </tfoot>
 
-   
+            <tbody>
+                @foreach ($books as $index => $book)
+                <tr>
+                    <td>
+                        <stong>{{$book->title}}</stong>
+                    </td>
+                    <td>@foreach ($book->authors as $author)
+                        {{$author->last_name}}, {{$author->first_names}}
+                        {{ $loop->last ? '' : ' •' }}
+                        @endforeach</td>
+                    <td>{{$publishers[$index]->name}}</td>
+                    <td>{{$book->isbn}}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
+    $('#dynatable').dynatable();
+
+    $(".dynatable-search").hide();
+    $("tfoot").hide();
+
+    $("thead").css("background-color", "red");
+
+
+    
     //submit search a book form
 //     $("#find-book-submit-btn").click(function(e){
 //       e.preventDefault();
@@ -101,14 +143,6 @@
 });
 
 
-  </script>
-
-<script>
- 
-    
-  
-
 
 </script>
 @endsection
-
