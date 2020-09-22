@@ -28,4 +28,11 @@ class AuthorController extends Controller {
 
         return response()->json(['success' => 'Autor ' . $request->fname . " " .$request->lname . ' dodany']);
     }
+
+
+    public function fetchAuthor($id){
+        $author = Author::where('id', $id)->with('books')->get()->first();
+        return view('/librarian/authorInfo', ['author' => $author]);
+
+    }
 }

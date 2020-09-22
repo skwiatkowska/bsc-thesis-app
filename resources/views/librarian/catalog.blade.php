@@ -74,7 +74,7 @@
                 @foreach ($books as $index => $book)
                 <tr>
                     <td>
-                    <a href="/pracownik/ksiazki/{{$book->id}}"><strong class="book-title">{{$book->title}}</strong></a>
+                    <a href="/pracownik/ksiazki/{{$book->id}}" target="_blank"><strong class="a-link-navy">{{$book->title}}</strong></a>
                     </td>
                     <td>@foreach ($book->authors as $author)
                         {{$author->last_name}}, {{$author->first_names}}

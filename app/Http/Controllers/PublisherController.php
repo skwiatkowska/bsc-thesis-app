@@ -27,4 +27,10 @@ class PublisherController extends Controller {
 
         return response()->json(['success' => 'Wydawnictwo ' . $request->name . ' dodane']);
     }
+
+    public function fetchPublisher($id){
+        $publisher = Publisher::where('id', $id)->with('books')->get()->first();
+        return view('/librarian/publisherInfo', ['publisher' => $publisher]);
+
+    }
 }

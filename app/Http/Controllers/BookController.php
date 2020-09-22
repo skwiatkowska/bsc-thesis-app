@@ -75,7 +75,12 @@ class BookController extends Controller {
         //return view('/showBooks', ['books' => $books]);
         return view('/librarian/catalog', ['categories' => $categories, 'books' => $books]);
     }
-
+    
+    public function fetchOneBook($id) {
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
+        $publisher = Publisher::find($book->publisher);
+        return view('/librarian/bookInfo', ['book' => $book, 'publisher' => $publisher]);
+    }
 
     public function findBook(Request $request) {
         $categories = Category::all();

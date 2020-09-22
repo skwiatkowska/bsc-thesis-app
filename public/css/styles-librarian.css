@@ -187,7 +187,7 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
-ul ul a {
+.sidebar-submenu-item {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #d90429;
@@ -426,6 +426,6 @@ ul.CTAs a {
 }
 
 
-.book-title{
+.a-link-navy{
     color: navy;
 }

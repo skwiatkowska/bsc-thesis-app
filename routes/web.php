@@ -34,17 +34,18 @@ Route::post('/pracownik/kategorie', 'CategoryController@store');
 
 Route::get('/pracownik/autorzy', 'AuthorController@index');
 Route::post('/pracownik/autorzy', 'AuthorController@store');
+Route::get('/pracownik/autorzy/{id}', 'AuthorController@fetchAuthor');
 
 Route::get('/pracownik/wydawnictwa', 'PublisherController@index');
 Route::post('/pracownik/wydawnictwa', 'PublisherController@store');
+Route::get('/pracownik/wydawnictwa/{id}', 'PublisherController@fetchPublisher');
 
 Route::get('/pracownik/info', 'LibrarianController@info');
 Route::get('/pracownik/katalog', 'BookController@index');
 Route::post('/pracownik/katalog', 'BookController@findBook');
 
 
-
-
 Route::get('/pracownik/ksiazki/nowa', 'BookController@create');
 Route::post('/pracownik/ksiazki/nowa', 'BookController@store');
+Route::get('/pracownik/ksiazki/{id}', 'BookController@fetchOneBook');
 

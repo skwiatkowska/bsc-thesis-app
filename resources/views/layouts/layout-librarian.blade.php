@@ -87,13 +87,13 @@
                     </a>
                     <ul class="collapse list-unstyled" id="lendingSubmenu">
                         <li>
-                            <a href="#">Aktualne wypożyczenia</a>
+                            <a class="sidebar-submenu-item" href="#">Aktualne wypożyczenia</a>
                         </li>
                         <li>
-                            <a href="#">Nowe wypożyczenie</a>
+                            <a class="sidebar-submenu-item" href="#">Nowe wypożyczenie</a>
                         </li>
                         <li>
-                            <a href="#">Zarejestruj zwrot</a>
+                            <a class="sidebar-submenu-item" href="#">Zarejestruj zwrot</a>
                         </li>
 
                     </ul>
@@ -106,10 +106,10 @@
                     </a>
                     <ul class="collapse list-unstyled" id="membersSubmenu">
                         <li>
-                            <a href="/pracownik/czytelnik/nowy">Dodaj Czytelnika</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/czytelnik/nowy">Dodaj Czytelnika</a>
                         </li>
                         <li>
-                            <a href="/pracownik/czytelnik/znajdz">Znajdź Czytelnika</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/czytelnik/znajdz">Znajdź Czytelnika</a>
                         </li>
 
                     </ul>
@@ -131,13 +131,13 @@
                     </a>
                     <ul class="collapse list-unstyled" id="manageSubmenu">
                         <li>
-                            <a href="/pracownik/kategorie">Kategorie</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/kategorie">Kategorie</a>
                         </li>
                         <li>
-                            <a href="/pracownik/autorzy">Autorzy</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/autorzy">Autorzy</a>
                         </li>
                         <li>
-                            <a href="/pracownik/wydawnictwa">Wydawnictwa</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/wydawnictwa">Wydawnictwa</a>
                         </li>
 
                     </ul>
