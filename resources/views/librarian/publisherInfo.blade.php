@@ -12,15 +12,19 @@
     <div class="card border-danger my-1">
         <div class="card-body ">
             <h5 class="card-title">Szczegóły o wydawnictwie</h5>
-            <div class=card-text">
+            <div class=card-text ">
                 <ul class="list-unstyled">
                     <li><strong>Nazwa: </strong>{{$publisher->name}}</li>
-                    <li><strong>Książki: </strong>
+                    <li><strong>Książki: </strong> {{$publisher->books->count()}}
 
-                        <ul class="list-group">
+                        <ul class="list-group mt-2 mx-lg-5">
                             @foreach ($publisher->books as $book)
-                            <li class="list-group-item"><a href="/pracownik/ksiazki/{{$book->id}}" target="_blank"
-                                    class="a-link-navy">{{$book->title}}</a>
+                            <li class="list-group-item"><a href="/pracownik/ksiazki/{{$book->id}}"
+                                    class="a-link-navy"><strong>{{$book->title}}</strong></a> - @foreach ($book->authors as $author)
+                                    <a href="/pracownik/autorzy/{{$author->id}}"
+                                        class="a-link-navy">{{$author->last_name}}, {{$author->first_names}}</a>
+                                    {{ $loop->last ? '' : ' •' }}
+                                    @endforeach
                             </li>
                             @endforeach
 

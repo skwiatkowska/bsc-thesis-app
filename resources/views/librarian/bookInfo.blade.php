@@ -18,13 +18,13 @@
                     <li><strong>ISBN: </strong>{{$book->isbn}}</li>
                     <li><strong>Autorzy: </strong>
                         @foreach ($book->authors as $author)
-                        <a href="/pracownik/autorzy/{{$author->id}}" target="_blank"
+                        <a href="/pracownik/autorzy/{{$author->id}}" 
                             class="a-link-navy">{{$author->last_name}}, {{$author->first_names}}</a>
                         {{ $loop->last ? '' : ' •' }}
                         @endforeach
                     </li>
                     <li><strong>Wydawnictwo: </strong><a href="/pracownik/wydawnictwa/{{$publisher->id}}"
-                            target="_blank" class="a-link-navy">{{$publisher->name}}</a>
+                            class="a-link-navy">{{$publisher->name}}</a>
                     </li>
                     <li><strong>Rok wydania: </strong>{{$book->publication_year}}</li>
                     <li><strong>Kategorie: </strong>
