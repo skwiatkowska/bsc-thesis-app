@@ -10,7 +10,7 @@
             <div class="card mt-0">
                 <div class="card-header">Edycja książki</div>
                 <div class="card-body">
-                    <form name="newBookForm" action="/pracownik/ksiazki/nowa" method="POST">
+                    <form name="editBookForm" action="/pracownik/ksiazki/{{$book->id}}/edycja" method="POST">
                         {{ csrf_field() }}
                         <div class="form-group row required">
                             <label for="title"
@@ -64,12 +64,10 @@
                                 </fieldset>
                             </div>
                         </div>
-
                         <div class="form-group row required">
                             <label for="publisher"
                                 class="col-md-4 col-form-label control-label text-md-right">Wydawnictwo</label>
                             <div class="col-md-6">
-
                                 <div class="control-group form-group mb-0">
                                     <div class="input-group col-xs-3">
                                         <select data-live-search="true" id="publisher" name="publisher"
@@ -101,7 +99,7 @@
                                 class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
                             </label>
                             <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
-                                <input id="numverOfItems" value="{{$book->book_items_number}}" class="form-control"
+                                <input id="numberOfItems" value="{{$book->book_items_number}}" class="form-control"
                                     name="numberOfItems" required>
                             </div>
                         </div>
@@ -200,9 +198,8 @@
 
 <script>
     var categories = {!! json_encode($book->categories) !!};
-    var publisher = {!! json_encode($publisher) !!};
+    var publisher = {!! json_encode($book->publisher) !!};
     var authors = {!! json_encode($book->authors) !!};
-
     $("#publisher").val(publisher.id);
 
     var i;

@@ -80,7 +80,7 @@
                         {{$author->last_name}}, {{$author->first_names}}
                         {{ $loop->last ? '' : ' •' }}
                         @endforeach</td>
-                    <td>{{$publishers[$index]->name}}</td>
+                    <td>{{$book->publisher->name}}</td>
                     <td>{{$book->isbn}}</td>
                 </tr>
                 @endforeach

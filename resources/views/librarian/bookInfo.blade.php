@@ -32,8 +32,8 @@
                         {{ $loop->last ? '' : ' •' }}
                         @endforeach
                     </li>
-                    <li><strong>Wydawnictwo: </strong><a href="/pracownik/wydawnictwa/{{$publisher->id}}"
-                            class="a-link-navy">{{$publisher->name}}</a>
+                    <li><strong>Wydawnictwo: </strong><a href="/pracownik/wydawnictwa/{{$book->publisher->id}}"
+                            class="a-link-navy">{{$book->publisher->name}}</a>
                     </li>
                     <li><strong>Rok wydania: </strong>{{$book->publication_year}}</li>
                     <li><strong>Kategorie: </strong>

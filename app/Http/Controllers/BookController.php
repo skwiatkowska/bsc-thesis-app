@@ -55,13 +55,13 @@ class BookController extends Controller {
             }
         }
 
-        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
+        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publication_year' => $request->year, 'book_items_number' => $request->numberOfItems], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
             'publisher' => $publisherToAssign
         ]);
 
-        return redirect('/pracownik')->with(['success' => 'Dodano nową książkę: ' . $request->input('title')]);
+        return redirect('/pracownik/ksiazki/' . $book->id)->with(['success' => 'Dodano nową książkę: ' . $request->input('title')]);
     }
 
     public function index() {
@@ -75,24 +75,71 @@ class BookController extends Controller {
 
     public function fetchOneBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
-        $publisher = Publisher::find($book->publisher);
-        return view('/librarian/bookInfo', ['book' => $book, 'publisher' => $publisher]);
+        return view('/librarian/bookInfo', ['book' => $book]);
     }
 
 
     public function editBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
-        $publisher = Publisher::find($book->publisher);
         $categories = Category::all();
         $authors = Author::all();
         $publishers = Publisher::all();
-        return view('/librarian/editBook', ['book' => $book, 'publisher' => $publisher, 'categories' => $categories, 'authors' => $authors, 'publishers'=>$publishers]);
+        return view('/librarian/editBook', ['book' => $book, 'categories' => $categories, 'authors' => $authors, 'publishers' => $publishers]);
+    }
+
+    public function update(Request $request, $id) {
+        $book = Book::where('id', $id)->with('categories')->get()->first();
+
+        if ($book->title != $request->title) {
+            $book->title = $request->title;
+        }
+        if ($book->isbn != $request->isbn) {
+            $book->isbn = $request->isbn;
+        }
+        if ($book->publication_year != $request->year) {
+            $book->publication_year = $request->year;
+        }
+        if ($book->book_items_number != $request->numberOfItems) {
+            $book->book_items_number = $request->numberOfItems;
+        }
+
+        if ($book->publisher->id != $request->publisher) {
+            $book->deleteRelatedPublisher($book->publisher->id);
+            $newPublisher = Publisher::where('id', $request->publisher)->get()->first();
+            $newPublisher->books()->save($book);
+        }
+
+        //delete old categories
+        foreach ($book->categories as $category) {
+            $book->deleteRelatedCategory($category->id);
+        }
+
+        //attach new categories
+        if (!empty($request->categories)) {
+            foreach ($request->categories as $category) {
+                $cat = Category::find($category);
+                $book->categories()->save($cat);
+            }
+        }
+
+        //delete old authors
+        foreach ($book->authors as $author) {
+            $book->deleteRelatedAuthor($author->id);
+        }
+
+        //attach new authors
+        foreach ($request->authors as $author) {
+            $a = Author::find($author);
+            $book->authors()->save($a);
+        }
+
+
+        $book->save();
+        return back()->with(['success' => 'Dane książki zostały zaktualizowane']);
     }
 
     public function findBook(Request $request) {
         $categories = Category::all();
-
-        //dd($request->post());
         $searchIn = $request->searchIn;
         $phrase = $request->phrase;
         if ($searchIn == "category") {
@@ -113,13 +160,11 @@ class BookController extends Controller {
             } else {
                 $authors = Author::where('last_name', '=~', '.*' . $words[0] . '.*')->get();
             }
-            //dd($authors);
             $authorIds = array();
             foreach ($authors as $author) {
                 array_push($authorIds, $author->id);
             }
 
-            //dd($authorIds);
             $books = Author::find($authorIds[0])->books()->with('authors')->with('categories')->with('publisher')->get();
 
             foreach ($authorIds as $index => $authorId) {
@@ -138,12 +183,6 @@ class BookController extends Controller {
         } elseif ($searchIn == "isbn") {
             $books = Book::where('isbn', $phrase)->with('authors')->with('categories')->with('publisher')->get();
         }
-
-        $publishers = array();
-        foreach ($books as $book) {
-            array_push($publishers, Publisher::find($book->publisher));
-        }
-
-        return view('/librarian/catalog', ['books' => $books, 'publishers' => $publishers, 'categories' => $categories, 'phrase' => $phrase]);
+        return view('/librarian/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
     }
 }
