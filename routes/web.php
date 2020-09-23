@@ -48,4 +48,5 @@ Route::post('/pracownik/katalog', 'BookController@findBook');
 Route::get('/pracownik/ksiazki/nowa', 'BookController@create');
 Route::post('/pracownik/ksiazki/nowa', 'BookController@store');
 Route::get('/pracownik/ksiazki/{id}', 'BookController@fetchOneBook');
+Route::get('/pracownik/ksiazki/{id}/edycja', 'BookController@editBook');
 

@@ -55,9 +55,6 @@ class BookController extends Controller {
             }
         }
 
-
-
-
         $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publisher' => $request->publisher, 'publication_year' => $request->year], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
@@ -75,11 +72,21 @@ class BookController extends Controller {
         //return view('/showBooks', ['books' => $books]);
         return view('/librarian/catalog', ['categories' => $categories, 'books' => $books]);
     }
-    
+
     public function fetchOneBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
         $publisher = Publisher::find($book->publisher);
         return view('/librarian/bookInfo', ['book' => $book, 'publisher' => $publisher]);
+    }
+
+
+    public function editBook($id) {
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
+        $publisher = Publisher::find($book->publisher);
+        $categories = Category::all();
+        $authors = Author::all();
+        $publishers = Publisher::all();
+        return view('/librarian/editBook', ['book' => $book, 'publisher' => $publisher, 'categories' => $categories, 'authors' => $authors, 'publishers'=>$publishers]);
     }
 
     public function findBook(Request $request) {
@@ -92,7 +99,6 @@ class BookController extends Controller {
             $phrase = $request->searchPhrase;
 
             $books = Category::find($phrase)->books()->with('authors')->with('publisher')->get();
-
         } elseif ($searchIn == "author") {
             $words = explode(" ", $phrase);
             if (count($words) > 1) {
@@ -124,20 +130,17 @@ class BookController extends Controller {
                     }
                 }
             }
-
         } elseif ($searchIn == "publisher") {
             $publisher = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get()->first();
             $books = Publisher::find($publisher->id)->books()->with('authors')->with('categories')->with('publisher')->get();
-        
         } elseif ($searchIn == "title") {
             $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('authors')->with('categories')->with('publisher')->get();
         } elseif ($searchIn == "isbn") {
             $books = Book::where('isbn', $phrase)->with('authors')->with('categories')->with('publisher')->get();
-        
-        } 
+        }
 
         $publishers = array();
-        foreach($books as $book){
+        foreach ($books as $book) {
             array_push($publishers, Publisher::find($book->publisher));
         }
 
