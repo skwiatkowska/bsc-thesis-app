@@ -55,8 +55,8 @@
                                             <i class="fas fa-plus"></i> nowy autor
                                         </button>
                                         <button type="button"
-                                            class="btn add-one btn-danger add_button mb-2 ml-sm-auto ml-md-0 ml-lg-auto"
-                                            data-toggle="modal">
+                                            class="btn add-one btn-danger add_button mb-2 ml-sm-auto ml-md-0 ml-lg-auto">
+                                
                                             <i class="fas fa-plus"></i> kolejny autor
 
                                         </button>
@@ -201,6 +201,7 @@
     var publisher = {!! json_encode($book->publisher) !!};
     var authors = {!! json_encode($book->authors) !!};
     $("#publisher").val(publisher.id);
+    console.log($("select#publisher").children('option:selected'));
 
     var i;
     var categoriesNames = [];
@@ -319,7 +320,6 @@ $("#new-publisher-btn-submit").click(function(e){
             alert(data.responseJSON.error);
           }
     });
-
   });
 
 
@@ -352,7 +352,6 @@ $(function () {
                
             };
 
-console.log(categoriesNames);
             if(categoriesNames.includes($button.html())){
                 $checkbox.prop('checked', !$checkbox.is(':checked'));
             $checkbox.triggerHandler('change');
@@ -390,5 +389,25 @@ console.log(categoriesNames);
         init();
     });
 });
+
+// $(window).unload(saveSettings);
+// 		loadSettings();
+	
+
+// 	function loadSettings() {
+// 		$('#title').val(localStorage.title);
+// 		$('#isbn').val(localStorage.isbn);
+// 		$("#numberOfItems").val(localStorage.numberOfItems);
+//         $("#publisher").val(localStorage.publisher);
+
+// 	}
+
+// 	function saveSettings() {
+// 		localStorage.title = $('#title').val();
+// 		localStorage.isbn = $('#isbn').val();
+// 		localStorage.numberOfItems = $('#numberOfItems').val();
+// 		localStorage.publisher = $("#publisher").val();
+// 	}
+
 </script>
 @endsection

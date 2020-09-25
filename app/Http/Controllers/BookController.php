@@ -135,7 +135,7 @@ class BookController extends Controller {
 
 
         $book->save();
-        return back()->with(['success' => 'Dane książki zostały zaktualizowane']);
+        return redirect("/pracownik/ksiazki/".$book->id)->with(['success' => 'Dane książki zostały zaktualizowane']);
     }
 
     public function findBook(Request $request) {
@@ -182,6 +182,11 @@ class BookController extends Controller {
             $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('authors')->with('categories')->with('publisher')->get();
         } elseif ($searchIn == "isbn") {
             $books = Book::where('isbn', $phrase)->with('authors')->with('categories')->with('publisher')->get();
+        }
+        if(!$books->count()){
+            // return back()->withErrors("Brak kategorii w bazie danych. Dodaj najpierw kategorie, aby móc dodawać książki");
+            return view('/librarian/catalog', ['books' => '', 'categories' => $categories, 'phrase' => $phrase])->withErrors("Nie znaleziono książek spełniających podane kryteria wyszukiwania");
+
         }
         return view('/librarian/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
     }

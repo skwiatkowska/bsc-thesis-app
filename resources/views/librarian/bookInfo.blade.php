@@ -5,16 +5,12 @@
 @section('content')
 
 <div class="container col-lg-10">
-    {{-- <div class="row">
-        <div class="col-sm-12 "> <button type="button" onclick="goBack()" class="btn btn-sm btn-secondary btn-rounded"><i class="fas fa-arrow-left"></i> Powrót do wyszukiwania</button>
-        </div>
-    </div> --}}
     <div class="card my-1">
         <div class="h5 card-header">
             <div class="row px-2">
                 Szczegóły książki
                 <div class="ml-auto">
-                <a href="{{$book->id}}/edycja" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a>
+                    <a href="{{$book->id}}/edycja" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a>
                     <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a>
                 </div>
             </div>
@@ -62,13 +58,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
-<script>
-    function goBack() {
-  window.history.back();
-}
-</script>
 @endsection

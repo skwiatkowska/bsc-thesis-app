@@ -46,11 +46,12 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css"
         integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
-        <link href="{{ asset('css/jquery.dynatable.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/jquery.dynatable.css') }}" rel="stylesheet" type="text/css">
 
-<!-- JS Pluging -->
-<script type="text/javascript" src="{{PUBLIC_URL}}js/jquery.dynatable.js"></script>
-    
+    <!-- JS Pluging -->
+    <script type="text/javascript" src="{{PUBLIC_URL}}js/jquery.dynatable.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <script type="text/javascript" src="{{PUBLIC_URL}}js/bootstrap-editable.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 </head>

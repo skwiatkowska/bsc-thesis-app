@@ -35,17 +35,17 @@
 
                                 <div class="control-group form-group mb-0">
                                     <div class="input-group col-xs-3 field_wrapper">
-                                                <select data-live-search="true" id="authors" name="authors[]"
-                                                    class="form-control">
-                                                    <option value="" selected disabled>Wybierz</option>
-                                                    @foreach ($authors as $author)
-                                                    <option value="{{$author->id}}">{{$author->last_name}},
-                                                        {{$author->first_names}}</option>
-                                                    @endforeach
-                                                </select> 
+                                        <select data-live-search="true" id="authors" name="authors[]"
+                                            class="form-control">
+                                            <option value="" selected disabled>Wybierz</option>
+                                            @foreach ($authors as $author)
+                                            <option value="{{$author->id}}">{{$author->last_name}},
+                                                {{$author->first_names}}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                             
+
 
                                 <fieldset class="pb-0 mb-0 mt-2">
                                     <div class="input-group col-xs-3">
@@ -113,7 +113,8 @@
                             <div class="col-md-6 sorted">
                                 @if($categories->isEmpty())
 
-                                <p class="mt-1"><i class="fas fa-exclamation-triangle mr-2"></i>Brak kategorii. <a class="a-link" href="/pracownik/kategorie">Kliknij i
+                                <p class="mt-1"><i class="fas fa-exclamation-triangle mr-2"></i>Brak kategorii. <a
+                                        class="a-link" href="/pracownik/kategorie">Kliknij i
                                         dodaj nową</a></p>
                                 @else
                                 @foreach ($categories as $category)
@@ -205,7 +206,7 @@
     </div>
 </div>
 
-<script >
+<script>
     $(document).ready(function(){
         var maxField = 6; 
         var addButton = $('.add_button'); //Add button selector
@@ -289,7 +290,6 @@ $("#new-author-btn-submit").click(function(e){
 $("#new-publisher-btn-submit").click(function(e){
       e.preventDefault();
       var name = $("input[name=name]").val();
-     
       $.ajax({
          type:'POST',
          dataType : 'json',
@@ -303,7 +303,6 @@ $("#new-publisher-btn-submit").click(function(e){
             alert(data.responseJSON.error);
           }
     });
-
   });
 
 
@@ -367,5 +366,26 @@ $(function () {
         init();
     });
 });
+
+
+	// 	$(window).unload(saveSettings);
+	// 	loadSettings();
+	
+
+	// function loadSettings() {
+	// 	$('#title').val(localStorage.title);
+	// 	$('#isbn').val(localStorage.isbn);
+	// 	$("#numberOfItems").val(localStorage.numberOfItems);
+    //     $("#publisher").val(localStorage.publisher);
+
+	// }
+
+	// function saveSettings() {
+	// 	localStorage.title = $('#title').val();
+	// 	localStorage.isbn = $('#isbn').val();
+	// 	localStorage.numberOfItems = $('#numberOfItems').val();
+	// 	localStorage.publisher = $("#publisher").val();
+	// }
+
 </script>
 @endsection

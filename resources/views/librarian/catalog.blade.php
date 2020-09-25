@@ -48,7 +48,7 @@
     <div class="row mt-4">
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
-    @endif
+    
     @if (!empty($books))
     <div class="row mt-2">
         <div class="col-10 mx-auto">
@@ -88,6 +88,9 @@
         </table>
         </div>
     </div>
+    @else
+    <p class="h6 text-center py-5">Nie znaleziono</p>
+    @endif
     @endif
 </div>
 
