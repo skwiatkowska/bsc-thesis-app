@@ -327,7 +327,6 @@ ul.CTAs a {
   min-height: 240px;
 }
 
-
 .container {
   padding: 30px;
 }
@@ -408,4 +407,8 @@ ul.CTAs a {
 
 .a-link-navy {
   color: navy;
+}
+
+table td a {
+  display: block;
 }

@@ -48,44 +48,50 @@
     <div class="row mt-4">
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
-    
+
     @if (!empty($books))
     <div class="row mt-2">
         <div class="col-10 mx-auto">
-        <table id="dynatable" class="table table-striped table-bordered mt-1">
-            <thead>
-                <tr>
-                    <th style="width: 30%">Tytuł</th>
-                    <th style="width: 45%">Autorzy</th>
-                    <th style="width: 15%">Wydawnictwo</th>
-                    <th style="width: 10%">ISBN</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Tytuł</th>
-                    <th>Autorzy</th>
-                    <th>Wydawnictwo</th>
-                    <th>ISBN</th>
-                </tr>
-            </tfoot>
+            <table id="dynatable" class="table table-striped table-bordered mt-1">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Tytuł</th>
+                        <th style="width: 45%">Autorzy</th>
+                        <th style="width: 15%">Wydawnictwo</th>
+                        <th style="width: 10%">ISBN</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Tytuł</th>
+                        <th>Autorzy</th>
+                        <th>Wydawnictwo</th>
+                        <th>ISBN</th>
+                    </tr>
+                </tfoot>
 
-            <tbody>
-                @foreach ($books as $index => $book)
-                <tr>
-                    <td>
-                    <a href="/pracownik/ksiazki/{{$book->id}}" target="_blank"><strong class="a-link-navy">{{$book->title}}</strong></a>
-                    </td>
-                    <td>@foreach ($book->authors as $author)
-                        {{$author->last_name}}, {{$author->first_names}}
-                        {{ $loop->last ? '' : ' •' }}
-                        @endforeach</td>
-                    <td>{{$book->publisher->name}}</td>
-                    <td>{{$book->isbn}}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                <tbody>
+                    @foreach ($books as $index => $book)
+                    <tr>
+                        <td>
+                            <a href="/pracownik/ksiazki/{{$book->id}}" target="_blank"><strong
+                                    class="a-link-navy">{{$book->title}}</strong></a>
+                        </td>
+                        <td>
+                            @foreach ($book->authors as $author)
+                            <a href="/pracownik/autorzy/{{$author->id}}" target="_blank"
+                                class="a-link-navy">{{$author->last_name}},
+                                {{$author->first_names}}</a>
+                            @endforeach
+                        </td>
+                        <td><a href="/pracownik/wydawnictwa/{{$book->publisher->id}}" class="a-link-navy"
+                                target="_blank">{{$book->publisher->name}}</a>
+                        </td>
+                        <td>{{$book->isbn}}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
     @else

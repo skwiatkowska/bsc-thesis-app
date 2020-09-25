@@ -41,9 +41,6 @@
 
 
 <script>
-    $(".editable-submit").prop('value', 'Save'); //versions newer than 1.6
-
-
     $.fn.editable.defaults.mode = 'inline';
     var id = {!! json_encode($author->id) !!};
 
@@ -68,7 +65,11 @@
                 ajaxOptions: {
                     dataType: 'json',
                     type: 'post'
-                }
+                },
+                success:function(data){
+            location.reload();
+            alert(data.success);
+         },
             });
         }
     );

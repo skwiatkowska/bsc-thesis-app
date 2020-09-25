@@ -40,6 +40,8 @@ Route::post('/pracownik/autorzy/{id}/edycja', 'AuthorController@update');
 Route::get('/pracownik/wydawnictwa', 'PublisherController@index');
 Route::post('/pracownik/wydawnictwa', 'PublisherController@store');
 Route::get('/pracownik/wydawnictwa/{id}', 'PublisherController@fetchPublisher');
+Route::post('/pracownik/wydawnictwa/{id}/edycja', 'PublisherController@update');
+Route::post('/pracownik/wydawnictwa/{id}/usun', 'PublisherController@delete');
 
 Route::get('/pracownik/info', 'LibrarianController@info');
 Route::get('/pracownik/katalog', 'BookController@index');
