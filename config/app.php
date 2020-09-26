@@ -1,5 +1,7 @@
 <?php
 
+if (!defined('PUBLIC_URL')) define('PUBLIC_URL', '/');
+
 return [
 
     /*
