@@ -11,7 +11,12 @@
             <div class="row px-2">
                 Szczegóły
                 <div class="ml-auto">
-                    <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a>
+                    <form action="/pracownik/autorzy/{{$author->id}}/usun" method="POST">
+                        {{ csrf_field() }}
+                        <button type="submit" id="delete-publisher-btn-submit"
+                            class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
+                        <input type="hidden" value="{{$author->id}}" name="id">
+                    </form>
                 </div>
             </div>
         </div>

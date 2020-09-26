@@ -13,9 +13,10 @@
                 <div class="ml-auto">
                     <form action="/pracownik/wydawnictwa/{{$publisher->id}}/usun" method="POST">
                         {{ csrf_field() }}
-                    <button type="submit" id="delete-publisher-btn-submit" class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
-                    <input type="hidden" value="{{$publisher->id}}" name="id">
-                </form>
+                        <button type="submit" id="delete-publisher-btn-submit"
+                            class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
+                        <input type="hidden" value="{{$publisher->id}}" name="id">
+                    </form>
                 </div>
             </div>
         </div>
@@ -23,7 +24,8 @@
         <div class="card-body">
             <div class=card-text">
                 <ul class="list-unstyled">
-                    <li><strong>Nazwa: </strong><a class="editable-input" id="name">{{$publisher->name}}<i class="fa fa-pencil-alt ml-2"></i></a>
+                    <li><strong>Nazwa: </strong><a class="editable-input" id="name">{{$publisher->name}}<i
+                                class="fa fa-pencil-alt ml-2"></i></a>
                     </li>
                     <br>
                     <li><strong>Książki: </strong> {{$publisher->books->count()}}
@@ -97,6 +99,7 @@
 //         //   }
 //     });
 //   });
-// </script>
+// 
+</script>
 
 @endsection

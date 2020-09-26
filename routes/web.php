@@ -36,6 +36,7 @@ Route::get('/pracownik/autorzy', 'AuthorController@index');
 Route::post('/pracownik/autorzy', 'AuthorController@store');
 Route::get('/pracownik/autorzy/{id}', 'AuthorController@fetchAuthor');
 Route::post('/pracownik/autorzy/{id}/edycja', 'AuthorController@update');
+Route::post('/pracownik/autorzy/{id}/usun', 'AuthorController@delete');
 
 Route::get('/pracownik/wydawnictwa', 'PublisherController@index');
 Route::post('/pracownik/wydawnictwa', 'PublisherController@store');
