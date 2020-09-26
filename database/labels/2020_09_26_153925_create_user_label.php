@@ -3,7 +3,7 @@
 use Vinelab\NeoEloquent\Schema\Blueprint;
 use Vinelab\NeoEloquent\Migrations\Migration;
 
-class CreateAuthorLabel extends Migration {
+class CreateUserLabel extends Migration {
 
     /**
      * Run the migrations.
@@ -11,8 +11,8 @@ class CreateAuthorLabel extends Migration {
      * @return void
      */
     public function up() {
-        Neo4jSchema::label('Author', function (Blueprint $label) {
-            //$label->unique(array('first_names', 'last_name'));
+        Neo4jSchema::label('User', function (Blueprint $label) {
+            $label->unique('pesel');
         });
     }
 
@@ -22,6 +22,6 @@ class CreateAuthorLabel extends Migration {
      * @return void
      */
     public function down() {
-        Neo4jSchema::dropIfExists('Author');
+        Neo4jSchema::dropIfExists('User');
     }
 }

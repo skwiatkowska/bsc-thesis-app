@@ -107,10 +107,10 @@
                     </a>
                     <ul class="collapse list-unstyled" id="membersSubmenu">
                         <li>
-                            <a class="sidebar-submenu-item" href="/pracownik/czytelnik/nowy">Dodaj Czytelnika</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/czytelnicy/nowy">Dodaj Czytelnika</a>
                         </li>
                         <li>
-                            <a class="sidebar-submenu-item" href="/pracownik/czytelnik/znajdz">Znajdź Czytelnika</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/czytelnicy/znajdz">Znajdź Czytelnika</a>
                         </li>
 
                     </ul>
