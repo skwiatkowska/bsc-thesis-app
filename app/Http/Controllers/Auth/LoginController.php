@@ -63,7 +63,7 @@ class LoginController extends Controller {
 
 
     public function adminLogout () {
-        Auth::logout();
+        Auth::guard('admin')->logout();
         return redirect('/pracownik/logowanie')->with(['success' => 'Wylogowano']);
     }
 }
