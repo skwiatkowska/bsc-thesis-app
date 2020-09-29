@@ -43,7 +43,6 @@ class LoginController extends Controller {
 
 
     public function showAdminLoginForm() {
-        //Admin::create(['name'=>'test', 'password'=>Hash::make('password'), 'email' => 'aa@aa.aa']);
         return view('librarian.login');
     }
 
@@ -56,7 +55,7 @@ class LoginController extends Controller {
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
             // dd(Auth::guard('admin')->check());
             //dd(Auth::check());
-            return redirect()->intended('/pracownik')->with(['success' => 'Zalogowano'.Auth::check()]);
+            return redirect()->intended('/pracownik')->with(['success' => 'Zalogowano']);
         }
         return back()->withErrors("Podano błędne dane logowania");
     }
@@ -65,5 +64,31 @@ class LoginController extends Controller {
     public function adminLogout () {
         Auth::guard('admin')->logout();
         return redirect('/pracownik/logowanie')->with(['success' => 'Wylogowano']);
+    }
+
+
+    
+    public function showUserLoginForm() {
+        return view('login');
+    }
+
+    public function userLogin(Request $request) {
+        // $this->validate($request, [
+        //     'email'   => 'required|email',
+        //     'password' => 'required|min:6'
+        // ]);
+
+        if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            // dd(Auth::guard('admin')->check());
+            //dd(Auth::check());
+            return redirect()->intended('/')->with(['success' => 'Zalogowano']);
+        }
+        return back()->withErrors("Podano błędne dane logowania");
+    }
+
+
+    public function userLogout () {
+        Auth::guard('web')->logout();
+        return redirect('/')->with(['success' => 'Wylogowano']);
     }
 }

@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Entities\User;
+use Illuminate\Support\Facades\Hash;
 
 class LibrarianController extends Controller {
     public function index() {
         return view('/librarian/home');
     }
 
-
-    public function login() {
-
-        return view('/librarian/login');
-    }
 
     public function createUser() {
         return view('/librarian/newUser');
@@ -28,7 +24,7 @@ class LibrarianController extends Controller {
             'pesel' => $request['pesel'],
             'email' => $request['email'],
             'phone' => $request['phone'],
-            'password' => bcrypt($request['pesel'])
+            'password' => Hash::make($request['pesel'])
         ]);
         return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request['fname'] . ' ' . $request['lname']]);
     }

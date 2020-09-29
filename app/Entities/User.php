@@ -10,7 +10,7 @@ use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 
 class User extends NeoEloquent implements Authenticatable {
     use Notifiable, AuthenticableTrait;
-
+    protected $guard = 'web';
     protected $label = 'User';
 
     /**

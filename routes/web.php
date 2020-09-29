@@ -15,12 +15,23 @@ Auth::routes();
 Route::get('/pracownik/logowanie', 'Auth\LoginController@showAdminLoginForm');
 Route::post('/pracownik/logowanie', 'Auth\LoginController@adminLogin');
 
+Route::get('/logowanie','Auth\LoginController@showUserLoginForm');
+Route::post('/logowanie','Auth\LoginController@userLogin');
+
+
 Route::get('/', 'IndexController@index');
-Route::get('/logowanie', 'IndexController@login');
 Route::get('/rejestracja', 'IndexController@register');
 Route::get('/kontakt', 'IndexController@contact');
 Route::get('/pierwsze-kroki', 'IndexController@firstSteps');
 Route::get('/godziny-otwarcia', 'IndexController@workingHours');
+
+
+Route::group(['middleware' => 'web'], function () {
+
+
+});
+
+
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/wyloguj', 'Auth\LoginController@adminLogout');
