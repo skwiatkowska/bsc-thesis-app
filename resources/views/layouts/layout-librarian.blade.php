@@ -176,7 +176,7 @@
                         <ul class="nav navbar-nav ml-auto">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Wyloguj</a>
+                                <a class="nav-link" href="{{ url('/pracownik/wyloguj') }}">Wyloguj</a>
                             </li>
 
                         </ul>

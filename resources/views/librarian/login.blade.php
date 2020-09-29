@@ -20,6 +20,13 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+        integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous">
+    </script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+        integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
+    </script>
     <!-- Include the above in your HEAD tag -->
 
 </head>
@@ -27,12 +34,30 @@
 {{-- source: https://bootsnipp.com/snippets/MR9Al --}}
 
 <body class="login-body">
+    @if (\Session::has('success'))
+    <div class="alert alert-success">
+        <ul class="ul-alert">
+            <li><i class="fas fa-check-circle mr-2"></i>{!! \Session::get('success') !!}</li>
+        </ul>
+    </div>
+    @endif
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul class="ul-alert">
+
+            {!! implode('', $errors->all('<li><i class="fas fa-exclamation-triangle mr-2"></i>:message</li>'))
+            !!}
+        </ul>
+    </div>
+
+    @endif
     <div class="login-page">
         <div class="form">
             <h2 class="mb-5"><strong>Panel pracownika</strong></h2>
-            <form class="login-form" method="POST">
-                <input type="text" placeholder="Login" />
-                <input type="password" placeholder="Hasło" />
+            <form class="login-form" action="/pracownik/logowanie" method="POST">
+                {{ csrf_field() }}
+                <input type="text" name="email" placeholder="Login" />
+                <input type="password" name="password" placeholder="Hasło" />
                 <button type="submit" class="mt-5">Zaloguj się</button>
             </form>
         </div>
