@@ -1,28 +1,26 @@
 @extends('layouts.layout-librarian')
 
-@section('title', 'e-Katalog')
+@section('title', 'Użytkownicy - wyszukiwanie')
 
 @section('content')
 
 <div class="container ">
     <div class="row text-right mb-3">
         <div class="col-sm-12 "> <button type="button" class="btn btn-secondary btn-rounded"><a
-                    href="/pracownik/ksiazki/nowa">Nowa książka</a></button>
+                    href="/pracownik/czytelnicy/nowy">Nowy Czytelnik</a></button>
         </div>
     </div>
     <div class="row">
-        <form class="form-inline col-12 justify-content-center" action="/pracownik/katalog" method="POST">
+        <form class="form-inline col-12 justify-content-center" action="/pracownik/czytelnicy/znajdz" method="POST">
+            {{ csrf_field() }}
 
             <div class="input-group mb-2 col-sm-12 col-lg-4 px-1">
                 <div class="input-group-prepend">
                     <div class="input-group-text">Szukaj w:</div>
                 </div>
                 <select class="form-control search-in-select" name="searchIn">
-                    <option value="title">Tytuł</option>
-                    <option value="author">Autor (nazwiska)</option>
-                    <option value="publisher">Wydawnictwo</option>
-                    <option value="category">Kategoria</option>
-
+                    <option value="pesel">PESEL</option>
+                    <option value="lname">Nazwisko</option>
                 </select>
             </div>
             <div class="input-group mb-2 col-sm-12 col-lg-6 px-1">
@@ -30,13 +28,6 @@
                     <div class="input-group-text">Fraza:</div>
                 </div>
                 <input type="text" class="form-control search-phrase" name="phrase" id="search-phrase-input">
-                <select class="form-control search-phrase" name="searchPhrase" id="choose-category-select">
-                    <option value="" selected disabled>Nie wybrano</option>
-
-                    @foreach ($categories as $category)
-                    <option value="{{$category->id}}">{{$category->name}}</option>
-                    @endforeach
-                </select>
                 <button type="submit" id="find-book-submit-btn" class="btn btn-primary ml-4 px-lg-4">Szukaj</button>
 
             </div>
@@ -48,45 +39,40 @@
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
 
-    @if (!empty($books))
-    <div class="row mt-2">
+    @if (!empty($users))
+    <div class="row mt-4">
         <div class="col-10 mx-auto">
-            <table id="dynatable" class="table table-striped table-bordered mt-1">
+            <table id="dynatable2" class="table table-striped table-bordered mt-1">
                 <thead>
                     <tr>
-                        <th style="width: 30%">Tytuł</th>
-                        <th style="width: 45%">Autorzy</th>
-                        <th style="width: 15%">Wydawnictwo</th>
-                        <th style="width: 10%">ISBN</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>PESEL</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Tytuł</th>
-                        <th>Autorzy</th>
-                        <th>Wydawnictwo</th>
-                        <th>ISBN</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>PESEL</th>
                     </tr>
                 </tfoot>
-
                 <tbody>
-                    @foreach ($books as $index => $book)
+                    @foreach ($users as $user)
                     <tr>
                         <td>
-                            <a href="/pracownik/ksiazki/{{$book->id}}" target="_blank"><strong
-                                    class="a-link-navy">{{$book->title}}</strong></a>
+                            <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
+                                    class="a-link-navy">{{$user->first_name}}</strong></a>
                         </td>
                         <td>
-                            @foreach ($book->authors as $author)
-                            <a href="/pracownik/autorzy/{{$author->id}}" target="_blank"
-                                class="a-link-navy">{{$author->last_name}},
-                                {{$author->first_names}}</a>
-                            @endforeach
+                            <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
+                                    class="a-link-navy">{{$user->last_name}}</strong></a>
                         </td>
-                        <td><a href="/pracownik/wydawnictwa/{{$book->publisher->id}}" class="a-link-navy"
-                                target="_blank">{{$book->publisher->name}}</a>
+                        <td>
+                            <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
+                                    class="a-link-navy">{{$user->pesel}}</strong></a>
                         </td>
-                        <td>{{$book->isbn}}</td>
+
                     </tr>
                     @endforeach
                 </tbody>
@@ -100,9 +86,10 @@
 </div>
 
 <script>
-    $('#dynatable').dynatable();
+    $('#dynatable2').dynatable();
 
     $(".dynatable-search").hide();
+    $(".dynatable-per-page").hide();
     $("tfoot").hide();
     $(".dynatable-per-page-label").css( "margin-right", "8px" );
     $("th").css( "padding", "5px" );
@@ -138,21 +125,8 @@
 //   });
 
 
-    $(document).ready(function() {
-    $("#choose-category-select").hide();
+  
 
-    $(".search-in-select").change(function() {
-        var val = $(this).find("option:selected").attr("value");
-        if (val == 'category') {
-            $("#search-phrase-input").hide();
-            $("#choose-category-select").show();
-
-        } else {
-            $("#search-phrase-input").show();
-            $("#choose-category-select").hide();
-        }
-    })
-});
 
 
 

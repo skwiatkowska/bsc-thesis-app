@@ -33,7 +33,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-orange">
+    <nav class="navbar top-nav">
 
         <p class="ml-auto font-weight-bold pt-1">
             <i class="fa fa-phone mr-2"></i>+ 01 234 567 89</p>

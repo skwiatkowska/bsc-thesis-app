@@ -27,7 +27,8 @@ Route::get('/pracownik', 'LibrarianController@index');
 Route::get('/pracownik/logowanie', 'LibrarianController@login');
 Route::get('/pracownik/czytelnicy/nowy', 'LibrarianController@createUser');
 Route::post('/pracownik/czytelnicy/nowy', 'LibrarianController@storeUser');
-Route::get('/pracownik/czytelnicy/znajdz', 'LibrarianController@findUser');
+Route::get('/pracownik/czytelnicy/znajdz', 'LibrarianController@findUserView');
+Route::post('/pracownik/czytelnicy/znajdz', 'LibrarianController@findUser');
 Route::get('/pracownik/czytelnicy/{id}', 'LibrarianController@fetchUser');
 Route::post('/pracownik/czytelnicy/{id}/edycja', 'LibrarianController@updateUser');
 

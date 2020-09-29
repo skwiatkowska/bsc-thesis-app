@@ -6,33 +6,39 @@ colors:
 #F2766B
 #F24444
 
+
+#0081a7
+#00afb9
+#fdfcdc
+#fed9b7
+#f07167
 */
 
 .page-footer {
-  background-color: #024059;
+  background-color: #00afb9;
 }
 
 .navbar {
-  background-color: #024059;
+  background-color: #00afb9;
 }
 
 .dropdown-menu {
-  background-color: #1b5369;
+  background-color: #00afb9;
 }
 .dropdown-item {
   color: white;
 }
 
 .dropdown-item:hover {
-  background-color: #024059;
+  background-color: #00afb9;
   color: hsla(0, 0%, 100%, 0.5);
 }
 
 .navbar-dark .navbar-nav .nav-link {
   color: white;
 }
-.navbar-orange {
-  background-color: #f2766b;
+.top-nav {
+  background-color: #0081a7;
   height: 35px;
   padding-top: 1px;
   color: #024059;
@@ -87,7 +93,6 @@ colors:
   margin-top: 2px;
   width: 100%;
   box-sizing: border-box;
-  font-family: montserrat;
   color: #2c3e50;
   font-size: 16px;
   letter-spacing: 1px;
@@ -95,18 +100,16 @@ colors:
 
 #msform input:focus,
 #msform textarea:focus {
-  -moz-box-shadow: none !important;
-  -webkit-box-shadow: none !important;
   box-shadow: none !important;
   border: none;
   font-weight: bold;
-  border-bottom: 2px solid #f2ca99;
+  border-bottom: 2px solid #f07167;
   outline-width: 0;
 }
 
 #msform .action-button {
   width: 100px;
-  background: #f2766b;
+  background: #f07167;
   font-weight: bold;
   color: white;
   border: 0 none;
@@ -147,13 +150,13 @@ select.list-dt {
 }
 
 select.list-dt:focus {
-  border-bottom: 2px solid #f2ca99;
+  border-bottom: 2px solid #f07167;
 }
 
 .card {
   z-index: 0;
-  border: none;
   border-radius: 0.5rem;
+  border: none;
   position: relative;
 }
 
@@ -182,6 +185,7 @@ select.list-dt:focus {
   float: left;
   position: relative;
 }
+
 
 #progressbar #account:before {
   font-family: FontAwesome;
@@ -224,24 +228,12 @@ select.list-dt:focus {
 
 #progressbar li.active:before,
 #progressbar li.active:after {
-  background: #f2ca99;
+  background: #fed9b7;
 }
 
 .fit-image {
   width: 100%;
   object-fit: cover;
-}
-
-
-.carousel {
-    background: #f2ca99;
-    margin-top: 20px;
-}
-
-
-.carousel-item {
-    text-align: center;
-    min-height: 280px;
 }
 
 .ul-alert{
@@ -250,6 +242,9 @@ select.list-dt:focus {
 }
 
 
+body{
+  background-color:white;
+}
 
 
 

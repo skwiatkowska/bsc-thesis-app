@@ -17,7 +17,7 @@ class LibrarianController extends Controller {
     }
 
     public function createUser() {
-        return view('/librarian/newMember');
+        return view('/librarian/newUser');
     }
 
     public function storeUser(Request $request) {
@@ -30,7 +30,7 @@ class LibrarianController extends Controller {
             'phone' => $request['phone'],
             'password' => bcrypt($request['pesel'])
         ]);
-        return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' .$request['fname']. ' '. $request['lname']]);
+        return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request['fname'] . ' ' . $request['lname']]);
     }
 
     public function fetchUser($id) {
@@ -44,19 +44,40 @@ class LibrarianController extends Controller {
             $user->first_name = $request->value;
         } else if ($request->name == "lname" && $user->last_name != $request->value) {
             $user->last_name = $request->value;
-        }else if ($request->name == "pesel" && $user->pesel != $request->value) {
+        } else if ($request->name == "pesel" && $user->pesel != $request->value) {
             $user->pesel = $request->value;
-        }else if ($request->name == "phone" && $user->phone != $request->value) {
+        } else if ($request->name == "phone" && $user->phone != $request->value) {
             $user->phone = $request->value;
-        }else if ($request->name == "email" && $user->email != $request->value) {
+        } else if ($request->name == "email" && $user->email != $request->value) {
             $user->email = $request->value;
         }
         $user->save();
         return response()->json(['success' => 'Dane zostały zmienione']);
     }
 
-    public function findUser() {
+    public function findUserView() {
         return view('/librarian/findUser');
+    }
+
+    public function findUser(Request $request) {
+        $searchIn = $request->searchIn;
+        $phrase = $request->phrase;
+        $searchInMode = null;
+        if ($searchIn == "pesel") {
+            $users = User::where('pesel', $phrase)->get();
+            $searchInMode = "PESEL";
+        } elseif ($searchIn == "lname") {
+            $users = User::where('last_name', '=~', '.*' . $phrase . '.*')->get();
+            if (!$users->count()) {
+                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego Czytelnika: " . $phrase);
+            }
+            $searchInMode = "nazwisko";
+        }
+
+        if (!$users->count()) {
+            return redirect('/pracownik/czytelnicy/znajdz')->withErrors("Nie znaleziono Czytelników spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
+        }
+        return view('/librarian/findUser', ['users' => $users, 'phrase' => $phrase]);
     }
 
     public function info() {

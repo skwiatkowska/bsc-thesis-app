@@ -61,86 +61,35 @@ $(document).ready(function () {
     );
   });
 
-  $(".sorted-list li").sort(asc_sort).appendTo('.sorted-list');
+  $(".sorted-list li").sort(asc_sort).appendTo(".sorted-list");
 
-  $(".sorted span ").sort(asc_sort).appendTo('.sorted');
+  $(".sorted span ").sort(asc_sort).appendTo(".sorted");
 
-  function asc_sort(a, b){
-      return ($(b).text()) < ($(a).text()) ? 1 : -1;    
+  function asc_sort(a, b) {
+    return $(b).text() < $(a).text() ? 1 : -1;
   }
-  
 
-
-  $(".delete").on("click", function(){
+  $(".delete").on("click", function () {
     return confirm("Czy na pewno chcesz usunąć?");
-});
-
-
+  });
 
   $(".noSuchInfo").hide();
-  
 
-  $(".listSearch").on("keyup", function() {
+  $(".listSearch").on("keyup", function () {
     $(".emptyDBInfo").hide();
-      var value = $(this).val().toLowerCase();
-      
-      $(".item-list li").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-     
+    var value = $(this).val().toLowerCase();
+
+    $(".item-list li").filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+
       var numOfVisibleRows = $(".item-list li:visible").length;
-       
-      if(numOfVisibleRows == 0){
+
+      if (numOfVisibleRows == 0) {
         $(".noSuchInfo").show();
       }
-      if(value.length == 0){
-          $(".noSuchInfo").hide();
-        }
- 
-  })
-
-  })
-  
+      if (value.length == 0) {
+        $(".noSuchInfo").hide();
+      }
+    });
+  });
 });
-
-
-
-//carousel
-    $('.carousel').carousel({
-        interval: 5000 //changes the speed
-    })
-
-    $('.carousel').on('slide.bs.carousel', function () {
-		$('.carousel-caption h3').animate({
-			marginLeft: "+=10%",
-          fontSize: "1px",
-			opacity: 0
-		}, 50);
-        $('.carousel-caption h5').animate({
-			marginLeft: "+=10%",
-          fontSize: "1px",
-			opacity: 0
-		}, 50);
-        $('.carousel-caption a').animate({
-			marginLeft: "+=10%",
-          fontSize: "1px",
-			opacity: 0
-		}, 50);
-	})
-	$('.carousel').on('slid.bs.carousel', function () {
-		$('.carousel-caption h3').animate({
-			marginLeft: 0,
-          fontSize: "40px",
-			opacity: 0.8
-		}, 600);
-        $('.carousel-caption h5').animate({
-			marginLeft: 0,
-          fontSize: "20px",
-			opacity: 0.8
-		}, 600);
-        $('.carousel-caption a').animate({
-			marginLeft: 0,
-          fontSize: "16px",
-			opacity: 0.8
-		}, 600);
-	})
-
