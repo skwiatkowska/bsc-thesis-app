@@ -17,24 +17,26 @@ Route::post('/pracownik/logowanie', 'Auth\LoginController@adminLogin');
 
 Route::get('/logowanie','Auth\LoginController@showUserLoginForm');
 Route::post('/logowanie','Auth\LoginController@userLogin');
+Route::get('/rejestracja', 'Auth\RegisterController@showUserRegisterForm');
+Route::post('/rejestracja', 'Auth\RegisterController@createUser');
+
 
 
 Route::get('/', 'IndexController@index');
-Route::get('/rejestracja', 'IndexController@register');
 Route::get('/kontakt', 'IndexController@contact');
 Route::get('/pierwsze-kroki', 'IndexController@firstSteps');
 Route::get('/godziny-otwarcia', 'IndexController@workingHours');
 
 
-Route::group(['middleware' => 'web'], function () {
-
-
+Route::group(['middleware' => 'user'], function () {
+    Route::get('/wyloguj', 'Auth\LoginController@userLogout')->name('logout');
+    Route::get('/dane', 'UserController@userInfo');
 });
 
 
 
 Route::group(['middleware' => 'admin'], function () {
-    Route::get('/pracownik/wyloguj', 'Auth\LoginController@adminLogout');
+    Route::get('/pracownik/wyloguj', 'Auth\LoginController@adminLogout')->name('logout');
     Route::get('/pracownik/czytelnicy/nowy', 'LibrarianController@createUser');
     Route::get('/pracownik', 'LibrarianController@index');
 

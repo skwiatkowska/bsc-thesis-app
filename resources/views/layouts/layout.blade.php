@@ -9,8 +9,8 @@
     <meta name="author" content="">
     <title>@yield('title')</title>
 
-      <!-- jQuery -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
     <!-- Bootstrap Core CSS -->
     <link href="{{PUBLIC_URL}}css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
     <!-- Custom CSS -->
     <link href="{{PUBLIC_URL}}css/app.css" rel="stylesheet">
 
-  
+
 
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet"
         media="screen" />
@@ -27,6 +27,9 @@
         type="text/css" />
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{{PUBLIC_URL}}js/script.js"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <script type="text/javascript" src="{{PUBLIC_URL}}js/bootstrap-editable.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 
 
@@ -38,83 +41,83 @@
 
         <p class="ml-auto font-weight-bold pt-1">
             <i class="fa fa-phone mr-2"></i>+ 01 234 567 89</p>
-        
-        </nav>
+
+    </nav>
 
     <nav class="navbar navbar-dark navbar-expand-lg">
-		
+
         <a class="navbar-brand" href="#"> Biblioteka Publiczna </a>
-    
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu"
+            aria-controls="mainmenu" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
         </button>
-    
+
         <div class="collapse navbar-collapse" id="mainmenu">
-        
-            <ul class="navbar-nav mr-auto">            
+
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2">
                     <a class="nav-link" href="/"> Strona główna </a>
-                </li>                                
+                </li>
                 <li class="nav-item px-2">
                     <a class="nav-link" href="pierwsze-kroki"> Pierwsze kroki </a>
-                </li>                
+                </li>
                 <li class="nav-item px-2">
                     <a class="nav-link font-weight-bold" href="#"> e-Katalog </a>
-                </li>                
+                </li>
                 <li class="nav-item px-2">
                     <a class="nav-link" href="godziny-otwarcia"> Godziny otwarcia </a>
                 </li>
                 <li class="nav-item px-2">
                     <a class="nav-link" href="kontakt"> Kontakt </a>
                 </li>
-            
+
             </ul>
             <ul class="nav navbar-nav ml-auto">
+                @if(Auth::check())            
+                   
                 <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbardrop" data-toggle="dropdown">
-        Moje konto
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item py-2" href="logowanie">Logowanie</a>
-        <a class="dropdown-item py-2" href="rejestracja">Rejestracja</a>
-      </div>
-    </li>
-         
-              </ul>
-    
-        
+                    <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbardrop"
+                        data-toggle="dropdown">
+                        <i class="fa fa-user mr-2"></i>{{Auth::user()->first_name}} {{Auth::user()->last_name}}
+                    </a>
+                    <div class="dropdown-menu list-right">
+                        <a class="dropdown-item py-2" href="dane">Moje dane</a>
+                        <hr class="my-0">
+                        <a class="dropdown-item py-2" href="wyloguj">Wyloguj</a>
+                    </div>
+                </li>
+                @else
+                <li class="nav-item px-2">
+                    <a class="nav-link" href="logowanie"> Logowanie </a>
+                </li>
+                <li class="nav-item px-2">
+                    <a class="nav-link" href="rejestracja"> Rejestracja </a>
+                </li>
+                @endif
+
+            </ul>
+
+
         </div>
-    
+
     </nav>
-
-    <div class="container">
-
-        <div class="row">
-            {{--<div class="box">--}}
-
-            
-                @if (\Session::has('success'))
-                <div class="alert alert-success">
-                    <ul class="ul-alert">
-                        <li><i class="fas fa-check-circle mr-2"></i>{!! \Session::get('success') !!}</li>
-                    </ul>
-                </div>
-                @endif
-                @if($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="ul-alert">
-                        {!! implode('', $errors->all('<li><i class="fas fa-exclamation-triangle mr-2"></i>:message</li>')) !!}
-                    </ul>
-                </div>
-    
-                @endif
-    
-
-            {{--</div>--}}
-        </div>
+    @if (\Session::has('success'))
+    <div class="alert alert-success">
+        <ul class="ul-alert">
+            <li><i class="fa fa-check-circle mr-2"></i>{!! \Session::get('success') !!}</li>
+        </ul>
+    </div>
+    @endif
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul class="ul-alert">
+            {!! implode('', $errors->all('<li><i class="fa fa-exclamation-triangle mr-2"></i>:message</li>'))
+            !!}
+        </ul>
     </div>
 
-
+    @endif
 
     @yield('content')
 

@@ -15,14 +15,13 @@ class RedirectIfAuthenticated {
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null) {
-        // if ($guard == "admin" && Auth::guard($guard)->check()) {
-        //     return redirect('/pracownik');
-        // }elseif ($guard == "web" && Auth::guard($guard)->check()) {
-        //     return redirect('/');
-        // }
-        // if (Auth::guard($guard)->check()) {
-        //     return redirect('/');
-        // }
+        if ($guard == "admin" && Auth::guard($guard)->check()) {
+            return redirect('/pracownik');
+        }
+        if (Auth::guard($guard)->check()) {
+            // dd($request);
+            return redirect('/');
+        }
 
         return $next($request);
     }

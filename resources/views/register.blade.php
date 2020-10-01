@@ -15,8 +15,6 @@
                     <div class="row">
                         <div class="col-md-12 mx-0">
                             <form id="msform">
-                                {{ csrf_field() }}
-
                                 <!-- progressbar -->
                                 <ul id="progressbar">
                                     <li class="active" id="account"><strong>Konto</strong></li>
@@ -27,9 +25,11 @@
                                     <div class="form-card">
                                         <h2 class="fs-title">Informacje o koncie</h2>
 
-                                        <input class="mt-4" type="email" name="email" placeholder="Adres e-mail" required />
-                                        <input type="password" name="pwd" placeholder="Hasło" required />
-                                        <input type="password" name="cpwd" placeholder="Powtórz hasło" required/>
+                                        <input class="mt-4" type="email" name="email" placeholder="Adres e-mail"
+                                            required />
+                                        <input type="password" name="password" placeholder="Hasło" required />
+                                        <input type="password" name="password_confirmation" placeholder="Powtórz hasło"
+                                            required />
                                     </div>
                                     <input type="button" name="next" class="next action-button" value="Dalej" />
                                 </fieldset>
@@ -37,26 +37,26 @@
                                     <div class="form-card">
                                         <h2 class="fs-title">Informacje osobiste</h2>
 
-                                        <input type="text" name="fname" placeholder="Imię" required/>
-                                        <input type="text" name="lname" placeholder="Nazwisko" required/>
-                                        <input type="text" name="pesel" placeholder="PESEL" required/>
-                                        <input type="text" name="phone" placeholder="Numer telefonu" required/>
+                                        <input type="text" name="fname" placeholder="Imię" required />
+                                        <input type="text" name="lname" placeholder="Nazwisko" required />
+                                        <input type="text" name="pesel" placeholder="PESEL" required />
+                                        <input type="text" name="phone" placeholder="Numer telefonu" required />
                                     </div> <input type="button" name="previous" class="previous action-button-previous"
                                         value="Cofnij" /> <input type="button" name="next" class="next action-button"
-                                        value="Zarejestruj" />
+                                        id="register-submit-btn" value="Zarejestruj" />
                                 </fieldset>
 
                                 <fieldset>
                                     <div class="form-card">
-                                        <h2 class="fs-title text-center">Gratulacje</h2> <br><br>
+                                        <h2 class="fs-title text-center">Twoje konto zostało utworzone</h2> <br><br>
                                         <div class="row justify-content-center">
                                             <div class="col-3"> <img
                                                     src="https://img.icons8.com/color/96/000000/ok--v2.png"
                                                     class="fit-image"> </div>
                                         </div> <br><br>
                                         <div class="row justify-content-center">
-                                            <div class="col-7 text-center">
-                                                <h5>Twoje konto zostało utworzone</h5>
+                                            <div class="text-center">
+                                                <h5><a class="pt-3" href="logowanie"><strong>Kliknij tutaj i zaloguj się</strong></a></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -69,5 +69,34 @@
         </div>
     </div>
 </div>
+<script>
+    //form submitting
+  $("#register-submit-btn").click(function(e){
+      e.preventDefault();
+      var fname = $("input[name=fname]").val();
+      var lname = $("input[name=lname]").val();
+      var password = $("input[name=password]").val();
+      var password_confirmation = $("input[name=password_confirmation]").val();
+      var email = $("input[name=email]").val();
+      var pesel = $("input[name=pesel]").val();
+      var phone = $("input[name=phone]").val();
+     
+    
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/rejestracja',
+         data: {_token:"{{csrf_token()}}", fname: fname, lname: lname, password:password, password_confirmation: password_confirmation, email:email, pesel:pesel, phone:phone},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+}     );
+
+  });
+</script>
 
 @endsection

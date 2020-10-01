@@ -31,7 +31,8 @@ colors:
 
 .dropdown-item:hover {
   background-color: #00afb9;
-  color: hsla(0, 0%, 100%, 0.5);
+  font-weight: bold;
+  color:white;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -246,7 +247,10 @@ body{
   background-color:white;
 }
 
-
+.list-right {
+  left: auto !important;
+  right: 0 !important;
+}
 
 
 
