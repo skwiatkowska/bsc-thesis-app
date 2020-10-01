@@ -84,6 +84,9 @@ class RegisterController extends Controller {
             'pesel' => $request->pesel,
             'phone' => $request->phone,
             'email' => $request->email,
+            'street' => $request->street,
+            'zipcode' => $request->zipcode,
+            'city' => $request->city,
             'password' => Hash::make($request->password),
         ]);
     }

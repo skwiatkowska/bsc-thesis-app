@@ -25,6 +25,9 @@ class User extends NeoEloquent implements Authenticatable {
         'phone',
         'email',
         'password',
+        'city',
+        'street',
+        'zipcode'
     ];
 
     /**

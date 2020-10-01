@@ -1,12 +1,5 @@
 /* 
 colors:
-#024059
-#027373
-#F2CA99
-#F2766B
-#F24444
-
-
 #0081a7
 #00afb9
 #fdfcdc
@@ -14,15 +7,7 @@ colors:
 #f07167
 */
 
-.page-footer {
-  background-color: #00afb9;
-}
-
-.navbar {
-  background-color: #00afb9;
-}
-
-.dropdown-menu {
+.page-footer, .navbar, .dropdown-menu {
   background-color: #00afb9;
 }
 .dropdown-item {
@@ -154,7 +139,7 @@ select.list-dt:focus {
   border-bottom: 2px solid #f07167;
 }
 
-.card {
+.card-borderless {
   z-index: 0;
   border-radius: 0.5rem;
   border: none;
@@ -182,11 +167,10 @@ select.list-dt:focus {
 #progressbar li {
   list-style-type: none;
   font-size: 12px;
-  width: 32%;
+  width: 25%;
   float: left;
   position: relative;
 }
-
 
 #progressbar #account:before {
   font-family: FontAwesome;
@@ -196,6 +180,10 @@ select.list-dt:focus {
 #progressbar #personal:before {
   font-family: FontAwesome;
   content: "\f007";
+}
+#progressbar #address:before {
+  font-family: FontAwesome;
+  content: "\f015";
 }
 
 #progressbar #confirm:before {
@@ -229,7 +217,7 @@ select.list-dt:focus {
 
 #progressbar li.active:before,
 #progressbar li.active:after {
-  background: #fed9b7;
+  background:  #f07167;
 }
 
 .fit-image {
@@ -253,4 +241,17 @@ body{
 }
 
 
+.profile .table-properties th {
+  font-weight: normal;
+  width: 15rem;
+}
 
+.profile .table-properties td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile .table-properties tr:first-child td,
+.profile .table-properties tr:first-child th {
+  border-top: none !important;
+}

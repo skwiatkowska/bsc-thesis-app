@@ -9,7 +9,7 @@ class UserController extends Controller {
 
     public function userInfo() {
         $user = Auth::user();
-        return view('/userInfo', ['user' => $user]);
+        return view('user/userInfo', ['user' => $user]);
     }
 
 }

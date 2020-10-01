@@ -264,11 +264,7 @@ ul.CTAs a {
     font-size: 0.8em;
   }
 
-  .title-nav p {
-    display: none;
-  }
-
-  #sidebarCollapse span {
+  .title-nav p, #sidebarCollapse span {
     display: none;
   }
 }
