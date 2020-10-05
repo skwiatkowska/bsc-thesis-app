@@ -77,6 +77,11 @@
                             <th>Data utworzenia konta</th>
                             <td>{{$user->created_at}}</td>
                         </tr>
+                        <tr>
+                            <th>Hasło</th>
+                            <td><button type="button" class="btn btn-sm btn-red" data-toggle="modal" data-target="#changePwdModal">Zmień hasło</button>
+                            </td>
+                        </tr>
                         
                     </table>
                 </div>
@@ -84,7 +89,47 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="changePwdModal" tabindex="-1" role="dialog" aria-labelledby="changePwdModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form name="changePwdModalForm" action="/reset" method="POST">
+                {{ csrf_field() }} 
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePwdModalLabel">Zmień hasło
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row required">
+                        <label for="current_password" class="col-md-4 col-form-label control-label text-md-right">Stare hasło</label>
+                        <div class="col-md-6">
+                            <input type="password" id="current_password" class="form-control" name="current_password" required>
+                        </div>
+                    </div>
+                    <div class="form-group required row">
+                        <label for="new_password" class="col-md-4 col-form-label control-label text-md-right">Nowe hasło</label>
+                        <div class="col-md-6">
+                            <input type="password" id="new_password" class="form-control" name="new_password" required>
+                        </div>
+                    </div>
+                    <div class="form-group required row">
+                        <label for="confirm_password" class="col-md-4 col-form-label control-label text-md-right">Powtórz nowe hasło</label>
+                        <div class="col-md-6">
+                            <input type="password" id="confirm_password" class="form-control" name="confirm_password" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer p-3">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="submit" id="change-pwd-btn-submit" class="btn btn-red">Zmień hasło</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {{-- <div class="container py-5">
     <div class="card border-secondary my-1">
         <div class="h5 card-header">
@@ -121,6 +166,7 @@
 
 
 <script>
+
     $.fn.editable.defaults.mode = 'inline';
     var id = {!! json_encode($user->id) !!};
 

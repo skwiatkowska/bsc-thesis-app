@@ -30,6 +30,7 @@ Route::get('/godziny-otwarcia', 'IndexController@workingHours');
 
 Route::group(['middleware' => 'user'], function () {
     Route::get('/wyloguj', 'Auth\LoginController@userLogout')->name('logout');
+    Route::post('/reset','Auth\ResetPasswordController@changePassword')->name('changePassword');
     Route::get('/dane', 'UserController@userInfo');
 });
 
