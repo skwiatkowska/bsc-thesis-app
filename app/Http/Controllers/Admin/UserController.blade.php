@@ -1,17 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Admin;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Entities\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
-class LibrarianController extends Controller {
-    public function index() {
-        return view('/librarian/home');
-    }
-
-
+class UserController extends Controller {
     public function createUser() {
         return view('/librarian/newUser');
     }
@@ -52,7 +48,8 @@ class LibrarianController extends Controller {
     }
 
     public function findUserView() {
-        return view('/librarian/findUser');
+        $users = User::all();
+        return view('/librarian/findUser', ['users' => $users]);
     }
 
     public function findUser(Request $request) {
@@ -76,7 +73,6 @@ class LibrarianController extends Controller {
         return view('/librarian/findUser', ['users' => $users, 'phrase' => $phrase]);
     }
 
-    public function info() {
-        return view('/librarian/info');
-    }
+
+
 }

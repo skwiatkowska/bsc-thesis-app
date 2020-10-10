@@ -1,4 +1,4 @@
-@extends('layouts.layout-librarian')
+@extends('layouts.admin')
 
 @section('title', 'Użytkownik '.$user->first_name." ".$user->last_name.' - informacje')
 

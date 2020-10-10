@@ -27,6 +27,10 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css"
         rel="stylesheet" />
     <script type="text/javascript" src="{{PUBLIC_URL}}js/bootstrap-editable.min.js"></script>
+    <link href="{{ asset('css/jquery.dynatable.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- JS Pluging -->
+    <script type="text/javascript" src="{{PUBLIC_URL}}js/jquery.dynatable.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 
@@ -55,7 +59,7 @@
                     <a class="nav-link" href="pierwsze-kroki"> Pierwsze kroki </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a class="nav-link font-weight-bold" href="#"> e-Katalog </a>
+                    <a class="nav-link font-weight-bold" href="katalog"> e-Katalog </a>
                 </li>
                 <li class="nav-item px-2">
                     <a class="nav-link" href="godziny-otwarcia"> Godziny otwarcia </a>

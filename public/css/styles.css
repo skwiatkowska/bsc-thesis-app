@@ -220,11 +220,25 @@ select.list-dt:focus {
   background:  #f07167;
 }
 
-.btn-red{
+.form-group.required .control-label:after {
+  content: "*";
+  color: red;
+}
+
+.btn-primary{
   background:  #f07167;
   color: white;
   font-weight: bold;
+  border: none;
 }
+
+.btn-primary:hover{
+  background:  #dd4a3e;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
 .fit-image {
   width: 100%;
   object-fit: cover;

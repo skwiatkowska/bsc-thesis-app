@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.user')
 
 @section('title', 'Pierwsze kroki')
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Entities\Author;
 use App\Entities\Book;
@@ -46,7 +46,7 @@ class BookController extends Controller {
                 array_push($categoriesToAssign, $cat);
             }
         }
-
+    
         //retrieve authors from db
         if (!empty($authors)) {
             foreach ($authors as $author) {

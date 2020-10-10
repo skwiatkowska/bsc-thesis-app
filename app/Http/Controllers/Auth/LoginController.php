@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Entities\Admin;
+use Illuminate\Support\Facades\Hash;
 
 
 class LoginController extends Controller {
@@ -41,6 +43,8 @@ class LoginController extends Controller {
 
 
     public function showAdminLoginForm() {
+        //Admin::create(['email' => 'admin@aa.aa', 'password' => Hash::make('admin')]);
+        
         return view('librarian.login');
     }
 

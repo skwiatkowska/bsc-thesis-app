@@ -22,54 +22,55 @@ Route::post('/rejestracja', 'Auth\RegisterController@createUser');
 
 
 
-Route::get('/', 'IndexController@index');
-Route::get('/kontakt', 'IndexController@contact');
-Route::get('/pierwsze-kroki', 'IndexController@firstSteps');
-Route::get('/godziny-otwarcia', 'IndexController@workingHours');
-
+Route::get('/', 'HomeController@index');
+Route::get('/kontakt', 'HomeController@contact');
+Route::get('/pierwsze-kroki', 'HomeController@firstSteps');
+Route::get('/godziny-otwarcia', 'HomeController@workingHours');
+Route::get('/katalog', 'User\BookController@index');
+Route::post('/katalog', 'User\BookController@findBook');
 
 Route::group(['middleware' => 'user'], function () {
     Route::get('/wyloguj', 'Auth\LoginController@userLogout')->name('logout');
     Route::post('/reset','Auth\ResetPasswordController@changePassword')->name('changePassword');
-    Route::get('/dane', 'UserController@userInfo');
+    Route::get('/dane', 'User\UserController@userInfo');
 });
 
 
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/wyloguj', 'Auth\LoginController@adminLogout')->name('logout');
-    Route::get('/pracownik/czytelnicy/nowy', 'LibrarianController@createUser');
-    Route::get('/pracownik', 'LibrarianController@index');
+    Route::get('/pracownik/czytelnicy/nowy', 'Admin\UserController@createUser');
+    Route::get('/pracownik', 'Admin\HomeController@index');
 
-    Route::post('/pracownik/czytelnicy/nowy', 'LibrarianController@storeUser');
-    Route::get('/pracownik/czytelnicy/znajdz', 'LibrarianController@findUserView');
-    Route::post('/pracownik/czytelnicy/znajdz', 'LibrarianController@findUser');
-    Route::get('/pracownik/czytelnicy/{id}', 'LibrarianController@fetchUser');
-    Route::post('/pracownik/czytelnicy/{id}/edycja', 'LibrarianController@updateUser');
+    Route::post('/pracownik/czytelnicy/nowy', 'Admin\UserController@storeUser');
+    Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUserView');
+    Route::post('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
+    Route::get('/pracownik/czytelnicy/{id}', 'Admin\UserController@fetchUser');
+    Route::post('/pracownik/czytelnicy/{id}/edycja', 'Admin\UserController@updateUser');
 
-    Route::get('/pracownik/kategorie', 'CategoryController@index');
-    Route::post('/pracownik/kategorie', 'CategoryController@store');
+    Route::get('/pracownik/kategorie', 'Admin\CategoryController@index');
+    Route::post('/pracownik/kategorie', 'Admin\CategoryController@store');
 
-    Route::get('/pracownik/autorzy', 'AuthorController@index');
-    Route::post('/pracownik/autorzy', 'AuthorController@store');
-    Route::get('/pracownik/autorzy/{id}', 'AuthorController@fetchAuthor');
-    Route::post('/pracownik/autorzy/{id}/edycja', 'AuthorController@update');
-    Route::post('/pracownik/autorzy/{id}/usun', 'AuthorController@delete');
+    Route::get('/pracownik/autorzy', 'Admin\AuthorController@index');
+    Route::post('/pracownik/autorzy', 'Admin\AuthorController@store');
+    Route::get('/pracownik/autorzy/{id}', 'Admin\AuthorController@fetchAuthor');
+    Route::post('/pracownik/autorzy/{id}/edycja', 'Admin\AuthorController@update');
+    Route::post('/pracownik/autorzy/{id}/usun', 'Admin\AuthorController@delete');
 
-    Route::get('/pracownik/wydawnictwa', 'PublisherController@index');
-    Route::post('/pracownik/wydawnictwa', 'PublisherController@store');
-    Route::get('/pracownik/wydawnictwa/{id}', 'PublisherController@fetchPublisher');
-    Route::post('/pracownik/wydawnictwa/{id}/edycja', 'PublisherController@update');
-    Route::post('/pracownik/wydawnictwa/{id}/usun', 'PublisherController@delete');
+    Route::get('/pracownik/wydawnictwa', 'Admin\PublisherController@index');
+    Route::post('/pracownik/wydawnictwa', 'Admin\PublisherController@store');
+    Route::get('/pracownik/wydawnictwa/{id}', 'Admin\PublisherController@fetchPublisher');
+    Route::post('/pracownik/wydawnictwa/{id}/edycja', 'Admin\PublisherController@update');
+    Route::post('/pracownik/wydawnictwa/{id}/usun', 'Admin\PublisherController@delete');
 
-    Route::get('/pracownik/info', 'LibrarianController@info');
-    Route::get('/pracownik/katalog', 'BookController@index');
-    Route::post('/pracownik/katalog', 'BookController@findBook');
+    Route::get('/pracownik/info', 'Admin\HomeController@info');
+    Route::get('/pracownik/katalog', 'Admin\BookController@index');
+    Route::post('/pracownik/katalog', 'Admin\BookController@findBook');
 
 
-    Route::get('/pracownik/ksiazki/nowa', 'BookController@create');
-    Route::post('/pracownik/ksiazki/nowa', 'BookController@store');
-    Route::get('/pracownik/ksiazki/{id}', 'BookController@fetchOneBook');
-    Route::get('/pracownik/ksiazki/{id}/edycja', 'BookController@editBook');
-    Route::post('/pracownik/ksiazki/{id}/edycja', 'BookController@update');
+    Route::get('/pracownik/ksiazki/nowa', 'Admin\BookController@create');
+    Route::post('/pracownik/ksiazki/nowa', 'Admin\BookController@store');
+    Route::get('/pracownik/ksiazki/{id}', 'Admin\BookController@fetchOneBook');
+    Route::get('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@editBook');
+    Route::post('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@update');
 });

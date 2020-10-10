@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.user')
 
 @section('title', 'Moje dane')
 
@@ -79,7 +79,7 @@
                         </tr>
                         <tr>
                             <th>Hasło</th>
-                            <td><button type="button" class="btn btn-sm btn-red" data-toggle="modal" data-target="#changePwdModal">Zmień hasło</button>
+                            <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#changePwdModal">Zmień hasło</button>
                             </td>
                         </tr>
                         
@@ -124,7 +124,7 @@
                 </div>
                 <div class="modal-footer p-3">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                    <button type="submit" id="change-pwd-btn-submit" class="btn btn-red">Zmień hasło</button>
+                    <button type="submit" id="change-pwd-btn-submit" class="btn btn-primary">Zmień hasło</button>
                 </div>
             </form>
         </div>

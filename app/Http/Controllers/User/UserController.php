@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
-   
 
 
     public function userInfo() {
