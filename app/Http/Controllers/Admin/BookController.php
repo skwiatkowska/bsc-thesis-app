@@ -231,4 +231,11 @@ class BookController extends Controller {
         }
         return view('/librarian/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
     }
+
+
+    // BOOK ITEMS FUNCTIONS
+    public function fetchBookItem($id) {
+        $item = BookItem::where('id', $id)->get()->first();
+        return view('/librarian/bookItemInfo', ['item' => $item]);
+    }
 }

@@ -6,9 +6,9 @@ use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 
 class BookItem extends NeoEloquent {
 
-    const AVAILABLE = 0;
-    const RESERVED = 1;
-    const BORROWED = 2;
+    const AVAILABLE = "Dostępne";
+    const RESERVED = "Zarezerwowane";
+    const BORROWED = "Wypożyczone";
 
     
     protected $label = 'BookItem';
@@ -18,6 +18,7 @@ class BookItem extends NeoEloquent {
         'isbn',
         'bookitem_id',
         'status',
+        'is_blocked',
         'created_at',
         'updated_at'
     ];
