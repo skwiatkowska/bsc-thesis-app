@@ -7,6 +7,7 @@ use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 use App\Entities\Category;
 use App\Entities\Author;
 use App\Entities\Publisher;
+use App\Entities\BookItem;
 
 class Book extends NeoEloquent {
 
@@ -39,6 +40,10 @@ class Book extends NeoEloquent {
 
     public function publisher() {
         return $this->belongsTo(Publisher::class, 'PUBLISHED');
+    }
+
+    public function bookItems() {
+        return $this->hasMany(BookItem::class, 'HAS');
     }
 
     public function deleteRelatedCategory($categoryId) {

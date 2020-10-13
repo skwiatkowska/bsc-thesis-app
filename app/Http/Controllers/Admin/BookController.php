@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Entities\Author;
 use App\Entities\Book;
+use App\Entities\BookItem;
 use App\Entities\Category;
 use App\Entities\Publisher;
 use Illuminate\Http\Request;
@@ -29,10 +30,13 @@ class BookController extends Controller {
         //Array ( [_token] => zU6M9DtxHgTwHBdyNEBzySqrJAecH8OdqBjHM4yp [title] => tytuł1 [authors] => Array ( [0] => guia ) [newAuthorName] => Array ( [0] => nowy1 [1] => ) [newAuthorLastName] => Array ( [0] => nowy2 [1] => ) [publisher] => aa [year] => 1998 [categories] => Array ( [0] => a [1] => b ) [numberOfItems] => 4 )
         $authors = $request->authors;
         $categories = $request->categories;
+        $items = $request->numberOfItems;
 
         $categoriesToAssign = array();
         $authorsToAssign = array();
         $publisherToAssign = Publisher::find($request->publisher);
+        $bookItemsToAssign = array();
+
 
         $isbn = $request->isbn;
         if (Book::where('isbn', $isbn)->count() > 0) {
@@ -46,7 +50,7 @@ class BookController extends Controller {
                 array_push($categoriesToAssign, $cat);
             }
         }
-    
+
         //retrieve authors from db
         if (!empty($authors)) {
             foreach ($authors as $author) {
@@ -55,10 +59,21 @@ class BookController extends Controller {
             }
         }
 
-        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publication_year' => $request->year, 'book_items_number' => $request->numberOfItems], [
+        for ($i = 1; $i <= $items; $i++) {
+            $item = array(
+                'bookitem_id' => $i,
+                'isbn' => $request->isbn,
+                'status' =>  BookItem::AVAILABLE
+            );
+            array_push($bookItemsToAssign, $item);
+        }
+
+
+        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publication_year' => $request->year, 'book_items_number' => $items], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
-            'publisher' => $publisherToAssign
+            'publisher' => $publisherToAssign,
+            'bookItems' => $bookItemsToAssign
         ]);
 
         return redirect('/pracownik/ksiazki/' . $book->id)->with(['success' => 'Dodano nową książkę: ' . $request->input('title')]);
@@ -166,7 +181,7 @@ class BookController extends Controller {
             }
 
             if (!$authors->count()) {
-                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego autora: ".$phrase);
+                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego autora: " . $phrase);
             }
             $authorIds = array();
             foreach ($authors as $author) {
@@ -187,7 +202,7 @@ class BookController extends Controller {
         } elseif ($searchIn == "publisher") {
             $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
             if (!$publishers->count()) {
-                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego wydawnictwa: ".$phrase);
+                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
             }
             $publisherIds = array();
             foreach ($publishers as $publisher) {

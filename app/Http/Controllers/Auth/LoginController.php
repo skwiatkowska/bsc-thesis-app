@@ -43,7 +43,7 @@ class LoginController extends Controller {
 
 
     public function showAdminLoginForm() {
-        //Admin::create(['email' => 'admin@aa.aa', 'password' => Hash::make('admin')]);
+        // Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
         
         return view('librarian.login');
     }

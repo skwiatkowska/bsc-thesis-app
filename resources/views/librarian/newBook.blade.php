@@ -102,7 +102,7 @@
                                 class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
                             </label>
                             <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
-                                <input type="number" id="numberOfItems" class="form-control" name="numberOfItems"
+                                <input type="number" id="numberOfItems" class="form-control" name="numberOfItems" min="1"
                                     required>
                             </div>
                         </div>
