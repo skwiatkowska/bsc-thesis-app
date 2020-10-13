@@ -63,7 +63,8 @@ class BookController extends Controller {
             $item = array(
                 'bookitem_id' => $i,
                 'isbn' => $request->isbn,
-                'status' =>  BookItem::AVAILABLE
+                'status' =>  BookItem::AVAILABLE,
+                'is_blocked' => False
             );
             array_push($bookItemsToAssign, $item);
         }
@@ -238,4 +239,17 @@ class BookController extends Controller {
         $item = BookItem::where('id', $id)->get()->first();
         return view('/librarian/bookItemInfo', ['item' => $item]);
     }
+
+
+    public function blockUnlockBookItem(Request $request) {
+        try{
+        $item = BookItem::where('id', $request->id)->get()->first();
+        $blocked = $item->is_blocked;
+        $item->update(['is_blocked' => !$blocked]);
+        }catch (\Exception $e) {
+            return response()->json(['error' => 'Błąd podczas zmiany statusu egzemplarza']);
+        }
+        return response()->json(['success' => 'Status egzemplarza został pomyślnie zmieniony']);
+    }
+
 }

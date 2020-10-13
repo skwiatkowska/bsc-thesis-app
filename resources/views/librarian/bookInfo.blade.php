@@ -57,62 +57,104 @@
                 <table class="table table-bordered text-center" id="bookItemsTable">
                     <thead>
                         <tr>
-                          <th>ID</th>
-                          <th>Status</th>
-                          <th>Uwagi</th>
-                          <th>Akcja</th>
+                            <th>ID</th>
+                            <th>Status</th>
+                            <th>Uwagi</th>
+                            <th colspan="2">Akcja</th>
                         </tr>
-                      </thead>
+                    </thead>
                     <tbody class="item-table">
-                      @foreach ($book->bookItems as $item)
-                      <tr>
-                        <td><a href="/pracownik/ksiazki/egzemplarze/{{$item->id}}"
-                            class="a-link-navy"><strong>{{$item->bookitem_id}}</strong></a>
-                        </td>
-                        <td>{{$item->status}}
-                        </td>
-                        <td>
-                            @if($item->status == "Wypożyczone")
-                            Zwrot: ##data zwrotu##
+                        @foreach ($book->bookItems as $item)
+                        <tr>
+                            <td><a href="/pracownik/ksiazki/egzemplarze/{{$item->id}}"
+                                    class="a-link-navy"><strong>{{$item->bookitem_id}}</strong></a>
+                            </td>
+                            @if($item->is_blocked)
+                            <td style="text-decoration: line-through;">
                             @else
-                            -
+                            <td>
                             @endif
-                        </td>
-                     <td><button type="button" class="btn btn-sm btn-primary"> 
-                         @if($item->status == "Dostępne")
-                         Wypożycz
-                         @endif
-                        </button>
-                        
-                        </td>
-                      </tr>
-                      @endforeach
+                            {{$item->status}}
+                            </td>
+                            <td>
+                                @if($item->status == "Wypożyczone")
+                                Zwrot: ##data zwrotu##
+                                @elseif($item->is_blocked)
+                                Zablokowane
+                                @endif
+                            </td>
+                            <td> @if($item->status == "Dostępne" && !$item->is_blocked)
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    Wypożycz
+                                </button>
+                                @endif
+                            </td>
+                            <td>
+                                @if($item->status == "Dostępne" && !$item->is_blocked)
+                                <form>
+                                    <button type="submit" title="Zablokuj" class="btn btn-sm block-item"
+                                        style="color:red; background:transparent; "><i class="fa fa-ban"></i></button>
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                </form>
+                                @elseif($item->status != "Dostępne" && !$item->is_blocked)
+                                <button title="Nie można zablokować niedostępnego egzemplarza" class="btn btn-sm"
+                                    style="color:gray; background:transparent;" disabled><i
+                                        class="fa fa-ban"></i></button>
+                                @elseif($item->is_blocked)
+                                <form>
+                                    <button type="submit" title="Odblokuj" class="btn btn-sm block-item"
+                                        style="background:transparent;"><i class="fa fa-unlock"></i></button>
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                </form>
+                                @endif
+
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
-                  </table>
-            
+                </table>
+
             </div>
         </div>
     </div>
 </div>
 <script>
+    //block/unlock item
+$(".block-item").click(function(e){
+    var rowNumber = $('.block-item').index(this);
+
+      e.preventDefault();
+      var id = $("input[name=id]").eq(rowNumber).val();
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/pracownik/ksiazki/egzemplarze/'+ id +'/blokuj',
+         data: {_token:"{{csrf_token()}}", id: id},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+    });
+  });
+
+
     function sortTable(){
   var rows = $('#bookItemsTable tbody tr').get();
 
   rows.sort(function(a, b) {
+    var A = $(a).children('td').eq(0).text().toUpperCase();
+    var B = $(b).children('td').eq(0).text().toUpperCase();
 
-  var A = $(a).children('td').eq(0).text().toUpperCase();
-  var B = $(b).children('td').eq(0).text().toUpperCase();
-
-  if(A < B) {
-    return -1;
-  }
-
-  if(A > B) {
-    return 1;
-  }
-
-  return 0;
-
+    if(A < B) {
+        return -1;
+    }
+    if(A > B) {
+        return 1;
+    }
+    return 0;
   });
 
   $.each(rows, function(index, row) {
@@ -121,5 +163,5 @@
 }
 
 sortTable();
-    </script>
+</script>
 @endsection
