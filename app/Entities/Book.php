@@ -19,7 +19,6 @@ class Book extends NeoEloquent {
         'isbn',
         'pages_number',
         'publication_year',
-        'book_items_number',
         'created_at',
         'updated_at'
     ];

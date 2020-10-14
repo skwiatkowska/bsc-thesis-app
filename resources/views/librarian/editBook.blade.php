@@ -88,19 +88,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row required  mt-2 mb-0">
+                        <div class="form-group row required mt-2 mb-0">
                             <label for="year" class="col-md-4 col-form-label control-label text-md-right">Rok
                                 wydania</label>
-                            <div class="col-md-6 col-lg-2 ">
+                            <div class="col-md-6 col-lg-3">
                                 <input id="year" name="year" value="{{$book->publication_year}}"
                                     class="form-control py-1 required">
-                            </div>
-                            <label for="numverOfItems"
-                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
-                            </label>
-                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
-                                <input id="numberOfItems" value="{{$book->book_items_number}}" class="form-control"
-                                    name="numberOfItems" required>
                             </div>
                         </div>
 
@@ -397,7 +390,6 @@ $(function () {
 // 	function loadSettings() {
 // 		$('#title').val(localStorage.title);
 // 		$('#isbn').val(localStorage.isbn);
-// 		$("#numberOfItems").val(localStorage.numberOfItems);
 //         $("#publisher").val(localStorage.publisher);
 
 // 	}
@@ -405,7 +397,6 @@ $(function () {
 // 	function saveSettings() {
 // 		localStorage.title = $('#title').val();
 // 		localStorage.isbn = $('#isbn').val();
-// 		localStorage.numberOfItems = $('#numberOfItems').val();
 // 		localStorage.publisher = $("#publisher").val();
 // 	}
 

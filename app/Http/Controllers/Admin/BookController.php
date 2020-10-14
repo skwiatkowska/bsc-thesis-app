@@ -69,7 +69,7 @@ class BookController extends Controller {
         }
 
 
-        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publication_year' => $request->year, 'book_items_number' => $items], [
+        $book = Book::createWith(['title' => $request->title, 'isbn' => $request->isbn, 'publication_year' => $request->year], [
             'authors' => $authorsToAssign,
             'categories' => $categoriesToAssign,
             'publisher' => $publisherToAssign,
@@ -114,10 +114,7 @@ class BookController extends Controller {
         if ($book->publication_year != $request->year) {
             $book->publication_year = $request->year;
         }
-        if ($book->book_items_number != $request->numberOfItems) {
-            $book->book_items_number = $request->numberOfItems;
-        }
-
+      
         if ($book->publisher->id != $request->publisher) {
             $book->deleteRelatedPublisher($book->publisher->id);
             $newPublisher = Publisher::where('id', $request->publisher)->get()->first();
@@ -272,7 +269,8 @@ class BookController extends Controller {
     //     }catch (\Exception $e) {
     //         return response()->json(['error' => 'Błąd podczas dodawania kolejnego egzemplarza']);
     //     }
-        return response()->json(['success' => 'Kolejny egzemplarz został pomyślnie dodany']);
+        // return response()->json(['success' => 'Kolejny egzemplarz został pomyślnie dodany']);
+        return redirect()->back();
     }
 
 }

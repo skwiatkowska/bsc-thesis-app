@@ -45,7 +45,7 @@
     <div class="card my-1">
         <div class="h5 card-header">
             <div class="row px-2">
-                Egzemplarze ({{$book->book_items_number}})
+                Egzemplarze ({{$book->bookItems->count()}})
                 <div class="ml-auto">
                     <a href="#" class="px-2" title="Dodaj" data-toggle="modal"
                     data-target="#newBookItemModal"><i class="fa fa-plus"></i></a>
@@ -104,11 +104,18 @@
                                     style="color:gray; background:transparent;" disabled><i
                                         class="fa fa-ban"></i></button>
                                 @elseif($item->is_blocked)
+                                <div class="row justify-content-lg-center">
                                 <form>
                                     <button type="submit" title="Odblokuj" class="btn btn-sm block-item"
                                         style="background:transparent;"><i class="fa fa-unlock"></i></button>
                                     <input type="hidden" name="id" value="{{$item->id}}">
                                 </form>
+                                <form>
+                                    <button type="submit" title="Usuń" class="btn btn-sm delete-item"
+                                        style="background:transparent;"><i class="fa fa-trash"></i></button>
+                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                </form>
+                                </div>
                                 @endif
 
                             </td>
@@ -134,9 +141,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row required">
-                        <label for="order" class="col-md-4 col-form-label control-label text-md-right">Numer porządkowy</label>
-                        <div class="col-md-6">
-                        <input type="number" id="order" class="form-control" name="order" min="{{$book->book_items_number+1}}" value="{{$book->book_items_number+1}}"required>
+                        <label for="order" class="col-md-6 col-form-label control-label text-md-right">Numer porządkowy</label>
+                        <div class="col-md-4">
+                        <input type="number" id="order" class="form-control" name="order" min="{{$book->bookItems->count()+1}}" value="{{$book->bookItems->count()+1}}"required>
                         </div>
                     </div>
                 </div>
