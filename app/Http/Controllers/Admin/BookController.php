@@ -245,7 +245,7 @@ class BookController extends Controller {
         }catch (\Exception $e) {
             return response()->json(['error' => 'Błąd podczas zmiany statusu egzemplarza']);
         }
-        return response()->json(['success' => 'Status egzemplarza został pomyślnie zmieniony']);
+        return response()->json(['success' => 'Status egzemplarza został zmieniony']);
     }
 
     public function storeBookItem(Request $request) {
@@ -269,8 +269,8 @@ class BookController extends Controller {
     //     }catch (\Exception $e) {
     //         return response()->json(['error' => 'Błąd podczas dodawania kolejnego egzemplarza']);
     //     }
-        // return response()->json(['success' => 'Kolejny egzemplarz został pomyślnie dodany']);
-        return redirect()->back();
+        return response()->json(['success' => 'Kolejny egzemplarz został pomyślnie dodany']);
+        // return redirect()->back();
     }
 
 }

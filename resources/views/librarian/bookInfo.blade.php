@@ -111,9 +111,9 @@
                                     <input type="hidden" name="id" value="{{$item->id}}">
                                 </form>
                                 <form>
-                                    <button type="submit" title="Usuń" class="btn btn-sm delete-item"
+                                    <button type="submit" title="Usuń na stałe" class="btn btn-sm delete-item"
                                         style="background:transparent;"><i class="fa fa-trash"></i></button>
-                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                    <input type="hidden" name="id2" value="{{$item->id}}">
                                 </form>
                                 </div>
                                 @endif
@@ -132,8 +132,8 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-        <form name="newBookItemForm" action="{{$book->id}}" method="POST">
-            {{ csrf_field() }}
+        <form name="newBookItemForm">
+            {{-- {{ csrf_field() }} --}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="newBookItemModalLabel">Kolejny egzemplarz</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -158,27 +158,27 @@
 </div>
 
 <script>
-//     //submit new book item form in modal
-// $("#new-item-btn-submit").click(function(e){
-//       e.preventDefault();
-//       var order = $("input[name=order]").val();
-//       var bookId = $("input[name=bookId]").val();
+    //submit new book item form in modal
+$("#new-item-btn-submit").click(function(e){
+      e.preventDefault();
+      var order = $("input[name=order]").val();
+      var bookId = $("input[name=bookId]").val();
      
-//       $.ajax({
-//          type:'POST',
-//          dataType : 'json',
-//          url:'/pracownik/ksiazki/'+ bookId+ '/nowy-egzemplarz',
-//          data: {_token:"{{csrf_token()}}", order: order, bookId: bookId},
-//          success:function(data){
-//             location.reload();
-//             alert(data.success);
-//          },
-//          error: function(data){
-//             alert(data.responseJSON.error);
-//           }
-//     });
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/pracownik/ksiazki/'+ bookId,
+         data: {_token:"{{csrf_token()}}", order: order, bookId: bookId},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+    });
 
-//   });
+  });
 
 
     //block/unlock item
