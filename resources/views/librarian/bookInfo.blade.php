@@ -47,8 +47,11 @@
             <div class="row px-2">
                 Egzemplarze ({{$book->book_items_number}})
                 <div class="ml-auto">
-                    <a href="#" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a>
-                    <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a>
+                    <a href="#" class="px-2" title="Dodaj" data-toggle="modal"
+                    data-target="#newBookItemModal"><i class="fa fa-plus"></i></a>
+                </button>
+                    {{-- <a href="#" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a> --}}
+                    {{-- <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a> --}}
                 </div>
             </div>
         </div>
@@ -118,7 +121,59 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="newBookItemModal" tabindex="-1" role="dialog" aria-labelledby="newBookItemModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <form name="newBookItemForm" action="{{$book->id}}" method="POST">
+            {{ csrf_field() }}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newBookItemModalLabel">Kolejny egzemplarz</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row required">
+                        <label for="order" class="col-md-4 col-form-label control-label text-md-right">Numer porządkowy</label>
+                        <div class="col-md-6">
+                        <input type="number" id="order" class="form-control" name="order" min="{{$book->book_items_number+1}}" value="{{$book->book_items_number+1}}"required>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="bookId" name="bookId" value="{{$book->id}}">
+                <div class="modal-footer p-3">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="submit" id="new-item-btn-submit" class="btn btn-primary">Dodaj</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
+//     //submit new book item form in modal
+// $("#new-item-btn-submit").click(function(e){
+//       e.preventDefault();
+//       var order = $("input[name=order]").val();
+//       var bookId = $("input[name=bookId]").val();
+     
+//       $.ajax({
+//          type:'POST',
+//          dataType : 'json',
+//          url:'/pracownik/ksiazki/'+ bookId+ '/nowy-egzemplarz',
+//          data: {_token:"{{csrf_token()}}", order: order, bookId: bookId},
+//          success:function(data){
+//             location.reload();
+//             alert(data.success);
+//          },
+//          error: function(data){
+//             alert(data.responseJSON.error);
+//           }
+//     });
+
+//   });
+
+
     //block/unlock item
 $(".block-item").click(function(e){
     var rowNumber = $('.block-item').index(this);

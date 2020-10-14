@@ -15,7 +15,6 @@ class BookItem extends NeoEloquent {
 
     protected $fillable = [
         'id',
-        'isbn',
         'bookitem_id',
         'status',
         'is_blocked',
@@ -29,7 +28,7 @@ class BookItem extends NeoEloquent {
         'updated_at'
     ];
 
-    public function books(){
+    public function book(){
         return $this->belongsTo(Book::class,'HAS');
     }
 
