@@ -71,6 +71,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/ksiazki/nowa', 'Admin\BookController@create');
     Route::post('/pracownik/ksiazki/nowa', 'Admin\BookController@store');
     Route::get('/pracownik/ksiazki/{id}', 'Admin\BookController@fetchOneBook');
+    Route::post('/pracownik/ksiazki/{id}', 'Admin\BookController@deleteBook');
     Route::get('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@editBook');
     Route::post('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@update');
     Route::post('/pracownik/ksiazki/{id}/nowy-egzemplarz', 'Admin\BookController@storeBookItem');

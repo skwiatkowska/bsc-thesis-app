@@ -9,9 +9,15 @@
         <div class="h5 card-header">
             <div class="row px-2">
                 Szczegóły książki
-                <div class="ml-auto">
-                    <a href="{{$book->id}}/edycja" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a>
-                    <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a>
+                <div class="ml-auto row">
+                    <a href="{{$book->id}}/edycja" class="btn px-2 my-auto" title="Edytuj"><i class="fa fa-pencil-alt"></i></a>
+                                          
+                        <form action="/pracownik/ksiazki/{{$book->id}}" method="POST">
+                            {{ csrf_field() }}
+                            <button type="submit" onclick="confirmDeletion()" title="Usuń książkę na stałe" class="btn delete-book"
+                                style="background:transparent;"><i class="fa fa-trash-alt"></i></button>
+                            <input type="hidden" name="id" value="{{$book->id}}">
+                        </form>
                 </div>
             </div>
         </div>
@@ -251,8 +257,6 @@ $(".delete-item").click(function(e){
 sortTable();
 
 
-function confirmDeletion() {
-  confirm("Czy na pewno chcesz usunąć na stałe ten egzemplarz?");
-}
+
 </script>
 @endsection

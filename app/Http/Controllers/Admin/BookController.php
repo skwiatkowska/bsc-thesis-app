@@ -230,6 +230,21 @@ class BookController extends Controller {
     }
 
 
+    public function deleteBook(Request $request) {
+        $book = Book::with('bookItems')->where('id', $request->id)->get()->first();
+        // dd($book->bookItems->count());
+        if ($book->bookItems->count() > 0) {
+            return back()->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
+        }
+        $book->delete();
+        // $book = $item->book;
+        // $book->deleteRelatedBookItem($item->id);
+        // $item->delete();      
+        return redirect('/pracownik/katalog')->with("success", "Książka " . $book->title . " została usunięta na stałe");
+    }
+
+
+
     // BOOK ITEMS FUNCTIONS
     public function fetchBookItem($id) {
         $item = BookItem::where('id', $id)->get()->first();
@@ -257,7 +272,7 @@ class BookController extends Controller {
         }
 
         BookItem::createWith([
-            'bookitem_id' => $request->order, 
+            'bookitem_id' => $request->order,
             'status' =>  BookItem::AVAILABLE,
             'is_blocked' => False
         ], ['book' => $book]);
@@ -268,7 +283,7 @@ class BookController extends Controller {
         $item = BookItem::with('book')->where('id', $request->id)->get()->first();
         $book = $item->book;
         $book->deleteRelatedBookItem($item->id);
-        $item->delete();      
+        $item->delete();
         return response()->json(['success' => 'Egzemplarz został usunięty']);
     }
 }
