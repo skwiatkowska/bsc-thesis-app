@@ -55,6 +55,7 @@
                 </div>
             </div>
         </div>
+        @if($book->bookItems->count() > 0)
         <div class="card-body ">
             <div class=card-text">
                 <table class="table table-bordered text-center" id="bookItemsTable">
@@ -103,6 +104,7 @@
                                 <button title="Nie można zablokować niedostępnego egzemplarza" class="btn btn-sm"
                                     style="color:gray; background:transparent;" disabled><i
                                         class="fa fa-ban"></i></button>
+                                    <input type="hidden" name="id" value="{{$item->id}}">
                                 @elseif($item->is_blocked)
                                 <div class="row justify-content-lg-center">
                                 <form>
@@ -111,9 +113,10 @@
                                     <input type="hidden" name="id" value="{{$item->id}}">
                                 </form>
                                 <form>
+                                    {{-- {{ csrf_field() }} --}}
                                     <button type="submit" title="Usuń na stałe" class="btn btn-sm delete-item"
                                         style="background:transparent;"><i class="fa fa-trash"></i></button>
-                                    <input type="hidden" name="id2" value="{{$item->id}}">
+                                    <input type="hidden" name="id" value="{{$item->id}}">
                                 </form>
                                 </div>
                                 @endif
@@ -126,6 +129,7 @@
 
             </div>
         </div>
+        @endif
     </div>
 </div>
 <div class="modal fade" id="newBookItemModal" tabindex="-1" role="dialog" aria-labelledby="newBookItemModalLabel"
@@ -133,7 +137,6 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <form name="newBookItemForm">
-            {{-- {{ csrf_field() }} --}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="newBookItemModalLabel">Kolejny egzemplarz</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -167,14 +170,16 @@ $("#new-item-btn-submit").click(function(e){
       $.ajax({
          type:'POST',
          dataType : 'json',
-         url:'/pracownik/ksiazki/'+ bookId,
+         url:'/pracownik/ksiazki/'+ bookId + '/nowy-egzemplarz',
          data: {_token:"{{csrf_token()}}", order: order, bookId: bookId},
          success:function(data){
+            console.log(data);
             location.reload();
             alert(data.success);
          },
          error: function(data){
-            alert(data.responseJSON.error);
+            //  console.log(data);
+            // alert(data.responseJSON.error);
           }
     });
 
@@ -183,14 +188,33 @@ $("#new-item-btn-submit").click(function(e){
 
     //block/unlock item
 $(".block-item").click(function(e){
-    var rowNumber = $('.block-item').index(this);
-
       e.preventDefault();
-      var id = $("input[name=id]").eq(rowNumber).val();
+      var id = $("input[name=id]", this.form).val();
+      console.log(id);
       $.ajax({
          type:'POST',
          dataType : 'json',
          url:'/pracownik/ksiazki/egzemplarze/'+ id +'/blokuj',
+         data: {_token:"{{csrf_token()}}", id: id},
+         success:function(data){
+            location.reload();
+            alert(data.success);
+         },
+         error: function(data){
+            alert(data.responseJSON.error);
+          }
+    });
+  });
+
+      //delete an item
+$(".delete-item").click(function(e){
+      e.preventDefault();
+      var id = $("input[name=id]", this.form).val();
+      console.log(id);
+      $.ajax({
+         type:'POST',
+         dataType : 'json',
+         url:'/pracownik/ksiazki/egzemplarze/'+ id +'/usun',
          data: {_token:"{{csrf_token()}}", id: id},
          success:function(data){
             location.reload();
@@ -207,8 +231,8 @@ $(".block-item").click(function(e){
   var rows = $('#bookItemsTable tbody tr').get();
 
   rows.sort(function(a, b) {
-    var A = $(a).children('td').eq(0).text().toUpperCase();
-    var B = $(b).children('td').eq(0).text().toUpperCase();
+    var A = parseInt($(a).children('td').eq(0).text(),10);
+    var B = parseInt($(b).children('td').eq(0).text(),10);
 
     if(A < B) {
         return -1;

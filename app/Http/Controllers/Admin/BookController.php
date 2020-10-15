@@ -114,7 +114,7 @@ class BookController extends Controller {
         if ($book->publication_year != $request->year) {
             $book->publication_year = $request->year;
         }
-      
+
         if ($book->publisher->id != $request->publisher) {
             $book->deleteRelatedPublisher($book->publisher->id);
             $newPublisher = Publisher::where('id', $request->publisher)->get()->first();
@@ -238,39 +238,37 @@ class BookController extends Controller {
 
 
     public function blockUnlockBookItem(Request $request) {
-        try{
-        $item = BookItem::where('id', $request->id)->get()->first();
-        $blocked = $item->is_blocked;
-        $item->update(['is_blocked' => !$blocked]);
-        }catch (\Exception $e) {
+        try {
+            $item = BookItem::where('id', $request->id)->get()->first();
+            $blocked = $item->is_blocked;
+            $item->update(['is_blocked' => !$blocked]);
+        } catch (\Exception $e) {
             return response()->json(['error' => 'Błąd podczas zmiany statusu egzemplarza']);
         }
         return response()->json(['success' => 'Status egzemplarza został zmieniony']);
     }
 
     public function storeBookItem(Request $request) {
-        // dd($request->post());
         $book = Book::with('bookItems')->where('id', $request->bookId)->get()->first();
-        foreach($book->bookItems as $exisitingBookItem){
-            if($exisitingBookItem->bookitem_id == $request->order){
-                return response()->json(['error' => 'Błąd podczas dodawania kolejnego egzemplarza']);
+        foreach ($book->bookItems as $exisitingBookItem) {
+            if ($exisitingBookItem->bookitem_id == $request->order) {
+                return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order]);
             }
         }
 
-        $item = BookItem::createWith(['bookitem_id' => $request->order, 'status' =>  BookItem::AVAILABLE,
-        'is_blocked' => False],['book' => $book]);
-        // $item = BookItem::where('')
-    //     try{
-    //     // 
-      
-    // if ($numberOfBooks > 0) {
-    //     
-    // }
-    //     }catch (\Exception $e) {
-    //         return response()->json(['error' => 'Błąd podczas dodawania kolejnego egzemplarza']);
-    //     }
+        BookItem::createWith([
+            'bookitem_id' => $request->order, 
+            'status' =>  BookItem::AVAILABLE,
+            'is_blocked' => False
+        ], ['book' => $book]);
         return response()->json(['success' => 'Kolejny egzemplarz został pomyślnie dodany']);
-        // return redirect()->back();
     }
 
+    public function deleteBookItem(Request $request) {
+        $item = BookItem::with('book')->where('id', $request->id)->get()->first();
+        $book = $item->book;
+        $book->deleteRelatedBookItem($item->id);
+        $item->delete();      
+        return response()->json(['success' => 'Egzemplarz został usunięty']);
+    }
 }
