@@ -10,14 +10,16 @@
             <div class="row px-2">
                 Szczegóły książki
                 <div class="ml-auto row">
-                    <a href="{{$book->id}}/edycja" class="btn px-2 my-auto" title="Edytuj"><i class="fa fa-pencil-alt"></i></a>
-                                          
-                        <form action="/pracownik/ksiazki/{{$book->id}}" method="POST">
-                            {{ csrf_field() }}
-                            <button type="submit" onclick="confirmDeletion()" title="Usuń książkę na stałe" class="btn delete-book"
-                                style="background:transparent;"><i class="fa fa-trash-alt"></i></button>
-                            <input type="hidden" name="id" value="{{$book->id}}">
-                        </form>
+                    <a href="{{$book->id}}/edycja" class="btn px-2 my-auto" title="Edytuj"><i
+                            class="fa fa-pencil-alt"></i></a>
+
+                    <form action="/pracownik/ksiazki/{{$book->id}}/usun" method="POST">
+                        {{ csrf_field() }}
+                        <button type="submit" onclick="confirmDeletion()" title="Usuń książkę na stałe"
+                            class="btn delete-book" style="background:transparent;"><i
+                                class="fa fa-trash-alt"></i></button>
+                        <input type="hidden" name="id" value="{{$book->id}}">
+                    </form>
                 </div>
             </div>
         </div>
@@ -53,9 +55,9 @@
             <div class="row px-2">
                 Egzemplarze ({{$book->bookItems->count()}})
                 <div class="ml-auto">
-                    <a href="#" class="px-2" title="Dodaj" data-toggle="modal"
-                    data-target="#newBookItemModal"><i class="fa fa-plus"></i></a>
-                </button>
+                    <a href="#" class="px-2" title="Dodaj" data-toggle="modal" data-target="#newBookItemModal"><i
+                            class="fa fa-plus"></i></a>
+                    </button>
                     {{-- <a href="#" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a> --}}
                     {{-- <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a> --}}
                 </div>
@@ -81,10 +83,10 @@
                             </td>
                             @if($item->is_blocked)
                             <td style="text-decoration: line-through;">
-                            @else
+                                @else
                             <td>
-                            @endif
-                            {{$item->status}}
+                                @endif
+                                {{$item->status}}
                             </td>
                             <td>
                                 @if($item->status == "Wypożyczone")
@@ -94,9 +96,19 @@
                                 @endif
                             </td>
                             <td> @if($item->status == "Dostępne" && !$item->is_blocked)
-                                <button type="button" class="btn btn-sm btn-primary">
-                                    Wypożycz
-                                </button>
+                                <form action="egzemplarze/{{$item->id}}/wypozycz" method="POST">
+                                    {{ csrf_field() }}
+                                    
+                                <input type="hidden" name="itemId" id="itemId" value="{{$item->id}}"/>
+
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-sm btn-primary">Wypożycz
+                                        </button>
+                                    </div>
+                                    <div class="form-group">
+                                    </div>
+                        
+                                </form>
                                 @endif
                             </td>
                             <td>
@@ -110,20 +122,21 @@
                                 <button title="Nie można zablokować niedostępnego egzemplarza" class="btn btn-sm"
                                     style="color:gray; background:transparent;" disabled><i
                                         class="fa fa-ban"></i></button>
-                                    <input type="hidden" name="id" value="{{$item->id}}">
+                                <input type="hidden" name="id" value="{{$item->id}}">
                                 @elseif($item->is_blocked)
                                 <div class="row justify-content-lg-center">
-                                <form>
-                                    <button type="submit" title="Odblokuj" class="btn btn-sm block-item"
-                                        style="background:transparent;"><i class="fa fa-unlock"></i></button>
-                                    <input type="hidden" name="id" value="{{$item->id}}">
-                                </form>
-                                <form>
-                                    {{-- {{ csrf_field() }} --}}
-                                    <button type="submit" onclick="confirmDeletion()" title="Usuń na stałe" class="btn btn-sm delete-item"
-                                        style="background:transparent;"><i class="fa fa-trash"></i></button>
-                                    <input type="hidden" name="id" value="{{$item->id}}">
-                                </form>
+                                    <form>
+                                        <button type="submit" title="Odblokuj" class="btn btn-sm block-item"
+                                            style="background:transparent;"><i class="fa fa-unlock"></i></button>
+                                        <input type="hidden" name="id" value="{{$item->id}}">
+                                    </form>
+                                    <form>
+                                        {{-- {{ csrf_field() }} --}}
+                                        <button type="submit" onclick="confirmDeletion()" title="Usuń na stałe"
+                                            class="btn btn-sm delete-item" style="background:transparent;"><i
+                                                class="fa fa-trash"></i></button>
+                                        <input type="hidden" name="id" value="{{$item->id}}">
+                                    </form>
                                 </div>
                                 @endif
 
@@ -142,7 +155,7 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-        <form name="newBookItemForm">
+            <form name="newBookItemForm">
                 <div class="modal-header">
                     <h5 class="modal-title" id="newBookItemModalLabel">Kolejny egzemplarz</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -150,9 +163,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row required">
-                        <label for="order" class="col-md-6 col-form-label control-label text-md-right">Numer porządkowy</label>
+                        <label for="order" class="col-md-6 col-form-label control-label text-md-right">Numer
+                            porządkowy</label>
                         <div class="col-md-4">
-                        <input type="number" id="order" class="form-control" name="order" min="{{$book->bookItems->count()+1}}" value="{{$book->bookItems->count()+1}}"required>
+                            <input type="number" id="order" class="form-control" name="order"
+                                min="{{$book->bookItems->count()+1}}" value="{{$book->bookItems->count()+1}}" required>
                         </div>
                     </div>
                 </div>

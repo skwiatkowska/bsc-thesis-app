@@ -71,12 +71,13 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/ksiazki/nowa', 'Admin\BookController@create');
     Route::post('/pracownik/ksiazki/nowa', 'Admin\BookController@store');
     Route::get('/pracownik/ksiazki/{id}', 'Admin\BookController@fetchOneBook');
-    Route::post('/pracownik/ksiazki/{id}', 'Admin\BookController@deleteBook');
+    Route::post('/pracownik/ksiazki/{id}/usun', 'Admin\BookController@deleteBook');
     Route::get('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@editBook');
     Route::post('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@update');
     Route::post('/pracownik/ksiazki/{id}/nowy-egzemplarz', 'Admin\BookController@storeBookItem');
     Route::get('/pracownik/ksiazki/egzemplarze/{id}', 'Admin\BookController@fetchBookItem');
     Route::post('/pracownik/ksiazki/egzemplarze/{id}/blokuj', 'Admin\BookController@blockUnlockBookItem');
     Route::post('/pracownik/ksiazki/egzemplarze/{id}/usun', 'Admin\BookController@deleteBookItem');
+    Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\BookController@borrowBookItemAddUser')->name('home.show');
 
 });

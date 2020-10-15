@@ -159,7 +159,7 @@ class BookController extends Controller {
         if ($searchIn == "category") {
             $phrase = $request->searchPhrase;
             $category = Category::where('id', $phrase)->get()->first();
-            $books = $category->books()->with('authors')->with('publisher')->get();
+            $books = $category->books()->with('bookItems')->with('authors')->with('publisher')->get();
             $phrase = $category->name;
             $searchInMode = "kategoria";
         } elseif ($searchIn == "author") {
@@ -185,11 +185,11 @@ class BookController extends Controller {
                 array_push($authorIds, $author->id);
             }
 
-            $books = Author::find($authorIds[0])->books()->with('authors')->with('categories')->with('publisher')->get();
+            $books = Author::find($authorIds[0])->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
 
             foreach ($authorIds as $index => $authorId) {
                 if ($index != 0) {
-                    $subquery = Author::find($authorId)->books()->with('authors')->with('categories')->with('publisher')->get();
+                    $subquery = Author::find($authorId)->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
                     if ($subquery->count() > 0) {
                         $books = $books->merge($subquery);
                     }
@@ -206,10 +206,10 @@ class BookController extends Controller {
                 array_push($publisherIds, $publisher->id);
             }
 
-            $books = Publisher::find($publisherIds[0])->books()->with('authors')->with('categories')->with('publisher')->get();
+            $books = Publisher::find($publisherIds[0])->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
             foreach ($publisherIds as $index => $publisherId) {
                 if ($index != 0) {
-                    $subquery = Publisher::find($publisherId)->books()->with('authors')->with('categories')->with('publisher')->get();
+                    $subquery = Publisher::find($publisherId)->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
                     if ($subquery->count() > 0) {
                         $books = $books->merge($subquery);
                     }
@@ -217,10 +217,10 @@ class BookController extends Controller {
             }
             $searchInMode = "wydawnictwo";
         } elseif ($searchIn == "title") {
-            $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('authors')->with('categories')->with('publisher')->get();
+            $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
             $searchInMode = "tytuł";
         } elseif ($searchIn == "isbn") {
-            $books = Book::where('isbn', $phrase)->with('authors')->with('categories')->with('publisher')->get();
+            $books = Book::where('isbn', $phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
             $searchInMode = "ISBN";
         }
         if (!$books->count()) {
@@ -232,14 +232,10 @@ class BookController extends Controller {
 
     public function deleteBook(Request $request) {
         $book = Book::with('bookItems')->where('id', $request->id)->get()->first();
-        // dd($book->bookItems->count());
         if ($book->bookItems->count() > 0) {
             return back()->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
         }
-        $book->delete();
-        // $book = $item->book;
-        // $book->deleteRelatedBookItem($item->id);
-        // $item->delete();      
+        $book->delete();     
         return redirect('/pracownik/katalog')->with("success", "Książka " . $book->title . " została usunięta na stałe");
     }
 
@@ -286,4 +282,12 @@ class BookController extends Controller {
         $item->delete();
         return response()->json(['success' => 'Egzemplarz został usunięty']);
     }
+
+
+    public function borrowBookItemAddUser(Request $request) {
+        $item = BookItem::with('book')->where('id', $request->itemId)->get()->first();
+        return view('/librarian/addUserToBorrowing', ['item' => $item]);
+
+    }
+    
 }

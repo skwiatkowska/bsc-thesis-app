@@ -56,9 +56,10 @@
                 <thead>
                     <tr>
                         <th style="width: 30%">Tytuł</th>
-                        <th style="width: 45%">Autorzy</th>
+                        <th style="width: 35%">Autorzy</th>
                         <th style="width: 15%">Wydawnictwo</th>
                         <th style="width: 10%">ISBN</th>
+                        <th style="width: 10%">Egzemplarze</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -67,6 +68,7 @@
                         <th>Autorzy</th>
                         <th>Wydawnictwo</th>
                         <th>ISBN</th>
+                        <th>Egzemplarze</th>
                     </tr>
                 </tfoot>
 
@@ -88,6 +90,9 @@
                                 target="_blank">{{$book->publisher->name}}</a>
                         </td>
                         <td>{{$book->isbn}}</td>
+                        <td>
+                            {{$book->bookItems->count()}}
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
