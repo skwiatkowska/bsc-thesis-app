@@ -114,7 +114,7 @@
                                 </form>
                                 <form>
                                     {{-- {{ csrf_field() }} --}}
-                                    <button type="submit" title="Usuń na stałe" class="btn btn-sm delete-item"
+                                    <button type="submit" onclick="confirmDeletion()" title="Usuń na stałe" class="btn btn-sm delete-item"
                                         style="background:transparent;"><i class="fa fa-trash"></i></button>
                                     <input type="hidden" name="id" value="{{$item->id}}">
                                 </form>
@@ -249,5 +249,10 @@ $(".delete-item").click(function(e){
 }
 
 sortTable();
+
+
+function confirmDeletion() {
+  confirm("Czy na pewno chcesz usunąć na stałe ten egzemplarz?");
+}
 </script>
 @endsection
