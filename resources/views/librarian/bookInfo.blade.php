@@ -96,19 +96,10 @@
                                 @endif
                             </td>
                             <td> @if($item->status == "Dostępne" && !$item->is_blocked)
-                                <form action="egzemplarze/{{$item->id}}/wypozycz" method="POST">
-                                    {{ csrf_field() }}
-                                    
-                                <input type="hidden" name="itemId" id="itemId" value="{{$item->id}}"/>
+                                <a href="egzemplarze/{{$item->id}}/wypozycz" type="button"
+                                    class="btn btn-sm btn-primary">Wypożycz
+                                </a>
 
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-sm btn-primary">Wypożycz
-                                        </button>
-                                    </div>
-                                    <div class="form-group">
-                                    </div>
-                        
-                                </form>
                                 @endif
                             </td>
                             <td>

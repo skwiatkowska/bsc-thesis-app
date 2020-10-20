@@ -78,6 +78,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/ksiazki/egzemplarze/{id}', 'Admin\BookController@fetchBookItem');
     Route::post('/pracownik/ksiazki/egzemplarze/{id}/blokuj', 'Admin\BookController@blockUnlockBookItem');
     Route::post('/pracownik/ksiazki/egzemplarze/{id}/usun', 'Admin\BookController@deleteBookItem');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\BookController@borrowBookItemAddUser')->name('home.show');
+    Route::get('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\UserController@borrowBookItemAddUser');
+    Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\UserController@borrowBookItemFindUser');
 
 });

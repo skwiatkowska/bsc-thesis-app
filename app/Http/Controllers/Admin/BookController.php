@@ -7,6 +7,7 @@ use App\Entities\Book;
 use App\Entities\BookItem;
 use App\Entities\Category;
 use App\Entities\Publisher;
+use App\Entities\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -284,10 +285,5 @@ class BookController extends Controller {
     }
 
 
-    public function borrowBookItemAddUser(Request $request) {
-        $item = BookItem::with('book')->where('id', $request->itemId)->get()->first();
-        return view('/librarian/addUserToBorrowing', ['item' => $item]);
-
-    }
     
 }

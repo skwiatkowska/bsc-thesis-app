@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use App\Entities\User;
+use App\Entities\BookItem;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
@@ -13,7 +14,6 @@ class UserController extends Controller {
     }
 
     public function storeUser(Request $request) {
-        // dd($request->post());
         $user = User::create([
             'first_name' => $request['fname'],
             'last_name' => $request['lname'],
@@ -22,6 +22,9 @@ class UserController extends Controller {
             'phone' => $request['phone'],
             'password' => Hash::make($request['pesel'])
         ]);
+        if ($request['isModal'] == 'true') {
+            return response()->json(['success' => 'Dodano nowego Czytelnika: ' . $request['fname'] . ' ' . $request['lname']]);
+        }
         return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request['fname'] . ' ' . $request['lname']]);
     }
 
@@ -73,6 +76,39 @@ class UserController extends Controller {
         return view('/librarian/findUser', ['users' => $users, 'phrase' => $phrase]);
     }
 
+    public function borrowBookItemAddUser($id) {
+        // dd($id);
+        $item = BookItem::with('book')->where('id', $id)->get()->first();
+        $book = $item->book::with('authors')->get()->first();
+
+        return view('/librarian/addUserToBorrowing', ['item' => $item, 'book' => $book,'users' => '']);
+    }
 
 
+
+    public function borrowBookItemFindUser(Request $request, $id) {
+        // dd($request->post());
+        $searchIn = $request->searchIn;
+        $phrase = $request->phrase;
+        $searchInMode = null;
+        if ($searchIn == "pesel") {
+            $users = User::where('pesel', $phrase)->get();
+            $searchInMode = "PESEL";
+        } elseif ($searchIn == "lname") {
+            $users = User::where('last_name', '=~', '.*' . $phrase . '.*')->get();
+            if (!$users->count()) {
+                // return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego Czytelnika: " . $phrase);
+            }
+            $searchInMode = "nazwisko";
+        }
+        // dd($users);
+        // return response()->json(['user' => $users]);
+        $item = BookItem::with('book')->where('id', $id)->get()->first();
+        $book = $item->book::with('authors')->get()->first();
+        return view('/librarian/addUserToBorrowing', ['item' => $item,'users' => $users, 'book' => $book, 'phrase' => $phrase]);
+
+        // $item = BookItem::with('book')->where('id', $request->itemId)->get()->first();
+        // return view('/librarian/addUserToBorrowing', ['item' => $item]);
+
+    }
 }

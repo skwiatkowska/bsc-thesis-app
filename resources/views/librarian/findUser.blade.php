@@ -73,7 +73,6 @@
                             <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
                                     class="a-link-navy">{{$user->pesel}}</strong></a>
                         </td>
-
                     </tr>
                     @endforeach
                 </tbody>

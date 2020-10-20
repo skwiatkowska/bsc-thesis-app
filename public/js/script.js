@@ -1,5 +1,6 @@
-function confirmDeletion() {
-  confirm("Czy na pewno chcesz usunąć na stałe?");
+
+function confirmBooking(bookTitle) {
+  confirm(bookTitle);
 }
 function goBack() {
   window.history.back()
