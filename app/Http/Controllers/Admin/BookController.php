@@ -20,9 +20,9 @@ class BookController extends Controller {
         $publishers = Publisher::all();
 
         if (count($categories) == 0) {
-            return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors, 'publishers' => $publishers])->withErrors("Brak kategorii w bazie danych. Dodaj najpierw kategorie, aby móc dodawać książki");
+            return view('/admin/newBook', ['categories' => $categories, 'authors' => $authors, 'publishers' => $publishers])->withErrors("Brak kategorii w bazie danych. Dodaj najpierw kategorie, aby móc dodawać książki");
         }
-        return view('/librarian/newBook', ['categories' => $categories, 'authors' => $authors, 'publishers' => $publishers]);
+        return view('/admin/newBook', ['categories' => $categories, 'authors' => $authors, 'publishers' => $publishers]);
     }
 
 
@@ -84,13 +84,13 @@ class BookController extends Controller {
     public function index() {
         $categories = Category::all();
         $books = array();
-        return view('/librarian/catalog', ['categories' => $categories, 'books' => $books]);
+        return view('/admin/catalog', ['categories' => $categories, 'books' => $books]);
     }
 
 
     public function fetchOneBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
-        return view('/librarian/bookInfo', ['book' => $book]);
+        return view('/admin/bookInfo', ['book' => $book]);
     }
 
 
@@ -99,7 +99,7 @@ class BookController extends Controller {
         $categories = Category::all();
         $authors = Author::all();
         $publishers = Publisher::all();
-        return view('/librarian/editBook', ['book' => $book, 'categories' => $categories, 'authors' => $authors, 'publishers' => $publishers]);
+        return view('/admin/editBook', ['book' => $book, 'categories' => $categories, 'authors' => $authors, 'publishers' => $publishers]);
     }
 
 
@@ -227,7 +227,7 @@ class BookController extends Controller {
         if (!$books->count()) {
             return redirect('/pracownik/katalog')->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
         }
-        return view('/librarian/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
+        return view('/admin/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
     }
 
 
@@ -245,7 +245,7 @@ class BookController extends Controller {
     // BOOK ITEMS FUNCTIONS
     public function fetchBookItem($id) {
         $item = BookItem::where('id', $id)->get()->first();
-        return view('/librarian/bookItemInfo', ['item' => $item]);
+        return view('/admin/bookItemInfo', ['item' => $item]);
     }
 
 

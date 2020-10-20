@@ -13,7 +13,7 @@ class PublisherController extends Controller {
 
     public function index() {
         $publishers = Publisher::all();
-        return view('/librarian/publishers', ['publishers' => $publishers]);
+        return view('/admin/publishers', ['publishers' => $publishers]);
     }
 
     public function store(Request $request) {
@@ -30,7 +30,7 @@ class PublisherController extends Controller {
 
     public function fetchPublisher($id) {
         $publisher = Publisher::where('id', $id)->with('books')->get()->first();
-        return view('/librarian/publisherInfo', ['publisher' => $publisher]);
+        return view('/admin/publisherInfo', ['publisher' => $publisher]);
     }
 
     public function update(Request $request, $id) {

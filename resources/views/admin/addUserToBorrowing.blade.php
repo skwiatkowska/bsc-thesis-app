@@ -69,10 +69,8 @@
                         <th>Imię i nazwisko</th>
                         <th>PESEL</th>
                         <th>Akcja</th>
-
                     </tr>
                 </thead>
-
                 <tbody>
                     @foreach ($users as $user)
                     <tr>
@@ -159,8 +157,8 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form name="newBookingConfirmForm">
-                {{-- {{ csrf_field() }} --}}
+            <form name="newBookingConfirmForm" action="wypozycz/zapisz" method="POST">
+                {{ csrf_field() }}
                 <div class="modal-header">
                     <h5 class="modal-title" id="newBookingModalLabel">Potwierdź wypożyczenie
                     </h5>
@@ -174,7 +172,7 @@
                             "<i>{{$item->book->title}}</i> "
                             <br>
                             @foreach ($book->authors as $author)
-                            {{$author->last_name}},{{$author->first_names}}
+                            {{$author->last_name}}, {{$author->first_names}}
                             {{ $loop->last ? '' : ' <br>' }}
                             @endforeach
                         </label>
@@ -186,9 +184,10 @@
                             <br>
                             PESEL: {{$user->pesel}}
                         </label>
-                    </div>
-                   
+                    </div>  
                 </div>
+            <input type="hidden" name="bookItemId" value="{{$item->id}}">
+            <input type="hidden" name="userId" value="{{$user->id}}">
 
                 <div class="modal-footer p-3">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>

@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 class AuthorController extends Controller {
     public function index() {
         $authors = Author::all();
-        return view('/librarian/authors', ['authors' => $authors]);
+        return view('/admin/authors', ['authors' => $authors]);
     }
 
     public function store(Request $request) {
@@ -39,7 +39,7 @@ class AuthorController extends Controller {
 
     public function fetchAuthor($id) {
         $author = Author::where('id', $id)->with('books')->get()->first();
-        return view('/librarian/authorInfo', ['author' => $author]);
+        return view('/admin/authorInfo', ['author' => $author]);
     }
 
     public function delete($id) {

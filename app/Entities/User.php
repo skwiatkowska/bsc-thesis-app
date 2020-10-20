@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entities;
+use App\Entities\Borrowing;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -41,4 +42,10 @@ class User extends NeoEloquent implements Authenticatable {
         'created_at',
         'updated_at'
     ];
+
+    public function borrows($morph = null)
+    {
+        return $this->hyperMorph($morph, Borrowing::class, 'BORROWED', 'ON');
+    }
+
 }

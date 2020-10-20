@@ -5,10 +5,10 @@ use App\Http\Controllers\Controller;
 
 class HomeController extends Controller {
     public function index() {
-        return view('/librarian/home');
+        return view('/admin/home');
     }
 
     public function info() {
-        return view('/librarian/info');
+        return view('/admin/info');
     }
 }

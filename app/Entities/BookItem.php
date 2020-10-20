@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entities;
+use App\Entities\Borrowing;
 
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 
@@ -32,5 +33,10 @@ class BookItem extends NeoEloquent {
 
     public function book() {
         return $this->belongsTo(Book::class, 'HAS_ITEM');
+    }
+
+    public function borrows()
+    {
+        return $this->morphMany(Borrowing::class, 'ON');
     }
 }
