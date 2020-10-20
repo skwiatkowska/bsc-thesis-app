@@ -1,6 +1,9 @@
 function confirmDeletion() {
   confirm("Czy na pewno chcesz usunąć na stałe?");
 }
+function goBack() {
+  window.history.back()
+}
 
 $(document).ready(function () {
   var current_fs, next_fs, previous_fs; //fieldsets
