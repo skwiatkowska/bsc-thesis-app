@@ -86,11 +86,16 @@
                                 @else
                             <td>
                                 @endif
+                                @if($item->status == "Wypożyczone")
+                                <a href="/pracownik/czytelnicy/{{$item->borrowings[0]->users[0]->id}}" class="a-link-navy">Wypożyczone</a>
+                                @else
                                 {{$item->status}}
+
+                                @endif
                             </td>
                             <td>
                                 @if($item->status == "Wypożyczone")
-                                Zwrot: ##data zwrotu##
+                                Zwrot: {{date('Y-m-d', strtotime($item->borrowings[0]->due_date))}}
                                 @elseif($item->is_blocked)
                                 Zablokowane
                                 @endif

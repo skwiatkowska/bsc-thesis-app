@@ -81,5 +81,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\UserController@borrowBookItemAddUser');
     Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\UserController@borrowBookItemFindUser');
     Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz/zapisz', 'Admin\UserController@borrowBook');
+    Route::post('/pracownik/ksiazki/egzemplarze/{id}/prolonguj', 'Admin\UserController@prolongBookItem');
+    Route::post('/pracownik/ksiazki/egzemplarze/{id}/zwroc', 'Admin\UserController@returnBookItem');
 
 });

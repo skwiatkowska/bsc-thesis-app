@@ -1,7 +1,13 @@
 
-function confirmBooking(bookTitle) {
-  confirm(bookTitle);
+function confirmProlongation() {
+  confirm("Możesz jednorazowo przedłużyć czas na zwrot tej książki o 1 miesiąc. Czy na pewno chcesz to zrobić?");
 }
+
+function confirmBooking() {
+  confirm("Czy na pewno chcesz usunąć na stałe?");
+}
+
+
 function goBack() {
   window.history.back()
 }

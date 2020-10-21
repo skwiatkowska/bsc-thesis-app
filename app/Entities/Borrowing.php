@@ -17,6 +17,7 @@ class Borrowing extends NeoEloquent {
         'due_date',
         'actual_return_date',
         'was_prolonged',
+        'overdue_fee',
         'created_at',
         'updated_at'
     ];
@@ -31,4 +32,10 @@ class Borrowing extends NeoEloquent {
     public function bookItem() {
         return $this->morphTo(BookItem::class,'ON');
     }
+
+    public function users()
+    {
+        return $this->morphMany(User::class, 'BORROWED');
+    }
+    
 }

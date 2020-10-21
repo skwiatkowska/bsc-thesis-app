@@ -65,61 +65,183 @@
                     </li>
 
                 </ul>
-                <div class="tab-content">
+                <div class="tab-content mt-3">
                     <div class="tab-pane fade" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">...
                     </div>
                     <div class="tab-pane fade show active" id="borrowing" role="tabpanel"
                         aria-labelledby="borrowing-tab">
-                        {{-- {{$user->borrowings}} --}}
-
-                        <table class="table table-bordered">
+                        <table class="table table-bordered text-center">
                             <thead>
                                 <tr>
                                     <th>Tytuł książki</th>
                                     <th>Autorzy</th>
-                                    <th>Data wypożyczenia</th>
-                                    <th>Data zwrotu</th>
+                                    <th>Wypożyczono</th>
+                                    <th>Zwrot</th>
                                     <th colspan="2">Akcja</th>
                                 </tr>
                             </thead>
                             <tbody class="item-table">
                                 @foreach ($user->borrowings as $book)
+                                @if(!isset($book->actual_return_date))
                                 <tr>
-                                    <td>{{$book->bookItem->book->title}}
+                                    <td> <a href="/pracownik/ksiazki/{{$book->bookItem->book->id}}"
+                                            class="a-link-navy"><strong>{{$book->bookItem->book->title}}</strong></a>
+                                        ({{$book->bookItem->bookitem_id}})
                                     </td>
                                     <td>
                                         @foreach ($book->bookItem->book->authors as $author)
                                         <a href="/pracownik/autorzy/{{$author->id}}"
                                             class="a-link-navy">{{$author->last_name}},
                                             {{$author->first_names}}</a>
-                                        {{ $loop->last ? '' : ' •' }}
                                         @endforeach
                                     </td>
                                     <td>{{date('Y-m-d', strtotime($book->borrow_date))}}
                                     </td>
                                     <td>{{date('Y-m-d', strtotime($book->due_date))}}
                                     </td>
-                                    <td>@if(!$book->was_prolonged)
+                                    <td>
+                                        @if(!$book->was_prolonged)
                                         <form>
-                                            <button type="submit" title="Prolonguj"
-                                                class="btn btn-sm btn-light prolong-item">Prolonguj</button>
-                                            <input type="hidden" name="id" value="{{$book->id}}">
+                                            <button type="submit" onclick="confirmProlongation()"
+                                                title="Jednorazowo rzedłuż czas oddania o 1 miesiąć"
+                                                class="btn btn-sm btn-light prolong-book">Prolonguj</button>
+                                            <input type="hidden" name="id" value="{{$book->bookItem->id}}">
                                         </form>
+                                        @else
+                                        <button type="submit" title="Brak możliwości ponownej prolongaty"
+                                            class="btn btn-sm btn-light prolong-book" disabled>Prolonguj</button>
+                                        @endif </td>
+                                    <td>
+                                        @if($book->bookItem->status == "Wypożyczone")
+                                        <button type="button" title="Zwrot" class="btn btn-sm btn-primary mb-2"
+                                            data-toggle="modal"
+                                            data-target="#returnBookItemModal-{{$book->bookItem->id}}">Zwrot</button>
                                         @endif
                                     </td>
-                                    <td>
-                                        <form>
-                                            <button type="submit" title="Zwrot"
-                                                class="btn btn-sm btn-primary return-item">Zwrot</button>
-                                            <input type="hidden" name="id" value="{{$book->id}}">
-                                        </form>
-                                    </td>
                                 </tr>
+                                @endif
+                                <div class="modal fade" id="returnBookItemModal-{{$book->bookItem->id}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="returnBookItemModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form action="/pracownik/ksiazki/egzemplarze/{{$book->bookItem->id}}/zwroc"
+                                                method="POST">
+                                                {{ csrf_field() }}<div class="modal-header">
+                                                    <h5 class="modal-title" id="returnBookItemModalLabel">Potwierdź
+                                                        zwrot
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body pt-0">
+                                                    <div class="form-group row">
+                                                        <label
+                                                            class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
+                                                        <label
+                                                            class="col-md-6 col-form-label control-label text-md-left">
+                                                            "{{$book->bookItem->book->title}}" , egzemplarz:
+                                                            {{$book->bookItem->bookitem_id}}
+                                                            <br>
+                                                            @foreach ($book->bookItem->book->authors as $author)
+                                                            {{$author->last_name}}, {{$author->first_names}}
+                                                            @if(!$loop->last)
+                                                            <br>
+                                                            @endif
+                                                            @endforeach
+                                                            <br>
+
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                            class="col-md-4 col-form-label control-label text-md-right"><strong>Czytelnik:</strong></label>
+                                                        <label
+                                                            class="col-md-6 col-form-label control-label text-md-left">
+                                                            {{$user->first_name}} {{$user->last_name}}
+                                                            <br>
+                                                            PESEL: {{$user->pesel}}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                            class="col-md-4 col-form-label control-label text-md-right"><strong>Wypożyczenie:</strong></label>
+                                                        <label
+                                                            class="col-md-6 col-form-label control-label text-md-left">
+                                                            Data wypożyczenia: <br>
+                                                            {{date('Y-m-d', strtotime($book->borrow_date))}}
+                                                            <br>
+                                                            Oczekiwana data zwrotu: <br>
+
+                                                            {{date('Y-m-d', strtotime($book->due_date))}}
+                                                            <br>
+                                                            Opłata:
+                                                            @if(new \DateTime($book->due_date)< new \DateTime())
+                                                                <strong>
+                                                                {{ (int)date_diff(new \DateTime($book->due_date), new \DateTime())->format("%d")*0.5}}</strong>
+                                                                @else
+                                                                -
+                                                                @endif
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer p-3">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Zamknij</button>
+                                                    <button type="submit"
+                                                        class="btn btn-primary return-book">Potwierdź</button>
+                                                    <input type="hidden" name="id" value="{{$book->bookItem->id}}">
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">historia...
+                    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>Tytuł książki</th>
+                                    <th>Autorzy</th>
+                                    <th>Wypożyczono</th>
+                                    <th>Zwrócono</th>
+                                    <th>Opłata</th>
+                                </tr>
+                            </thead>
+                            <tbody class="item-table">
+                                @foreach ($user->borrowings as $book)
+                                @if(isset($book->actual_return_date))
+                                <tr>
+                                    <td> <a href="/pracownik/ksiazki/{{$book->bookItem->book->id}}"
+                                            class="a-link-navy"><strong>{{$book->bookItem->book->title}}</strong></a>
+                                        ({{$book->bookItem->bookitem_id}})
+                                    </td>
+                                    <td>
+                                        @foreach ($book->bookItem->book->authors as $author)
+                                        <a href="/pracownik/autorzy/{{$author->id}}"
+                                            class="a-link-navy">{{$author->last_name}},
+                                            {{$author->first_names}}</a>
+                                        @endforeach
+                                    </td>
+                                    <td>{{date('Y-m-d', strtotime($book->borrow_date))}}
+                                    </td>
+                                    <td>{{date('Y-m-d', strtotime($book->actual_return_date))}}
+                                    </td>
+                                    <td>
+                                        {{$book->overdue_fee}}
+                                    </td>
+                                </tr>
+                                @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+
                     </div>
                 </div>
             </div>
@@ -128,8 +250,35 @@
 </div>
 
 
-
 <script>
+    $('table').each(function() {
+    if($(this).find('tr').children("td").length == 0) {
+        $(this).hide();
+    }
+});
+
+    //prolong a book
+    $(".prolong-book").click(function(e){
+        e.preventDefault();
+        var id = $("input[name=id]", this.form).val();
+        $.ajax({
+            type:'POST',
+            dataType : 'json',
+            url:'/pracownik/ksiazki/egzemplarze/'+id+'/prolonguj',
+            data: {_token:"{{csrf_token()}}", id: id},
+            success:function(data){
+                location.reload();
+                alert(data.success);
+            },
+            error: function(data){
+                alert(data.responseJSON.error);
+            }
+        });
+    });
+
+  
+
+
     $.fn.editable.defaults.mode = 'inline';
     var id = {!! json_encode($user->id) !!};
 

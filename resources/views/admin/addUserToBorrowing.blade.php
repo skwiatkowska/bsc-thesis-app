@@ -81,9 +81,60 @@
                         <td>{{$user->pesel}}
                         </td>
                         <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
-                                data-target="#newBookingModal">Wybierz
+                                data-target="#newBookingModal-{{$user->id}}">Wybierz
                             </button></td>
                     </tr>
+
+                    <div class="modal fade" id="newBookingModal-{{$user->id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="newBookingModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <form name="newBookingConfirmForm" action="wypozycz/zapisz" method="POST">
+                                    {{ csrf_field() }}
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="newBookingModalLabel">Potwierdź wypożyczenie
+                                            {{$user->pesel}}
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body pt-0">
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
+                                            <label class="col-md-6 col-form-label control-label text-md-left">
+                                                "<i>{{$item->book->title}}</i> "
+                                                <br>
+                                                @foreach ($book->authors as $author)
+                                                {{$author->last_name}}, {{$author->first_names}}
+                                                {{ $loop->last ? '' : ' •' }}
+                                                @endforeach
+                                            </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-md-4 col-form-label control-label text-md-right"><strong>Czytelnik:</strong></label>
+                                            <label class="col-md-6 col-form-label control-label text-md-left">
+                                                {{$user->first_name}} {{$user->last_name}}
+                                                <br>
+                                                PESEL: {{$user->pesel}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="bookItemId" value="{{$item->id}}">
+                                    <input type="hidden" name="userId" value="{{$user->id}}">
+
+                                    <div class="modal-footer p-3">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Zamknij</button>
+                                        <button type="submit" id="confirm-booking-btn-submit"
+                                            class="btn btn-primary">Potwierdź</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     @endforeach
                 </tbody>
             </table>
@@ -153,52 +204,7 @@
         </div>
     </div>
 </div>
-@if(!empty($users) && $users->count() > 0)
-<div class="modal fade" id="newBookingModal" tabindex="-1" role="dialog" aria-labelledby="newBookingModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form name="newBookingConfirmForm" action="wypozycz/zapisz" method="POST">
-                {{ csrf_field() }}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="newBookingModalLabel">Potwierdź wypożyczenie
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-                <div class="modal-body pt-0">
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
-                        <label class="col-md-6 col-form-label control-label text-md-left">
-                            "<i>{{$item->book->title}}</i> "
-                            <br>
-                            @foreach ($book->authors as $author)
-                            {{$author->last_name}}, {{$author->first_names}}
-                            {{ $loop->last ? '' : ' <br>' }}
-                            @endforeach
-                        </label>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label control-label text-md-right"><strong>Czytelnik:</strong></label>
-                        <label class="col-md-6 col-form-label control-label text-md-left">
-                            {{$user->first_name}} {{$user->last_name}}
-                            <br>
-                            PESEL: {{$user->pesel}}
-                        </label>
-                    </div>  
-                </div>
-            <input type="hidden" name="bookItemId" value="{{$item->id}}">
-            <input type="hidden" name="userId" value="{{$user->id}}">
 
-                <div class="modal-footer p-3">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                    <button type="submit" id="confirm-booking-btn-submit" class="btn btn-primary">Potwierdź</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endif
 <script>
     $("#new-user-btn-submit").click(function(e){
       e.preventDefault();
