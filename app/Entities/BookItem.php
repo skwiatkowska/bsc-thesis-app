@@ -35,7 +35,7 @@ class BookItem extends NeoEloquent {
         return $this->belongsTo(Book::class, 'HAS_ITEM');
     }
 
-    public function borrows()
+    public function borrowings()
     {
         return $this->morphMany(Borrowing::class, 'ON');
     }

@@ -43,7 +43,7 @@ class User extends NeoEloquent implements Authenticatable {
         'updated_at'
     ];
 
-    public function borrows($morph = null)
+    public function borrowings($morph = null)
     {
         return $this->hyperMorph($morph, Borrowing::class, 'BORROWED', 'ON');
     }

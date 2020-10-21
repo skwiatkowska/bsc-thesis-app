@@ -31,15 +31,8 @@ class UserController extends Controller {
     }
 
     public function fetchUser($id) {
-        $user = User::where('id', $id)->with('borrows')->get()->first();
-        // $borrowed = $user->borrows;
-        $item = BookItem::where('id',587)->with('borrows')->get()->first();
-        dd($item);
-        foreach($user->borrows as $borrow){
-            $b = Borrowing::where('id', $borrow->id)->with('borrows')->get();
-            dd($b);
-        }
-        // dd($borrowed->first()->with('borrowable')->get());
+        $user = User::where('id', $id)->with('borrowings.bookItem.book.authors')->get()->first();
+        // dd($user);
         return view('/admin/userInfo', ['user' => $user]);
     }
 
@@ -114,8 +107,8 @@ class UserController extends Controller {
         $user = User::where('id',$request->userId)->get()->first();
         $item = BookItem::with('book')->where('id',$request->bookItemId)->get()->first();
         $borrowing = new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
-
-        $user->borrows($item)->save($borrowing);       
+        $item->update(['status' => BookItem::BORROWED]);
+        $user->borrowings($item)->save($borrowing);       
         return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka '.$item->book->title.' została wypożyczona']);
     }
 

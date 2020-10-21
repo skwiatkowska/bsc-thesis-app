@@ -34,7 +34,7 @@
                                 class="fa fa-pencil-alt ml-2"></i></a></li>
                     <li><strong>E-mail: </strong><a class="editable-input" id="email">{{$user->email}}<i
                                 class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Data utworzenia konta: </strong>{{$user->created_at}}</li>
+                    <li><strong>Data utworzenia konta: </strong>{{date('Y-m-d', strtotime($user->created_at))}}</li>
 
                 </ul>
             </div>
@@ -43,7 +43,7 @@
     <div class="card my-1">
         <div class="h5 card-header">
             <div class="row px-2">
-                Rezerwacje i obecne wypożyczenia
+                Rezerwacje i wypożyczenia
                 <div class="ml-auto">
                 </div>
             </div>
@@ -57,7 +57,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" id="borrowing-tab" data-toggle="tab" href="#borrowing" role="tab"
-                            aria-controls="borrowing" aria-selected="false">Wypożyczenia</a>
+                            aria-controls="borrowing" aria-selected="false">Aktualne wypożyczenia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab"
+                            aria-controls="history" aria-selected="true">Historia</a>
                     </li>
 
                 </ul>
@@ -66,6 +70,8 @@
                     </div>
                     <div class="tab-pane fade show active" id="borrowing" role="tabpanel"
                         aria-labelledby="borrowing-tab">
+                        {{-- {{$user->borrowings}} --}}
+
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -73,20 +79,47 @@
                                     <th>Autorzy</th>
                                     <th>Data wypożyczenia</th>
                                     <th>Data zwrotu</th>
+                                    <th colspan="2">Akcja</th>
                                 </tr>
                             </thead>
                             <tbody class="item-table">
-                                @foreach ($user->borrows as $borrow)
+                                @foreach ($user->borrowings as $book)
                                 <tr>
-                                    <td>{{$borrow}}
+                                    <td>{{$book->bookItem->book->title}}
                                     </td>
-                                    <td>{{$borrow}}
+                                    <td>
+                                        @foreach ($book->bookItem->book->authors as $author)
+                                        <a href="/pracownik/autorzy/{{$author->id}}"
+                                            class="a-link-navy">{{$author->last_name}},
+                                            {{$author->first_names}}</a>
+                                        {{ $loop->last ? '' : ' •' }}
+                                        @endforeach
                                     </td>
-
+                                    <td>{{date('Y-m-d', strtotime($book->borrow_date))}}
+                                    </td>
+                                    <td>{{date('Y-m-d', strtotime($book->due_date))}}
+                                    </td>
+                                    <td>@if(!$book->was_prolonged)
+                                        <form>
+                                            <button type="submit" title="Prolonguj"
+                                                class="btn btn-sm btn-light prolong-item">Prolonguj</button>
+                                            <input type="hidden" name="id" value="{{$book->id}}">
+                                        </form>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <form>
+                                            <button type="submit" title="Zwrot"
+                                                class="btn btn-sm btn-primary return-item">Zwrot</button>
+                                            <input type="hidden" name="id" value="{{$book->id}}">
+                                        </form>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">historia...
                     </div>
                 </div>
             </div>

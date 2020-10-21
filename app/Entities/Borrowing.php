@@ -28,7 +28,7 @@ class Borrowing extends NeoEloquent {
     ];
 
 
-    public function borrowable() {
-        return $this->morphTo();
+    public function bookItem() {
+        return $this->morphTo(BookItem::class,'ON');
     }
 }

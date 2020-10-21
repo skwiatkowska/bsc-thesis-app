@@ -60,7 +60,7 @@
     <div class="row mt-2">
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
-    @if (!empty($users))
+    @if (!empty($users) && $users->count() > 0)
     <div class="row mt-5">
         <div class="col-10 mx-auto">
             <table class="table table-striped table-bordered text-center mt-1">
@@ -153,6 +153,7 @@
         </div>
     </div>
 </div>
+@if(!empty($users) && $users->count() > 0)
 <div class="modal fade" id="newBookingModal" tabindex="-1" role="dialog" aria-labelledby="newBookingModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -197,6 +198,7 @@
         </div>
     </div>
 </div>
+@endif
 <script>
     $("#new-user-btn-submit").click(function(e){
       e.preventDefault();
