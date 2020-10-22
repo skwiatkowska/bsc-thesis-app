@@ -89,7 +89,7 @@ class BookController extends Controller {
 
 
     public function fetchOneBook($id) {
-        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.users')->get()->first();
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->get()->first();
         return view('/admin/bookInfo', ['book' => $book]);
     }
 
@@ -277,7 +277,14 @@ class BookController extends Controller {
     }
 
     public function deleteBookItem(Request $request) {
-        $item = BookItem::with('book')->where('id', $request->id)->get()->first();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
+       if($item->borrowings->count()>0){
+           foreach($item->borrowings as $b){
+            $item->deleteRelatedBorrowing($b->id);
+
+           }
+       }
+
         $book = $item->book;
         $book->deleteRelatedBookItem($item->id);
         $item->delete();

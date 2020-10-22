@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Entities;
-use App\Entities\Borrowing;
 
+use Illuminate\Support\Facades\DB;
+use App\Entities\Borrowing;
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 
 class BookItem extends NeoEloquent {
@@ -35,8 +36,14 @@ class BookItem extends NeoEloquent {
         return $this->belongsTo(Book::class, 'HAS_ITEM');
     }
 
-    public function borrowings()
-    {
+    public function borrowings() {
         return $this->morphMany(Borrowing::class, 'ON');
+    }
+
+    public function deleteRelatedBorrowing($borrowingId) {
+        $cypher = "MATCH (b:Borrowing)-[rel1:ON]->(item:BookItem) WHERE ID(b)=$borrowingId AND ID(item)=$this->id 
+                    MATCH (b:Borrowing)<-[rel2:BORROWED]-(u:User) WHERE ID(b)=$borrowingId
+                    DELETE rel1, rel2;";
+        return DB::select($cypher);
     }
 }

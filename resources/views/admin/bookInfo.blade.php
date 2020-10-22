@@ -87,7 +87,11 @@
                             <td>
                                 @endif
                                 @if($item->status == "Wypożyczone")
-                                <a href="/pracownik/czytelnicy/{{$item->borrowings[0]->users[0]->id}}" class="a-link-navy">Wypożyczone</a>
+                                    @foreach ($item->borrowings as $b)
+                                        @if(!isset($b->actual_return_date))
+                                            <a href="/pracownik/czytelnicy/{{$b->user->id}}" class="a-link-navy">Wypożyczone</a>
+                                        @endif
+                                    @endforeach
                                 @else
                                 {{$item->status}}
 
@@ -95,7 +99,11 @@
                             </td>
                             <td>
                                 @if($item->status == "Wypożyczone")
-                                Zwrot: {{date('Y-m-d', strtotime($item->borrowings[0]->due_date))}}
+                                @foreach ($item->borrowings as $b)
+                                        @if(!isset($b->actual_return_date))
+                                            Zwrot: {{date('Y-m-d', strtotime($b->due_date))}}
+                                        @endif
+                                    @endforeach
                                 @elseif($item->is_blocked)
                                 Zablokowane
                                 @endif
@@ -126,8 +134,7 @@
                                             style="background:transparent;"><i class="fa fa-unlock"></i></button>
                                         <input type="hidden" name="id" value="{{$item->id}}">
                                     </form>
-                                    <form>
-                                        {{-- {{ csrf_field() }} --}}
+                                <form>
                                         <button type="submit" onclick="confirmDeletion()" title="Usuń na stałe"
                                             class="btn btn-sm delete-item" style="background:transparent;"><i
                                                 class="fa fa-trash"></i></button>

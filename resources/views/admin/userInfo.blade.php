@@ -252,9 +252,9 @@
 
 <script>
     $('table').each(function() {
-    if($(this).find('tr').children("td").length == 0) {
-        $(this).hide();
-    }
+  if($(this).find('tr').children("td").length == 0) {
+      $(this).hide();
+  }
 });
 
     //prolong a book

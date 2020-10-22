@@ -32,7 +32,6 @@ class UserController extends Controller {
 
     public function fetchUser($id) {
         $user = User::where('id', $id)->with('borrowings.bookItem.book.authors')->get()->first();
-        // dd($user);
         return view('/admin/userInfo', ['user' => $user]);
     }
 
@@ -106,7 +105,7 @@ class UserController extends Controller {
     public function borrowBook(Request $request) {
         $user = User::where('id', $request->userId)->with('borrowings')->get()->first();
         $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
-        if ($item->borrowings->count() > 0) {
+        if ($item->status != BookItem::AVAILABLE) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony");
         }
 

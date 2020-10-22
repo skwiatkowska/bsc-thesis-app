@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Entities;
-
 use Illuminate\Support\Facades\DB;
+
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 use App\Entities\BookItem;
 use App\Entities\User;
@@ -30,12 +30,10 @@ class Borrowing extends NeoEloquent {
 
 
     public function bookItem() {
-        return $this->morphTo(BookItem::class,'ON');
+        return $this->morphTo(BookItem::class, 'ON');
     }
 
-    public function users()
-    {
-        return $this->morphMany(User::class, 'BORROWED');
+    public function user() {
+        return $this->belongsTo(User::class, 'BORROWED');
     }
-    
 }

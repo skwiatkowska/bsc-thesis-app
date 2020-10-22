@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entities;
+
 use App\Entities\Borrowing;
 
 use Illuminate\Notifications\Notifiable;
@@ -43,9 +44,7 @@ class User extends NeoEloquent implements Authenticatable {
         'updated_at'
     ];
 
-    public function borrowings($morph = null)
-    {
+    public function borrowings($morph = null) {
         return $this->hyperMorph($morph, Borrowing::class, 'BORROWED', 'ON');
     }
-
 }
