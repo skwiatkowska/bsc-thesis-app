@@ -25,7 +25,7 @@
     {{-- {{$item}} --}}
     <div class="row">
         <form class="form-inline col-12 justify-content-center"
-            action="/pracownik/ksiazki/egzemplarze/{{$item->id}}/wypozycz" method="POST">
+            action="/pracownik/egzemplarze/{{$item->id}}/wypozycz" method="POST">
             {{ csrf_field() }}
             <div class="input-group mb-2 col-sm-12 col-lg-3 px-1">
                 <div class="input-group-prepend">

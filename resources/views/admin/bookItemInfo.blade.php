@@ -168,7 +168,7 @@
         $.ajax({
             type:'POST',
             dataType : 'json',
-            url:'/pracownik/ksiazki/egzemplarze/'+id+'/prolonguj',
+            url:'/pracownik/egzemplarze/'+id+'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();

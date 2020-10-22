@@ -21,6 +21,7 @@
                 <select class="form-control search-in-select" name="searchIn">
                     <option value="title">Tytuł</option>
                     <option value="author">Autor (nazwiska)</option>
+                    <option value="isbn">ISBN</option>
                     <option value="publisher">Wydawnictwo</option>
                     <option value="category">Kategoria</option>
 

@@ -42,6 +42,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/czytelnicy/nowy', 'Admin\UserController@createUser');
     Route::get('/pracownik', 'Admin\HomeController@index');
 
+    Route::get('/pracownik/info', 'Admin\HomeController@info');
+
     Route::post('/pracownik/czytelnicy/nowy', 'Admin\UserController@storeUser');
     Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUserView');
     Route::post('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
@@ -63,10 +65,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/pracownik/wydawnictwa/{id}/edycja', 'Admin\PublisherController@update');
     Route::post('/pracownik/wydawnictwa/{id}/usun', 'Admin\PublisherController@delete');
 
-    Route::get('/pracownik/info', 'Admin\HomeController@info');
     Route::get('/pracownik/katalog', 'Admin\BookController@index');
     Route::post('/pracownik/katalog', 'Admin\BookController@findBook');
-
 
     Route::get('/pracownik/ksiazki/nowa', 'Admin\BookController@create');
     Route::post('/pracownik/ksiazki/nowa', 'Admin\BookController@store');
@@ -75,13 +75,16 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@editBook');
     Route::post('/pracownik/ksiazki/{id}/edycja', 'Admin\BookController@update');
     Route::post('/pracownik/ksiazki/{id}/nowy-egzemplarz', 'Admin\BookController@storeBookItem');
-    Route::get('/pracownik/ksiazki/egzemplarze/{id}', 'Admin\BookController@fetchBookItem');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/blokuj', 'Admin\BookController@blockUnlockBookItem');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/usun', 'Admin\BookController@deleteBookItem');
-    Route::get('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\UserController@borrowBookItemAddUser');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz', 'Admin\UserController@borrowBookItemFindUser');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/wypozycz/zapisz', 'Admin\UserController@borrowBook');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/prolonguj', 'Admin\UserController@prolongBookItem');
-    Route::post('/pracownik/ksiazki/egzemplarze/{id}/zwroc', 'Admin\UserController@returnBookItem');
+
+    Route::get('/pracownik/egzemplarze/{id}', 'Admin\BookController@fetchBookItem');
+    Route::post('/pracownik/egzemplarze/{id}/blokuj', 'Admin\BookController@blockUnlockBookItem');
+    Route::post('/pracownik/egzemplarze/{id}/usun', 'Admin\BookController@deleteBookItem');
+    Route::get('/pracownik/egzemplarze/{id}/wypozycz', 'Admin\BorrowingController@borrowBookItemAddUser');
+    Route::post('/pracownik/egzemplarze/{id}/wypozycz', 'Admin\BorrowingController@borrowBookItemFindUser');
+    Route::post('/pracownik/egzemplarze/{id}/wypozycz/zapisz', 'Admin\BorrowingController@borrowBook');
+    Route::post('/pracownik/egzemplarze/{id}/prolonguj', 'Admin\BorrowingController@prolongBookItem');
+    Route::post('/pracownik/egzemplarze/{id}/zwroc', 'Admin\BorrowingController@returnBookItem');
+
+    Route::get('/pracownik/wypozyczenia', 'Admin\BorrowingController@index');
 
 });

@@ -86,7 +86,7 @@
                                 <tr>
                                     <td> <a href="/pracownik/ksiazki/{{$borrowing->bookItem->book->id}}"
                                             class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
-                                        <a href="/pracownik/ksiazki/egzemplarze/{{$borrowing->bookItem->id}}"
+                                        <a href="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}"
                                             class="a-link-navy">egzemplarz {{$borrowing->bookItem->bookitem_id}}</a>
                                     </td>
                                     <td>
@@ -127,7 +127,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <form
-                                                action="/pracownik/ksiazki/egzemplarze/{{$borrowing->bookItem->id}}/zwroc"
+                                                action="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}/zwroc"
                                                 method="POST">
                                                 {{ csrf_field() }}<div class="modal-header">
                                                     <h5 class="modal-title" id="returnBookItemModalLabel">Potwierdź
@@ -223,7 +223,7 @@
                                 <tr>
                                     <td> <a href="/pracownik/ksiazki/{{$borrowing->bookItem->book->id}}"
                                             class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
-                                        <a href="/pracownik/ksiazki/egzemplarze/{{$borrowing->bookItem->id}}"
+                                        <a href="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}"
                                             class="a-link-navy">egzemplarz {{$borrowing->bookItem->bookitem_id}}</a>
                                     </td>
                                     <td>
@@ -269,7 +269,7 @@
         $.ajax({
             type:'POST',
             dataType : 'json',
-            url:'/pracownik/ksiazki/egzemplarze/'+id+'/prolonguj',
+            url:'/pracownik/egzemplarze/'+id+'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();

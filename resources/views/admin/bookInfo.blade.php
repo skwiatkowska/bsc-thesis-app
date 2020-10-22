@@ -78,7 +78,7 @@
                     <tbody class="item-table">
                         @foreach ($book->bookItems as $item)
                         <tr>
-                            <td><a href="/pracownik/ksiazki/egzemplarze/{{$item->id}}"
+                            <td><a href="/pracownik/egzemplarze/{{$item->id}}"
                                     class="a-link-navy"><strong>{{$item->bookitem_id}}</strong></a>
                             </td>
                             @if($item->is_blocked)
@@ -222,7 +222,7 @@ $(".block-item").click(function(e){
       $.ajax({
          type:'POST',
          dataType : 'json',
-         url:'/pracownik/ksiazki/egzemplarze/'+ id +'/blokuj',
+         url:'/pracownik/egzemplarze/'+ id +'/blokuj',
          data: {_token:"{{csrf_token()}}", id: id},
          success:function(data){
             location.reload();
@@ -242,7 +242,7 @@ $(".delete-item").click(function(e){
       $.ajax({
          type:'POST',
          dataType : 'json',
-         url:'/pracownik/ksiazki/egzemplarze/'+ id +'/usun',
+         url:'/pracownik/egzemplarze/'+ id +'/usun',
          data: {_token:"{{csrf_token()}}", id: id},
          success:function(data){
             location.reload();

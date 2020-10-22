@@ -82,22 +82,10 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#lendingSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <a href="wypozyczenia">
                         <i class="fas fa-folder-open"></i>
                         Wypożyczenia
                     </a>
-                    <ul class="collapse list-unstyled" id="lendingSubmenu">
-                        <li>
-                            <a class="sidebar-submenu-item" href="#">Aktualne wypożyczenia</a>
-                        </li>
-                        <li>
-                            <a class="sidebar-submenu-item" href="#">Nowe wypożyczenie</a>
-                        </li>
-                        <li>
-                            <a class="sidebar-submenu-item" href="#">Zarejestruj zwrot</a>
-                        </li>
-
-                    </ul>
                 </li>
 
                 <li>
