@@ -244,7 +244,7 @@ class BookController extends Controller {
 
     // BOOK ITEMS FUNCTIONS
     public function fetchBookItem($id) {
-        $item = BookItem::where('id', $id)->get()->first();
+        $item = BookItem::where('id', $id)->with('book')->with('borrowings.user')->get()->first();
         return view('/admin/bookItemInfo', ['item' => $item]);
     }
 

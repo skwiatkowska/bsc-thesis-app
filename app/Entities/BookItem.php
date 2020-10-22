@@ -41,8 +41,10 @@ class BookItem extends NeoEloquent {
     }
 
     public function deleteRelatedBorrowing($borrowingId) {
-        $cypher = "MATCH (b:Borrowing)-[rel1:ON]->(item:BookItem) WHERE ID(b)=$borrowingId AND ID(item)=$this->id 
-                    MATCH (b:Borrowing)<-[rel2:BORROWED]-(u:User) WHERE ID(b)=$borrowingId
+        $cypher = "MATCH (b:Borrowing)-[rel1:ON]->(item:BookItem) 
+                        WHERE ID(b)=$borrowingId AND ID(item)=$this->id 
+                    MATCH (b:Borrowing)<-[rel2:BORROWED]-(u:User) 
+                        WHERE ID(b)=$borrowingId
                     DELETE rel1, rel2;";
         return DB::select($cypher);
     }

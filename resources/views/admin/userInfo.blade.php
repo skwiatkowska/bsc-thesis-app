@@ -81,50 +81,53 @@
                                 </tr>
                             </thead>
                             <tbody class="item-table">
-                                @foreach ($user->borrowings as $book)
-                                @if(!isset($book->actual_return_date))
+                                @foreach ($user->borrowings as $borrowing)
+                                @if(!isset($borrowing->actual_return_date))
                                 <tr>
-                                    <td> <a href="/pracownik/ksiazki/{{$book->bookItem->book->id}}"
-                                            class="a-link-navy"><strong>{{$book->bookItem->book->title}}</strong></a>
-                                        ({{$book->bookItem->bookitem_id}})
+                                    <td> <a href="/pracownik/ksiazki/{{$borrowing->bookItem->book->id}}"
+                                            class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
+                                        <a href="/pracownik/ksiazki/egzemplarze/{{$borrowing->bookItem->id}}"
+                                            class="a-link-navy">egzemplarz {{$borrowing->bookItem->bookitem_id}}</a>
                                     </td>
                                     <td>
-                                        @foreach ($book->bookItem->book->authors as $author)
+                                        @foreach ($borrowing->bookItem->book->authors as $author)
                                         <a href="/pracownik/autorzy/{{$author->id}}"
                                             class="a-link-navy">{{$author->last_name}},
                                             {{$author->first_names}}</a>
                                         @endforeach
                                     </td>
-                                    <td>{{date('Y-m-d', strtotime($book->borrow_date))}}
+                                    <td>{{date('Y-m-d', strtotime($borrowing->borrow_date))}}
                                     </td>
-                                    <td>{{date('Y-m-d', strtotime($book->due_date))}}
+                                    <td>{{date('Y-m-d', strtotime($borrowing->due_date))}}
                                     </td>
                                     <td>
-                                        @if(!$book->was_prolonged)
+                                        @if(!$borrowing->was_prolonged)
                                         <form>
                                             <button type="submit" onclick="confirmProlongation()"
-                                                title="Jednorazowo rzedłuż czas oddania o 1 miesiąć"
+                                                title="Jednorazowo przedłuż czas oddania o 1 miesiąć"
                                                 class="btn btn-sm btn-light prolong-book">Prolonguj</button>
-                                            <input type="hidden" name="id" value="{{$book->bookItem->id}}">
+                                            <input type="hidden" name="id" value="{{$borrowing->bookItem->id}}">
                                         </form>
                                         @else
                                         <button type="submit" title="Brak możliwości ponownej prolongaty"
                                             class="btn btn-sm btn-light prolong-book" disabled>Prolonguj</button>
                                         @endif </td>
                                     <td>
-                                        @if($book->bookItem->status == "Wypożyczone")
+                                        @if($borrowing->bookItem->status == "Wypożyczone")
                                         <button type="button" title="Zwrot" class="btn btn-sm btn-primary mb-2"
                                             data-toggle="modal"
-                                            data-target="#returnBookItemModal-{{$book->bookItem->id}}">Zwrot</button>
+                                            data-target="#returnBookItemModal-{{$borrowing->bookItem->id}}">Zwrot</button>
                                         @endif
                                     </td>
                                 </tr>
                                 @endif
-                                <div class="modal fade" id="returnBookItemModal-{{$book->bookItem->id}}" tabindex="-1"
-                                    role="dialog" aria-labelledby="returnBookItemModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="returnBookItemModal-{{$borrowing->bookItem->id}}"
+                                    tabindex="-1" role="dialog" aria-labelledby="returnBookItemModalLabel"
+                                    aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <form action="/pracownik/ksiazki/egzemplarze/{{$book->bookItem->id}}/zwroc"
+                                            <form
+                                                action="/pracownik/ksiazki/egzemplarze/{{$borrowing->bookItem->id}}/zwroc"
                                                 method="POST">
                                                 {{ csrf_field() }}<div class="modal-header">
                                                     <h5 class="modal-title" id="returnBookItemModalLabel">Potwierdź
@@ -140,10 +143,10 @@
                                                             class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
                                                         <label
                                                             class="col-md-6 col-form-label control-label text-md-left">
-                                                            "{{$book->bookItem->book->title}}" , egzemplarz:
-                                                            {{$book->bookItem->bookitem_id}}
+                                                            "{{$borrowing->bookItem->book->title}}" , egzemplarz:
+                                                            {{$borrowing->bookItem->bookitem_id}}
                                                             <br>
-                                                            @foreach ($book->bookItem->book->authors as $author)
+                                                            @foreach ($borrowing->bookItem->book->authors as $author)
                                                             {{$author->last_name}}, {{$author->first_names}}
                                                             @if(!$loop->last)
                                                             <br>
@@ -169,16 +172,16 @@
                                                         <label
                                                             class="col-md-6 col-form-label control-label text-md-left">
                                                             Data wypożyczenia: <br>
-                                                            {{date('Y-m-d', strtotime($book->borrow_date))}}
+                                                            {{date('Y-m-d', strtotime($borrowing->borrow_date))}}
                                                             <br>
                                                             Oczekiwana data zwrotu: <br>
 
-                                                            {{date('Y-m-d', strtotime($book->due_date))}}
+                                                            {{date('Y-m-d', strtotime($borrowing->due_date))}}
                                                             <br>
                                                             Opłata:
-                                                            @if(new \DateTime($book->due_date)< new \DateTime())
+                                                            @if(new \DateTime($borrowing->due_date)< new \DateTime())
                                                                 <strong>
-                                                                {{ (int)date_diff(new \DateTime($book->due_date), new \DateTime())->format("%d")*0.5}}</strong>
+                                                                {{ (int)date_diff(new \DateTime($borrowing->due_date), new \DateTime())->format("%d")*0.5}}</strong>
                                                                 @else
                                                                 -
                                                                 @endif
@@ -191,7 +194,7 @@
                                                         data-dismiss="modal">Zamknij</button>
                                                     <button type="submit"
                                                         class="btn btn-primary return-book">Potwierdź</button>
-                                                    <input type="hidden" name="id" value="{{$book->bookItem->id}}">
+                                                    <input type="hidden" name="id" value="{{$borrowing->bookItem->id}}">
 
                                                 </div>
                                             </form>
@@ -215,26 +218,27 @@
                                 </tr>
                             </thead>
                             <tbody class="item-table">
-                                @foreach ($user->borrowings as $book)
-                                @if(isset($book->actual_return_date))
+                                @foreach ($user->borrowings as $borrowing)
+                                @if(isset($borrowing->actual_return_date))
                                 <tr>
-                                    <td> <a href="/pracownik/ksiazki/{{$book->bookItem->book->id}}"
-                                            class="a-link-navy"><strong>{{$book->bookItem->book->title}}</strong></a>
-                                        ({{$book->bookItem->bookitem_id}})
+                                    <td> <a href="/pracownik/ksiazki/{{$borrowing->bookItem->book->id}}"
+                                            class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
+                                        <a href="/pracownik/ksiazki/egzemplarze/{{$borrowing->bookItem->id}}"
+                                            class="a-link-navy">egzemplarz {{$borrowing->bookItem->bookitem_id}}</a>
                                     </td>
                                     <td>
-                                        @foreach ($book->bookItem->book->authors as $author)
+                                        @foreach ($borrowing->bookItem->book->authors as $author)
                                         <a href="/pracownik/autorzy/{{$author->id}}"
                                             class="a-link-navy">{{$author->last_name}},
                                             {{$author->first_names}}</a>
                                         @endforeach
                                     </td>
-                                    <td>{{date('Y-m-d', strtotime($book->borrow_date))}}
+                                    <td>{{date('Y-m-d', strtotime($borrowing->borrow_date))}}
                                     </td>
-                                    <td>{{date('Y-m-d', strtotime($book->actual_return_date))}}
+                                    <td>{{date('Y-m-d', strtotime($borrowing->actual_return_date))}}
                                     </td>
                                     <td>
-                                        {{$book->overdue_fee}}
+                                        {{isset($borrowing->overdue_fee)? $borrowing->overdue_fee : '-'}}
                                     </td>
                                 </tr>
                                 @endif
@@ -254,6 +258,7 @@
     $('table').each(function() {
   if($(this).find('tr').children("td").length == 0) {
       $(this).hide();
+      $( "<h6 class='text-center'>Brak</h6>" ).insertBefore(this);
   }
 });
 

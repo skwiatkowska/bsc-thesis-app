@@ -109,6 +109,8 @@
                                                 {{$author->last_name}}, {{$author->first_names}}
                                                 {{ $loop->last ? '' : ' •' }}
                                                 @endforeach
+                                                <br>
+                                                {{$item->bookitem_id}}
                                             </label>
                                         </div>
                                         <div class="form-group row">

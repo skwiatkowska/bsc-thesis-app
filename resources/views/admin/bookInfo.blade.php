@@ -87,11 +87,15 @@
                             <td>
                                 @endif
                                 @if($item->status == "Wypożyczone")
-                                    @foreach ($item->borrowings as $b)
-                                        @if(!isset($b->actual_return_date))
-                                            <a href="/pracownik/czytelnicy/{{$b->user->id}}" class="a-link-navy">Wypożyczone</a>
-                                        @endif
-                                    @endforeach
+                                @foreach ($item->borrowings as $b)
+                                @if(!isset($b->actual_return_date))
+                                Wypożyczone:
+                                <br>
+                                <a href="/pracownik/czytelnicy/{{$b->user->id}}"
+                                    class="a-link-navy">{{$b->user->first_name}} {{$b->user->last_name}}</a>
+
+                                @endif
+                                @endforeach
                                 @else
                                 {{$item->status}}
 
@@ -100,10 +104,10 @@
                             <td>
                                 @if($item->status == "Wypożyczone")
                                 @foreach ($item->borrowings as $b)
-                                        @if(!isset($b->actual_return_date))
-                                            Zwrot: {{date('Y-m-d', strtotime($b->due_date))}}
-                                        @endif
-                                    @endforeach
+                                @if(!isset($b->actual_return_date))
+                                Zwrot: {{date('Y-m-d', strtotime($b->due_date))}}
+                                @endif
+                                @endforeach
                                 @elseif($item->is_blocked)
                                 Zablokowane
                                 @endif
@@ -134,7 +138,7 @@
                                             style="background:transparent;"><i class="fa fa-unlock"></i></button>
                                         <input type="hidden" name="id" value="{{$item->id}}">
                                     </form>
-                                <form>
+                                    <form>
                                         <button type="submit" onclick="confirmDeletion()" title="Usuń na stałe"
                                             class="btn btn-sm delete-item" style="background:transparent;"><i
                                                 class="fa fa-trash"></i></button>
