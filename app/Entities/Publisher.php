@@ -10,6 +10,7 @@ class Publisher extends NeoEloquent {
 
     protected $label = 'Publisher';
     protected $fillable = [
+        'id',
         'name',
         'created_at',
         'updated_at'

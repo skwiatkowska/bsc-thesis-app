@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Egzemplarz '.$item->bookitem_id.' - '.$item->book->title)
+@section('title', 'Egzemplarz '.$item->book_item_id.' - '.$item->book->title)
 
 @section('content')
 
@@ -22,7 +22,7 @@
                 <ul class="list-unstyled">
                     <li><strong>Tytuł: </strong><a href="/pracownik/ksiazki/{{$item->book->id}}"><strong
                                     class="a-link-navy">{{$item->book->title}}</strong></a></li>
-                    <li><strong>Numer egzemplarza: </strong>{{$item->bookitem_id}}</li>
+                    <li><strong>Numer egzemplarza: </strong>{{$item->book_item_id}}</li>
                     <li><strong>Autorzy: </strong>
                         @foreach ($item->book->authors as $author)
                         <a href="/pracownik/autorzy/{{$author->id}}" class="a-link-navy">{{$author->last_name}},

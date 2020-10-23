@@ -40,7 +40,7 @@
                         </td>
                         <td>
                             <a href="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}"
-                                class="a-link-navy">{{$borrowing->bookItem->bookitem_id}}</a>
+                                class="a-link-navy">{{$borrowing->bookItem->book_item_id}}</a>
                         </td>
                         <td>
                             @foreach ($borrowing->bookItem->book->authors as $author)
@@ -96,7 +96,7 @@
                                             <label
                                                 class="col-md-6 col-form-label control-label text-md-left">
                                                 "{{$borrowing->bookItem->book->title}}" , egzemplarz:
-                                                {{$borrowing->bookItem->bookitem_id}}
+                                                {{$borrowing->bookItem->book_item_id}}
                                                 <br>
                                                 @foreach ($borrowing->bookItem->book->authors as $author)
                                                 {{$author->last_name}}, {{$author->first_names}}

@@ -20,7 +20,9 @@ class Admin extends NeoEloquent implements Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id',
+        'email', 
+        'password',
     ];
 
     /**

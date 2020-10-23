@@ -17,7 +17,6 @@ class Book extends NeoEloquent {
         'id',
         'title',
         'isbn',
-        'pages_number',
         'publication_year',
         'created_at',
         'updated_at'

@@ -12,8 +12,7 @@ use DateTime;
 
 class BorrowingController extends Controller {
 
-
-    public function index(){
+    public function index() {
         $borrowings = Borrowing::with('user')->with('bookItem.book')->get();
         // dd($borrowings);
         return view('/admin/borrowings', ['borrowings' => $borrowings]);
@@ -24,7 +23,7 @@ class BorrowingController extends Controller {
         $book = $item->book::with('authors')->get()->first();
         return view('/admin/addUserToBorrowing', ['item' => $item, 'book' => $book, 'users' => '']);
     }
-    
+
 
     public function borrowBookItemFindUser(Request $request, $id) {
         $searchIn = $request->searchIn;
@@ -45,8 +44,8 @@ class BorrowingController extends Controller {
     public function borrowBook(Request $request) {
         $user = User::where('id', $request->userId)->with('borrowings')->get()->first();
         $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
-        if ($item->status != BookItem::AVAILABLE) {
-            return back()->withErrors("Ten egzemplarz jest już wypożyczony");
+        if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
+            return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         }
 
         $borrowing = new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);

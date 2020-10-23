@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Wypożyczanie: '.$item->book->title.', egzemplarz: '.$item->bookitem_id)
+@section('title', 'Wypożyczanie: '.$item->book->title.', egzemplarz: '.$item->book_item_id)
 
 @section('content')
 
@@ -110,7 +110,7 @@
                                                 {{ $loop->last ? '' : ' •' }}
                                                 @endforeach
                                                 <br>
-                                                {{$item->bookitem_id}}
+                                                {{$item->book_item_id}}
                                             </label>
                                         </div>
                                         <div class="form-group row">

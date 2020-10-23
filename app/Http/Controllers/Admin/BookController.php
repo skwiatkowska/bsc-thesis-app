@@ -62,7 +62,7 @@ class BookController extends Controller {
 
         for ($i = 1; $i <= $items; $i++) {
             $item = array(
-                'bookitem_id' => $i,
+                'book_item_id' => $i,
                 'status' =>  BookItem::AVAILABLE,
                 'is_blocked' => False
             );
@@ -263,13 +263,13 @@ class BookController extends Controller {
     public function storeBookItem(Request $request) {
         $book = Book::with('bookItems')->where('id', $request->bookId)->get()->first();
         foreach ($book->bookItems as $exisitingBookItem) {
-            if ($exisitingBookItem->bookitem_id == $request->order) {
+            if ($exisitingBookItem->book_item_id == $request->order) {
                 return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order]);
             }
         }
 
         BookItem::createWith([
-            'bookitem_id' => $request->order,
+            'book_item_id' => $request->order,
             'status' =>  BookItem::AVAILABLE,
             'is_blocked' => False
         ], ['book' => $book]);

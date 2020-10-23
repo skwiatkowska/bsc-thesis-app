@@ -17,7 +17,7 @@ class BookItem extends NeoEloquent {
 
     protected $fillable = [
         'id',
-        'bookitem_id',
+        'book_item_id',
         'status',
         'is_blocked',
         'created_at',
@@ -38,6 +38,10 @@ class BookItem extends NeoEloquent {
 
     public function borrowings() {
         return $this->morphMany(Borrowing::class, 'ON');
+    }
+
+    public function reservations() {
+        return $this->morphMany(Reservation::class, 'ON');
     }
 
     public function deleteRelatedBorrowing($borrowingId) {

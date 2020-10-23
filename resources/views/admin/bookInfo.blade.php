@@ -78,7 +78,7 @@
                         @foreach ($book->bookItems as $item)
                         <tr>
                             <td><a href="/pracownik/egzemplarze/{{$item->id}}"
-                                    class="a-link-navy"><strong>{{$item->bookitem_id}}</strong></a>
+                                    class="a-link-navy"><strong>{{$item->book_item_id}}</strong></a>
                             </td>
                             @if($item->is_blocked)
                             <td style="text-decoration: line-through;">

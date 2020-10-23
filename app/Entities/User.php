@@ -38,6 +38,16 @@ class User extends NeoEloquent implements Authenticatable {
      * @var array
      */
     protected $hidden = [
+        'id',
+        'first_name',
+        'last_name',
+        'pesel',
+        'phone',
+        'email',
+        'street',
+        'house_number',
+        'zipcode',
+        'city',
         'password',
         'remember_token',
         'created_at',
@@ -46,5 +56,9 @@ class User extends NeoEloquent implements Authenticatable {
 
     public function borrowings($morph = null) {
         return $this->hyperMorph($morph, Borrowing::class, 'BORROWED', 'ON');
+    }
+
+    public function reservations($morph = null) {
+        return $this->hyperMorph($morph, Reservation::class, 'RESERVED', 'ON');
     }
 }
