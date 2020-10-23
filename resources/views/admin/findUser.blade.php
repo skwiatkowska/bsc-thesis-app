@@ -13,7 +13,6 @@
     <div class="row">
         <form class="form-inline col-12 justify-content-center" action="/pracownik/czytelnicy/znajdz" method="POST">
             {{ csrf_field() }}
-
             <div class="input-group mb-2 col-sm-12 col-lg-4 px-1">
                 <div class="input-group-prepend">
                     <div class="input-group-text">Szukaj w:</div>
@@ -43,12 +42,15 @@
     @if (!empty($users))
     <div class="row mt-4">
         <div class="col-10 mx-auto">
-            <table id="dynatable2" class="table table-striped table-bordered mt-1">
+            <table id="dynatable2" class="table table-striped table-bordered mt-1 text-center">
                 <thead>
                     <tr>
                         <th>Imię</th>
                         <th>Nazwisko</th>
                         <th>PESEL</th>
+                        <th>Telefon</th>
+                        <th></th>
+
                     </tr>
                 </thead>
                 <tfoot>
@@ -56,22 +58,23 @@
                         <th>Imię</th>
                         <th>Nazwisko</th>
                         <th>PESEL</th>
+                        <th>Telefon</th>
+                        <th></th>
                     </tr>
                 </tfoot>
                 <tbody>
                     @foreach ($users as $user)
-                    <tr>
-                        <td>
-                            <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
-                                    class="a-link-navy">{{$user->first_name}}</strong></a>
+                    <tr><td>{{$user->first_name}}
                         </td>
-                        <td>
-                            <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
-                                    class="a-link-navy">{{$user->last_name}}</strong></a>
+                        <td>{{$user->last_name}}
                         </td>
-                        <td>
-                            <a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank"><strong
-                                    class="a-link-navy">{{$user->pesel}}</strong></a>
+                        <td>{{$user->pesel}}
+                        </td>
+                        <td>{{$user->phone}}
+                        </td>
+                        <td><a href="/pracownik/czytelnicy/{{$user->id}}"  target="_blank" type="button" class="btn btn-primary btn-rounded">
+                           Profil
+                    </a>
                         </td>
                     </tr>
                     @endforeach
@@ -87,7 +90,7 @@
 <script>
     $('#dynatable2').dynatable();
 
-    $(".dynatable-search").hide();
+    // $(".dynatable-search").hide();
     $("tfoot").hide();
     $(".dynatable-per-page-label").css( "margin-right", "8px" );
     $("th").css( "padding", "5px" );

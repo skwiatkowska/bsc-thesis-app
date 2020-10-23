@@ -57,7 +57,6 @@
                 <div class="ml-auto">
                     <a href="#" class="px-2" title="Dodaj" data-toggle="modal" data-target="#newBookItemModal"><i
                             class="fa fa-plus"></i></a>
-                    </button>
                     {{-- <a href="#" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a> --}}
                     {{-- <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a> --}}
                 </div>
@@ -113,7 +112,7 @@
                                 @endif
                             </td>
                             <td> @if($item->status == "Dostępne" && !$item->is_blocked)
-                                <a href="egzemplarze/{{$item->id}}/wypozycz" type="button"
+                                <a href="/pracownik/egzemplarze/{{$item->id}}/wypozycz" type="button"
                                     class="btn btn-sm btn-primary">Wypożycz
                                 </a>
 

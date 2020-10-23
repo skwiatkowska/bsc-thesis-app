@@ -75,10 +75,4 @@ class UserController extends Controller {
         }
         return view('/admin/findUser', ['users' => $users, 'phrase' => $phrase]);
     }
-
-    public function borrowBookItemAddUser($id) {
-        $item = BookItem::with('book')->where('id', $id)->get()->first();
-        $book = $item->book::with('authors')->get()->first();
-        return view('/admin/addUserToBorrowing', ['item' => $item, 'book' => $book, 'users' => '']);
-    }
 }

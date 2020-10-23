@@ -5,7 +5,9 @@
 @section('content')
 
 <div class="container">
-
+Wypożyczenia:
+{{-- {{$borrowings->count()}} --}}
+{{-- {{$current->count()}} --}}
  </div>
 
 @endsection

@@ -82,7 +82,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="wypozyczenia">
+                    <a href="/pracownik/wypozyczenia">
                         <i class="fas fa-folder-open"></i>
                         Wypożyczenia
                     </a>
