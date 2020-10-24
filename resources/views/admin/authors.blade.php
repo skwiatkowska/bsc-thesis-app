@@ -25,21 +25,26 @@
       <p class="h6 text-center py-5 emptyDBInfo">Baza danych jest pusta. </p>
       @else
 
-      <table class="table table-bordered">
+      <table class="table table-bordered text-center">
         <thead>
           <tr>
             <th>Nazwisko</th>
             <th>Imię / Imiona</th>
+            <th></th>
           </tr>
         </thead>
         <tbody class="item-table">
           @foreach ($authors as $author)
           <tr>
-            <td><a href="/pracownik/autorzy/{{$author->id}}"
-                class="a-link-navy"><strong>{{$author->last_name}}</strong></a>
+            <td>{{$author->last_name}}
             </td>
-            <td><a href="/pracownik/autorzy/{{$author->id}}" class="a-link-navy">{{$author->first_names}}</a>
+            <td>{{$author->first_names}}
             </td>
+            <td><a href="/pracownik/autorzy/{{$author->id}}" target="_blank" type="button"
+              class="btn btn-primary btn-rounded">
+              Profil
+          </a>
+      </td>
           </tr>
           @endforeach
         </tbody>

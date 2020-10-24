@@ -87,4 +87,8 @@ Route::group(['middleware' => 'admin'], function () {
 
     Route::get('/pracownik/wypozyczenia', 'Admin\BorrowingController@index');
 
+    Route::get('/pracownik/rezerwacje', 'Admin\ReservationController@index');
+    Route::post('/pracownik/egzemplarze/{id}/rezerwacja/wypozycz', 'Admin\ReservationController@borrowReservedBook');
+
+
 });

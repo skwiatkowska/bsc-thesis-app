@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Użytkownicy - wyszukiwanie')
+@section('title', 'Wyszukiwanie Czytelników')
 
 @section('content')
 
@@ -40,7 +40,7 @@
     @endif
 
     @if (!empty($users))
-    <div class="row mt-4">
+    <div class="row mt-5">
         <div class="col-10 mx-auto">
             <table id="dynatable2" class="table table-striped table-bordered mt-1 text-center">
                 <thead>
@@ -64,7 +64,8 @@
                 </tfoot>
                 <tbody>
                     @foreach ($users as $user)
-                    <tr><td>{{$user->first_name}}
+                    <tr>
+                        <td>{{$user->first_name}}
                         </td>
                         <td>{{$user->last_name}}
                         </td>
@@ -72,9 +73,10 @@
                         </td>
                         <td>{{$user->phone}}
                         </td>
-                        <td><a href="/pracownik/czytelnicy/{{$user->id}}"  target="_blank" type="button" class="btn btn-primary btn-rounded">
-                           Profil
-                    </a>
+                        <td><a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank" type="button"
+                                class="btn btn-primary btn-rounded">
+                                Profil
+                            </a>
                         </td>
                     </tr>
                     @endforeach

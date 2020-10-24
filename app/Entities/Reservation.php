@@ -9,7 +9,7 @@ use App\Entities\User;
 
 class Reservation extends NeoEloquent {
 
-    protected $label = 'Reservarion';
+    protected $label = 'Reservation';
 
     protected $fillable = [
         'id',

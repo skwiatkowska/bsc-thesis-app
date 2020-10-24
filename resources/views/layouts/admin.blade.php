@@ -76,7 +76,7 @@
 
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/pracownik/rezerwacje">
                         <i class="fas fa-bookmark"></i>
                         Rezerwacje
                     </a>
