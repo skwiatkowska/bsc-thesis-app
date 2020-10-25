@@ -15,7 +15,7 @@ class UserController extends Controller {
     public function userInfo(Request $request) {
         $user = Auth::user();
 
-        // $item = BookItem::where('id',1247)->with('book')->with('borrowings')->get()->first();
+        // $item = BookItem::where('id',1248)->with('book')->with('borrowings')->get()->first();
         // if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
         //     return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         // }

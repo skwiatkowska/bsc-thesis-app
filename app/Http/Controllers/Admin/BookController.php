@@ -13,7 +13,6 @@ use App\Http\Controllers\Controller;
 
 class BookController extends Controller {
 
-
     public function create() {
         $categories = Category::all();
         $authors = Author::all();

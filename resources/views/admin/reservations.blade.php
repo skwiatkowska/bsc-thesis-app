@@ -15,7 +15,7 @@
     @if (!empty($reservations))
     <div class="row mt-5">
         <div class="col-10 mx-auto">
-            <table id="dynatable-borrow" class="table table-striped table-bordered mt-1">
+            <table id="dynatable-reserved" class="table table-striped table-bordered mt-1">
                 <thead>
                     <tr>
                         <th>Czytelnik</th>
@@ -154,7 +154,7 @@
 //     });
 // });
 
-//     $('#dynatable-borrow').dynatable();
+//     $('#dynatable-reserved').dynatable();
 
 //     $(".dynatable-search").hide();
 //     $("tfoot").hide();

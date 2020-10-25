@@ -66,7 +66,121 @@
 
                 </ul>
                 <div class="tab-content mt-3">
-                    <div class="tab-pane fade" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">...
+                    <div class="tab-pane fade" id="reservation" role="tabpanel" aria-labelledby="reservation-tab">
+                        <table class="table table-striped table-bordered text-center mt-1">
+                            <thead>
+                                <tr>
+                                    <th>Książka</th>
+                                    <th>Egzemplarz</th>
+                                    <th>Autorzy</th>
+                                    <th>Data rezerwacji</th>
+                                    <th>Data wygaśnięcia</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="item-table">
+                                @foreach ($user->reservations as $reservation)
+                                @if(!isset($reservation->actual_return_date))
+                                <tr>
+                                    <td> <a href="/pracownik/ksiazki/{{$reservation->bookItem->book->id}}"
+                                            class="a-link-navy"><strong>{{$reservation->bookItem->book->title}}</strong></a>
+                                    </td>
+                                    <td>
+                                        <a href="/pracownik/egzemplarze/{{$reservation->bookItem->id}}"
+                                            class="a-link-navy">{{$reservation->bookItem->book_item_id}}</a>
+                                    </td>
+                                    <td>
+                                        @foreach ($reservation->bookItem->book->authors as $author)
+                                        <a href="/pracownik/autorzy/{{$author->id}}" class="a-link-navy">
+                                            {{$author->last_name.', '.$author->first_names}}
+                                        </a>
+                                        @endforeach
+                                    </td>
+                                    <td>{{date('Y-m-d', strtotime($reservation->reservation_date))}}
+                                    </td>
+                                    <td>{{date('Y-m-d', strtotime($reservation->due_date))}}
+                                    </td>
+            
+            
+                                    <td>
+                                        <button type="button" title="Wypożyczenie" class="btn btn-sm btn-primary mb-2"
+                                            data-toggle="modal"
+                                            data-target="#borrowBookItemModal-{{$reservation->bookItem->id}}">Wypożyczenie</button>
+                                    </td>
+                                </tr>
+                                @endif
+                                <div class="modal fade" id="borrowBookItemModal-{{$reservation->bookItem->id}}" tabindex="-1"
+                                    role="dialog" aria-labelledby="borrowBookItemModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <form action="/pracownik/egzemplarze/{{$reservation->bookItem->id}}/rezerwacja/wypozycz"
+                                                method="POST">
+                                                {{ csrf_field() }}
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="borrowBookItemModalLabel">Potwierdź
+                                                        wypożyczenie
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body pt-0">
+                                                    <div class="form-group row">
+                                                        <label
+                                                            class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
+                                                        <label class="col-md-6 col-form-label control-label text-md-left">
+                                                            "{{$reservation->bookItem->book->title}}" , egzemplarz:
+                                                            {{$reservation->bookItem->book_item_id}}
+                                                            <br>
+                                                            @foreach ($reservation->bookItem->book->authors as $author)
+                                                            {{$author->last_name}}, {{$author->first_names}}
+                                                            @if(!$loop->last)
+                                                            <br>
+                                                            @endif
+                                                            @endforeach
+                                                            <br>
+            
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                            class="col-md-4 col-form-label control-label text-md-right"><strong>Czytelnik:</strong></label>
+                                                        <label class="col-md-6 col-form-label control-label text-md-left">
+                                                            {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                                                            <br>
+                                                            PESEL: {{$reservation->user->pesel}}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label
+                                                            class="col-md-4 col-form-label control-label text-md-right"><strong>Wypożyczenie:</strong></label>
+                                                        <label class="col-md-6 col-form-label control-label text-md-left">
+                                                            Data wypożyczenia: <br>
+                                                            {{date('Y-m-d')}}
+                                                            <br>
+                                                            Oczekiwana data zwrotu: <br>
+            
+                                                            {{date('Y-m-d', strtotime( "+1 month"))}}
+                                                        </label>
+                                                    </div>
+                                                </div>
+            
+                                                <div class="modal-footer p-3">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Zamknij</button>
+                                                    <button type="submit" class="btn btn-primary return-book">Potwierdź</button>
+                                                    <input type="hidden" name="bookItemId" value="{{$reservation->bookItem->id}}">
+                                                    <input type="hidden" name="userId" value="{{$reservation->user->id}}">
+                                                    <input type="hidden" name="reservationId" value="{{$reservation->id}}">
+            
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                     <div class="tab-pane fade show active" id="borrowing" role="tabpanel"
                         aria-labelledby="borrowing-tab">
