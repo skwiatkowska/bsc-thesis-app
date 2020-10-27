@@ -48,6 +48,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
     Route::get('/pracownik/czytelnicy/{id}', 'Admin\UserController@fetchUser');
     Route::post('/pracownik/czytelnicy/{id}/edycja', 'Admin\UserController@updateUser');
+    Route::post('/pracownik/czytelnicy/{id}/usun', 'Admin\UserController@deleteUser');
 
     Route::get('/pracownik/kategorie', 'Admin\CategoryController@index');
     Route::post('/pracownik/kategorie', 'Admin\CategoryController@store');

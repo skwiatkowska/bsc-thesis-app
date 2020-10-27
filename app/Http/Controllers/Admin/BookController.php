@@ -280,15 +280,19 @@ class BookController extends Controller {
 
     public function deleteBookItem(Request $request) {
         $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
-        if ($item->borrowings->count() > 0) {
-            foreach ($item->borrowings as $b) {
-                $item->deleteRelatedBorrowing($b->id);
+        if ($item->status == BookItem::AVAILABLE) {
+            if (!empty($item->borrowings)) {
+                foreach ($item->borrowings as $b) {
+                    $item->deleteRelatedBorrowing($b->id);
+                }
             }
-        }
 
-        $book = $item->book;
-        $book->deleteRelatedBookItem($item->id);
-        $item->delete();
-        return response()->json(['success' => 'Egzemplarz został usunięty']);
+            $book = $item->book;
+            $book->deleteRelatedBookItem($item->id);
+            $item->delete();
+            return response()->json(['success' => 'Egzemplarz został usunięty']);
+        } else {
+            return response()->json(['error' => 'Nie można usunąć niedostępnego egzemplarza']);
+        }
     }
 }

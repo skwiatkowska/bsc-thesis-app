@@ -43,7 +43,6 @@ class BorrowingController extends Controller {
 
     public function borrowBook(Request $request) {
         $user = User::where('id', $request->userId)->with('borrowings')->get()->first();
-        dd($user);
         $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
         if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");

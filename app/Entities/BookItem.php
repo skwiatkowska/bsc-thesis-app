@@ -52,4 +52,14 @@ class BookItem extends NeoEloquent {
                     DELETE rel1, rel2;";
         return DB::select($cypher);
     }
+
+
+    public function deleteRelatedReservation($reservationId) {
+        $cypher = "MATCH (r:Reservation)-[rel1:ON]->(item:BookItem) 
+                        WHERE ID(r)=$reservationId AND ID(item)=$this->id 
+                    MATCH (r:Reservation)<-[rel2:RESERVED]-(u:User) 
+                        WHERE ID(r)=$reservationId
+                    DELETE rel1, rel2;";
+        return DB::select($cypher);
+    }
 }

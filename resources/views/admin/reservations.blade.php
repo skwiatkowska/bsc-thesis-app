@@ -12,7 +12,7 @@
         </div>
     </div>
     {{$reservations}}
-    @if (!empty($reservations))
+    @if($reservations->count() > 0)
     <div class="row mt-5">
         <div class="col-10 mx-auto">
             <table id="dynatable-reserved" class="table table-striped table-bordered mt-1">
@@ -145,7 +145,7 @@
 
 //     $("table tr").each(function (index) {
 //         if (!index) return;
-//         $(this).find("td").each(function () {
+//                 $(this).find("td:not(:has(button))").each(function () {
 //             var id = $(this).text().toLowerCase().trim();
 //             var not_found = (id.indexOf(value) == -1);
 //             $(this).closest('tr').toggle(!not_found);

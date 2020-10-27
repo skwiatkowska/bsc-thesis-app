@@ -66,7 +66,7 @@ class UserController extends Controller {
             }
 
             if (!$users->count()) {
-                $users = User::all();
+                $users = array();
                 return view('/admin/findUser', ['users' => $users])->withErrors("Nie znaleziono Czytelników spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
             return view('/admin/findUser', ['users' => $users, 'phrase' => $phrase]);
@@ -74,5 +74,38 @@ class UserController extends Controller {
             $users = User::all();
             return view('/admin/findUser', ['users' => $users]);
         }
+    }
+
+
+    public function deleteUser(Request $request) {
+        $user = User::with('borrowings.bookItem')->with('reservations.bookItem')->where('id', $request->id)->get()->first();
+        // dd($user);
+        if (!empty($user->borrowings)) {
+            foreach ($user->borrowings as $borrowing) {
+                if (!isset($borrowing->actual_return_date)) {
+                    return back()->withErrors("Nie można usunąć użytkownika z zarezerwowanymi lub wypożyczonymi książkami");
+                }
+            }
+        }
+        if (!empty($user->reservations)) {
+            foreach ($user->reservations as $reservation) {
+                if (!isset($reservation->actual_return_date)) {
+                    return back()->withErrors("Nie można usunąć użytkownika z zarezerwowanymi lub wypożyczonymi książkami");
+                }
+            }
+        }
+
+        if (!empty($user->borrowings)) {
+            foreach ($user->borrowings as $borrowing) {
+                $borrowing->bookItem->deleteRelatedBorrowing($borrowing->id);
+            }
+        }
+        if (!empty($user->reservations)) {
+            foreach ($user->reservations as $reservation) {
+                $reservation->bookItem->deleteRelatedReservation($reservation->id);
+            }
+        }
+        $user->delete();
+        return redirect('/pracownik/katalog')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
     }
 }

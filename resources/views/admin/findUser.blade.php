@@ -72,7 +72,7 @@
                         </td>
                         <td>{{$user->phone}}
                         </td>
-                        <td><a href="/pracownik/czytelnicy/{{$user->id}}" target="_blank" type="button"
+                        <td><a href="/pracownik/czytelnicy/{{$user->id}}" type="button"
                                 class="btn btn-primary btn-rounded">
                                 Profil
                             </a>
