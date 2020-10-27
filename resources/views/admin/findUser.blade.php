@@ -38,7 +38,7 @@
     </div>
     @endif
 
-    @if (!empty($users))
+    @if ($users->count() > 0)
     <div class="row mt-5">
         <div class="col-10 mx-auto">
             <table id="dynatable2" class="table table-striped table-bordered mt-1 text-center">
@@ -84,7 +84,7 @@
         </div>
     </div>
     @else
-    <p class="h6 text-center py-5">Nie znaleziono</p>
+    <p class="h6 text-center py-5">Brak Czytelników</p>
     @endif
 </div>
 

@@ -21,7 +21,8 @@ class BorrowingController extends Controller {
     public function borrowBookItemAddUser($id) {
         $item = BookItem::with('book')->where('id', $id)->get()->first();
         $book = $item->book::with('authors')->get()->first();
-        return view('/admin/addUserToBorrowing', ['item' => $item, 'book' => $book, 'users' => '']);
+        $users = User::all();
+        return view('/admin/addUserToBorrowing', ['item' => $item, 'book' => $book, 'users' => $users]);
     }
 
 

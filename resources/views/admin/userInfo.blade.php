@@ -12,10 +12,10 @@
                 Szczegóły
                 <div class="ml-auto">
                     <form action="/pracownik/czytelnicy/{{$user->id}}/usun" method="POST">
-                    {{ csrf_field() }}
-                    <button type="submit" id="delete-publisher-btn-submit" class="btn btn-sm btn-secondary delete"><i
-                            class="fa fa-trash-alt"></i></button>
-                    <input type="hidden" value="{{$user->id}}" name="id">
+                        {{ csrf_field() }}
+                        <button type="submit" id="delete-publisher-btn-submit"
+                            class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
+                        <input type="hidden" value="{{$user->id}}" name="id">
                     </form>
                 </div>
             </div>
@@ -33,6 +33,14 @@
                     <li><strong>Telefon: </strong><a class="editable-input" id="phone">{{$user->phone}}<i
                                 class="fa fa-pencil-alt ml-2"></i></a></li>
                     <li><strong>E-mail: </strong><a class="editable-input" id="email">{{$user->email}}<i
+                                class="fa fa-pencil-alt ml-2"></i></a></li>
+                    <li><strong>Ulica: </strong><a class="editable-input" id="street">{{$user->street}}<i
+                                class="fa fa-pencil-alt ml-2"></i></a></li>
+                    <li><strong>Numer domu: </strong><a class="editable-input"
+                            id="house_number">{{$user->house_number}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                    <li><strong>Kod pocztowy: </strong><a class="editable-input" id="zipcode">{{$user->zipcode}}<i
+                                class="fa fa-pencil-alt ml-2"></i></a></li>
+                    <li><strong>Miasto: </strong><a class="editable-input" id="city">{{$user->city}}<i
                                 class="fa fa-pencil-alt ml-2"></i></a></li>
                     <li><strong>Data utworzenia konta: </strong>{{date('Y-m-d', strtotime($user->created_at))}}</li>
 
@@ -100,8 +108,8 @@
                                     </td>
                                     <td>{{date('Y-m-d', strtotime($reservation->due_date))}}
                                     </td>
-            
-            
+
+
                                     <td>
                                         <button type="button" title="Wypożyczenie" class="btn btn-sm btn-primary mb-2"
                                             data-toggle="modal"
@@ -109,25 +117,29 @@
                                     </td>
                                 </tr>
                                 @endif
-                                <div class="modal fade" id="borrowBookItemModal-{{$reservation->bookItem->id}}" tabindex="-1"
-                                    role="dialog" aria-labelledby="borrowBookItemModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="borrowBookItemModal-{{$reservation->bookItem->id}}"
+                                    tabindex="-1" role="dialog" aria-labelledby="borrowBookItemModalLabel"
+                                    aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <form action="/pracownik/egzemplarze/{{$reservation->bookItem->id}}/rezerwacja/wypozycz"
+                                            <form
+                                                action="/pracownik/egzemplarze/{{$reservation->bookItem->id}}/rezerwacja/wypozycz"
                                                 method="POST">
                                                 {{ csrf_field() }}
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="borrowBookItemModalLabel">Potwierdź
                                                         wypożyczenie
                                                     </h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
                                                     </button>
                                                 </div>
                                                 <div class="modal-body pt-0">
                                                     <div class="form-group row">
                                                         <label
                                                             class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
-                                                        <label class="col-md-6 col-form-label control-label text-md-left">
+                                                        <label
+                                                            class="col-md-6 col-form-label control-label text-md-left">
                                                             "{{$reservation->bookItem->book->title}}" , egzemplarz:
                                                             {{$reservation->bookItem->book_item_id}}
                                                             <br>
@@ -138,14 +150,16 @@
                                                             @endif
                                                             @endforeach
                                                             <br>
-            
+
                                                         </label>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label
                                                             class="col-md-4 col-form-label control-label text-md-right"><strong>Czytelnik:</strong></label>
-                                                        <label class="col-md-6 col-form-label control-label text-md-left">
-                                                            {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                                                        <label
+                                                            class="col-md-6 col-form-label control-label text-md-left">
+                                                            {{$reservation->user->first_name}}
+                                                            {{$reservation->user->last_name}}
                                                             <br>
                                                             PESEL: {{$reservation->user->pesel}}
                                                         </label>
@@ -153,31 +167,36 @@
                                                     <div class="form-group row">
                                                         <label
                                                             class="col-md-4 col-form-label control-label text-md-right"><strong>Wypożyczenie:</strong></label>
-                                                        <label class="col-md-6 col-form-label control-label text-md-left">
+                                                        <label
+                                                            class="col-md-6 col-form-label control-label text-md-left">
                                                             Data wypożyczenia: <br>
                                                             {{date('Y-m-d')}}
                                                             <br>
                                                             Oczekiwana data zwrotu: <br>
-            
+
                                                             {{date('Y-m-d', strtotime( "+1 month"))}}
                                                         </label>
                                                     </div>
                                                 </div>
-            
+
                                                 <div class="modal-footer p-3">
                                                     <button type="button" class="btn btn-secondary"
                                                         data-dismiss="modal">Zamknij</button>
-                                                    <button type="submit" class="btn btn-primary return-book">Potwierdź</button>
-                                                    <input type="hidden" name="bookItemId" value="{{$reservation->bookItem->id}}">
-                                                    <input type="hidden" name="userId" value="{{$reservation->user->id}}">
-                                                    <input type="hidden" name="reservationId" value="{{$reservation->id}}">
-            
+                                                    <button type="submit"
+                                                        class="btn btn-primary return-book">Potwierdź</button>
+                                                    <input type="hidden" name="bookItemId"
+                                                        value="{{$reservation->bookItem->id}}">
+                                                    <input type="hidden" name="userId"
+                                                        value="{{$reservation->user->id}}">
+                                                    <input type="hidden" name="reservationId"
+                                                        value="{{$reservation->id}}">
+
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-            
+
                                 @endforeach
                             </tbody>
                         </table>
@@ -240,8 +259,7 @@
                                     aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <form
-                                                action="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}/zwroc"
+                                            <form action="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}/zwroc"
                                                 method="POST">
                                                 {{ csrf_field() }}<div class="modal-header">
                                                     <h5 class="modal-title" id="returnBookItemModalLabel">Potwierdź

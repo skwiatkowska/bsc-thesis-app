@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="cotainer">
+<div class="container-fluid px-0">
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card mt-0">
@@ -98,12 +98,12 @@
                                     <option value="" selected disabled>Wybierz</option>
                                 </select>
                             </div>
-                            <label for="numverOfItems"
+                            <label for="numberOfItems"
                                 class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Egzemplarze
                             </label>
                             <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
-                                <input type="number" id="numberOfItems" class="form-control" name="numberOfItems" min="1"
-                                    required>
+                                <input type="number" id="numberOfItems" class="form-control" name="numberOfItems"
+                                    min="1" required>
                             </div>
                         </div>
 
@@ -135,11 +135,11 @@
                                 Dodaj
                             </button>
                         </div>
+
+
+
+                    </form>
                 </div>
-
-
-                </form>
-
             </div>
         </div>
     </div>
@@ -180,7 +180,6 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="newAuthorModalLabel">Nowy autor</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">

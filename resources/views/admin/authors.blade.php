@@ -40,7 +40,7 @@
             </td>
             <td>{{$author->first_names}}
             </td>
-            <td><a href="/pracownik/autorzy/{{$author->id}}" target="_blank" type="button"
+            <td><a href="/pracownik/autorzy/{{$author->id}}" type="button"
               class="btn btn-primary btn-rounded">
               Profil
           </a>

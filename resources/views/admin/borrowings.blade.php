@@ -12,7 +12,7 @@
             </div>
     </div>
     
-    @if (!empty($borrowings))
+    @if (($borrowings->count() > 0))
     <div class="row mt-5">
         <div class="col-10 mx-auto">
             <table id="dynatable-borrow" class="table table-striped table-bordered mt-1">

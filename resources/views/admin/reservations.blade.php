@@ -11,7 +11,6 @@
             <button type="submit" id="find-book-submit-btn" class="btn btn-primary ml-4 px-lg-4">Szukaj</button>
         </div>
     </div>
-    {{$reservations}}
     @if($reservations->count() > 0)
     <div class="row mt-5">
         <div class="col-10 mx-auto">

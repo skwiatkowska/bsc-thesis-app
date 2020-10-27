@@ -10,9 +10,7 @@
             <a href="/pracownik/ksiazki/{{$item->book->id}}" type="button"
                 class="btn btn-sm btn-secondary btn-rounded"><i class="fa fa-arrow-left"></i> Powrót
             </a>
-
         </div>
-
 
         <div class="progressbar-wrapper mb-5 col-sm-11 ml-0">
             <ul class="progressbar">
@@ -22,10 +20,9 @@
             </ul>
         </div>
     </div>
-    {{-- {{$item}} --}}
     <div class="row">
-        <form class="form-inline col-12 justify-content-center"
-            action="/pracownik/egzemplarze/{{$item->id}}/wypozycz" method="POST">
+        <form class="form-inline col-12 justify-content-center" action="/pracownik/egzemplarze/{{$item->id}}/wypozycz"
+            method="POST">
             {{ csrf_field() }}
             <div class="input-group mb-2 col-sm-12 col-lg-3 px-1">
                 <div class="input-group-prepend">
@@ -50,16 +47,15 @@
             </div>
             <div class="input-group mb-2 col-lg-2 ml-auto">
                 <button type="button" class="btn btn-secondary btn-rounded" data-toggle="modal"
-                    data-target="#newUserModal">Nowy
-                    Czytelnik</button>
+                    data-target="#newUserModal">Nowy Czytelnik</button>
             </div>
-
         </form>
     </div>
     @if (!empty($phrase))
     <div class="row mt-2">
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
+    @endif
     @if (!empty($users) && $users->count() > 0)
     <div class="row mt-5">
         <div class="col-10 mx-auto">
@@ -145,7 +141,6 @@
     @else
     <p class="h6 text-center py-5">Nie znaleziono</p>
     @endif
-    @endif
 
 </div>
 <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModalLabel"
@@ -153,7 +148,6 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form name="newUserForm">
-                {{-- {{ csrf_field() }} --}}
                 <div class="modal-header">
                     <h5 class="modal-title" id="newUserModalLabel">Nowe Czytelnik
                     </h5>
@@ -189,12 +183,31 @@
                     </div>
 
                     <div class="form-group row required">
-                        <label for="phone" class="col-md-4 col-form-label control-label text-md-right">Numer
-                            telefonu</label>
+                        <label for="street" class="col-md-4 col-form-label control-label text-md-right">Ulica</label>
                         <div class="col-md-6">
-                            <input type="text" id="phone" name="phone" class="form-control" required>
+                            <input type="text" id="street" name="street" class="form-control" required>
                         </div>
                     </div>
+                    <div class="form-group row required">
+                        <label for="house_number" class="col-md-4 col-form-label control-label text-md-right">Numer
+                            domu</label>
+                        <div class="col-md-6">
+                            <input type="number" id="house_number" name="house_number" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label for="zipcode" class="col-md-4 col-form-label control-label text-md-right">Kod pocztowy</label>
+                        <div class="col-md-6">
+                            <input type="text" id="zipcode" name="zipcode" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label for="city" class="col-md-4 col-form-label control-label text-md-right">Miasto</label>
+                        <div class="col-md-6">
+                            <input type="text" id="city" name="city" class="form-control" required>
+                        </div>
+                    </div>
+                    
                 </div>
                 <input type="hidden" name="isModal" value="true">
 

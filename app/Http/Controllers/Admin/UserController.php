@@ -20,6 +20,10 @@ class UserController extends Controller {
             'pesel' => $request['pesel'],
             'email' => $request['email'],
             'phone' => $request['phone'],
+            'street' => $request['street'],
+            'house_number' => $request['house_number'],
+            'zipcode' => $request['zipcode'],
+            'city' => $request['city'],
             'password' => Hash::make($request['pesel'])
         ]);
         if ($request['isModal'] == 'true') {
@@ -45,6 +49,14 @@ class UserController extends Controller {
             $user->phone = $request->value;
         } else if ($request->name == "email" && $user->email != $request->value) {
             $user->email = $request->value;
+        } else if ($request->name == "street" && $user->street != $request->value) {
+            $user->street = $request->value;
+        } else if ($request->name == "house_number" && $user->house_number != $request->value) {
+            $user->house_number = $request->value;
+        } else if ($request->name == "zipcode" && $user->zipcode != $request->value) {
+            $user->zipcode = $request->value;
+        } else if ($request->name == "city" && $user->city != $request->value) {
+            $user->city = $request->value;
         }
         $user->save();
         return response()->json(['success' => 'Dane zostały zmienione']);
@@ -52,7 +64,6 @@ class UserController extends Controller {
 
     public function findUser(Request $request) {
         if ($request->all()) {
-
             $searchIn = $request->searchIn;
             $phrase = $request->phrase;
             $searchInMode = null;
@@ -61,7 +72,6 @@ class UserController extends Controller {
                 $searchInMode = "PESEL";
             } elseif ($searchIn == "lname") {
                 $users = User::where('last_name', '=~', '.*' . $phrase . '.*')->get();
-
                 $searchInMode = "nazwisko";
             }
 

@@ -68,18 +68,18 @@
                     @foreach ($books as $index => $book)
                     <tr>
                         <td>
-                            <a href="/pracownik/ksiazki/{{$book->id}}" target="_blank"><strong
+                            <a href="/pracownik/ksiazki/{{$book->id}}"><strong
                                     class="a-link-navy">{{$book->title}}</strong></a>
                         </td>
                         <td>
                             @foreach ($book->authors as $author)
-                            <a href="/pracownik/autorzy/{{$author->id}}" target="_blank"
+                            <a href="/pracownik/autorzy/{{$author->id}}"
                                 class="a-link-navy">{{$author->last_name}},
                                 {{$author->first_names}}</a>
                             @endforeach
                         </td>
                         <td><a href="/pracownik/wydawnictwa/{{$book->publisher->id}}" class="a-link-navy"
-                                target="_blank">{{$book->publisher->name}}</a>
+                                >{{$book->publisher->name}}</a>
                         </td>
                         <td>{{$book->isbn}}</td>
                     </tr>

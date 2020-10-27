@@ -4,10 +4,10 @@
 
 @section('content')
 
-<div class="cotainer">
+<div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+        <div class="col-md-10">
+            <div class="card mt-0">
                 <div class="card-header">Nowy Czytelnik</div>
                 <div class="card-body">
                     <form name="newUserForm" action="/pracownik/czytelnicy/nowy" method="POST">
@@ -27,12 +27,23 @@
                             </div>
                         </div>
 
+
                         <div class="form-group row required">
-                            <label for="pesel" class="col-md-4 col-form-label control-label text-md-right">PESEL</label>
-                            <div class="col-md-6">
+                            <label for="pesel" class="col-md-4 col-form-label control-label text-md-right">PESEL
+                            </label>
+                            <div class="col-md-6 col-lg-2 ">
                                 <input type="text" id="pesel" class="form-control" name="pesel" required>
+
+                            </div>
+                            <label for="phone"
+                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Telefon
+                            </label>
+                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
+                                <input type="text" id="phone" name="phone" class="form-control" required>
+
                             </div>
                         </div>
+
 
                         <div class="form-group row required">
                             <label for="email"
@@ -43,24 +54,46 @@
                         </div>
 
                         <div class="form-group row required">
-                            <label for="phone" class="col-md-4 col-form-label control-label text-md-right">Numer
-                                telefonu</label>
+                            <label for="street"
+                                class="col-md-4 col-form-label control-label text-md-right">Ulica</label>
                             <div class="col-md-6">
-                                <input type="text" id="phone" name="phone" class="form-control" required>
+                                <input type="text" id="street" class="form-control" name="street" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row required">
+                            <label for="house_number" class="col-md-4 col-form-label control-label text-md-right">Nr
+                                domu</label>
+                            <div class="col-md-6 col-lg-2">
+                                <input type="number" id="house_number" class="form-control" name="house_number"
+                                    required>
+
+                            </div>
+                            <label for="zipcode"
+                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Kod
+                                poczt.
+                            </label>
+                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
+                                <input type="text" id="zipcode" class="form-control" name="zipcode" required>
+                            </div>
+                        </div>
+                        <div class="form-group row required">
+                            <label for="city" class="col-md-4 col-form-label control-label text-md-right">Miasto</label>
+                            <div class="col-md-6">
+                                <input type="text" id="city" class="form-control" name="city" required>
                             </div>
                         </div>
                         <input type="hidden" name="isModal" value="false">
-
                         <div class="row d-flex justify-content-center">
                             <button type="submit" class="btn btn-lg btn-primary">
                                 Dodaj
                             </button>
                         </div>
+
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection

@@ -6,8 +6,19 @@
 
 <div class="container">
     Wypożyczenia:
-    {{-- {{$borrowings->count()}} --}}
-    {{-- {{$current->count()}} --}}
+    {{$borrowings->count()}}
+    <br>
+    Rezerwacje:
+    {{$reservations->count()}}
+    <br>
+    Czytelnicy:
+    {{$users->count()}}
+    <br>
+    Książki:
+    {{$books->count()}}
+    <br>
+    Egzemplarze:
+    {{$bookItems->count()}}
 </div>
 
 @endsection
