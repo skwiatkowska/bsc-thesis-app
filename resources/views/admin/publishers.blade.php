@@ -38,6 +38,8 @@
   </div>
 
 
+  @endsection
+  @section('script')
   <script>
     $(document).ready(function(){
       $( ".item-list" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie znaleziono. Dodaj książkę z takim wydawnictwem <a class="a-link" href="/pracownik/ksiazki/nowa">tutaj</a></p>');        

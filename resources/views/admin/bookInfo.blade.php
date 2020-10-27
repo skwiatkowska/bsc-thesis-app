@@ -187,6 +187,8 @@
     </div>
 </div>
 
+@endsection
+@section('script')
 <script>
     //submit new book item form in modal
 $("#new-item-btn-submit").click(function(e){

@@ -42,6 +42,9 @@
   </div>
 </div>
 
+
+@endsection
+@section('script')
 <script>
   //form submitting
   $(".btn-submit").click(function(e){

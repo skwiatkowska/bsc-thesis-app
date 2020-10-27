@@ -138,6 +138,9 @@
     <p class="h6 text-center py-5">Brak rezerwacji</p>
     @endif
 </div>
+
+@endsection
+@section('script')
 <script>
     // $("#search").keyup(function () {
 //     var value = this.value.toLowerCase().trim();

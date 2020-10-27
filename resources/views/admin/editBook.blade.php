@@ -189,6 +189,9 @@
     </div>
 </div>
 
+
+@endsection
+@section('script')
 <script>
     var categories = {!! json_encode($book->categories) !!};
     var publisher = {!! json_encode($book->publisher) !!};

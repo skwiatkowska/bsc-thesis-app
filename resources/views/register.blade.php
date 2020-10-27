@@ -87,6 +87,9 @@
         </div>
     </div>
 </div>
+
+@endsection
+@section('script')
 <script>
     //form submitting
   $("#register-submit-btn").click(function(e){

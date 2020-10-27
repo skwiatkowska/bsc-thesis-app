@@ -88,6 +88,9 @@
     @endif
 </div>
 
+
+@endsection
+@section('script')
 <script>
     $('#dynatable2').dynatable();
 

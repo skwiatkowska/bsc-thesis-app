@@ -196,6 +196,7 @@
 
         </div>
     </div>
+    @yield('script')
 
 
     <script type="text/javascript">

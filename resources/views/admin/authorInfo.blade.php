@@ -44,7 +44,8 @@
 </div>
 
 
-
+@endsection
+@section('script')
 <script>
     $.fn.editable.defaults.mode = 'inline';
     var id = {!! json_encode($author->id) !!};

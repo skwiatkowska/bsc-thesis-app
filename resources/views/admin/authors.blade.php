@@ -40,11 +40,10 @@
             </td>
             <td>{{$author->first_names}}
             </td>
-            <td><a href="/pracownik/autorzy/{{$author->id}}" type="button"
-              class="btn btn-primary btn-rounded">
-              Profil
-          </a>
-      </td>
+            <td><a href="/pracownik/autorzy/{{$author->id}}" type="button" class="btn btn-primary btn-rounded">
+                Profil
+              </a>
+            </td>
           </tr>
           @endforeach
         </tbody>
@@ -55,6 +54,8 @@
     </div>
   </div>
 
+  @endsection
+  @section('script')
   <script>
     $(document).ready(function(){
       $( ".col-md-8" ).append('<p class="h6 text-center py-5 noSuchInfo">Nie znaleziono. Dodaj książkę z takim autorem <a class="a-link" href="/pracownik/ksiazki/nowa">tutaj</a></p>');           

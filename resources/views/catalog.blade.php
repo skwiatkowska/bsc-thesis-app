@@ -94,6 +94,9 @@
     @endif
 </div>
 
+
+@endsection
+@section('script')
 <script>
     $('#dynatable').dynatable();
 

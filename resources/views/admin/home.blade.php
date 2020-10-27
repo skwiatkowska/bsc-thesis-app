@@ -66,7 +66,8 @@
 
     </div>
 </div>
-
+@endsection
+@section('script')
 <script>
     $('.count-numbers').each(function () {
     $(this).prop('Counter',0).animate({
@@ -79,5 +80,5 @@
         }
     });
 });
-    </script>
+</script>
 @endsection

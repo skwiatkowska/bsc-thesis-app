@@ -196,7 +196,8 @@
                         </div>
                     </div>
                     <div class="form-group row required">
-                        <label for="zipcode" class="col-md-4 col-form-label control-label text-md-right">Kod pocztowy</label>
+                        <label for="zipcode" class="col-md-4 col-form-label control-label text-md-right">Kod
+                            pocztowy</label>
                         <div class="col-md-6">
                             <input type="text" id="zipcode" name="zipcode" class="form-control" required>
                         </div>
@@ -207,7 +208,7 @@
                             <input type="text" id="city" name="city" class="form-control" required>
                         </div>
                     </div>
-                    
+
                 </div>
                 <input type="hidden" name="isModal" value="true">
 
@@ -220,6 +221,8 @@
     </div>
 </div>
 
+@endsection
+@section('script')
 <script>
     $("#new-user-btn-submit").click(function(e){
       e.preventDefault();
