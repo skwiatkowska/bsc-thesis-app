@@ -164,7 +164,7 @@
                         <ul class="nav navbar-nav ml-auto">
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/pracownik/wyloguj') }}">Wyloguj</a>
+                                <a class="nav-link" href="{{ url('/pracownik/wyloguj') }}"><i class="fa fa-power-off"></i> Wyloguj</a>
                             </li>
 
                         </ul>
