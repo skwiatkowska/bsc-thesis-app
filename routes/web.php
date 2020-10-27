@@ -45,8 +45,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/info', 'Admin\HomeController@info');
 
     Route::post('/pracownik/czytelnicy/nowy', 'Admin\UserController@storeUser');
-    Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUserView');
-    Route::post('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
+    Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
     Route::get('/pracownik/czytelnicy/{id}', 'Admin\UserController@fetchUser');
     Route::post('/pracownik/czytelnicy/{id}/edycja', 'Admin\UserController@updateUser');
 
@@ -65,8 +64,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/pracownik/wydawnictwa/{id}/edycja', 'Admin\PublisherController@update');
     Route::post('/pracownik/wydawnictwa/{id}/usun', 'Admin\PublisherController@delete');
 
-    Route::get('/pracownik/katalog', 'Admin\BookController@index');
-    Route::post('/pracownik/katalog', 'Admin\BookController@findBook');
+    Route::get('/pracownik/katalog', 'Admin\BookController@findBook');
 
     Route::get('/pracownik/ksiazki/nowa', 'Admin\BookController@create');
     Route::post('/pracownik/ksiazki/nowa', 'Admin\BookController@store');

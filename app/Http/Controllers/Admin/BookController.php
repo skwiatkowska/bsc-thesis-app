@@ -10,6 +10,7 @@ use App\Entities\Publisher;
 use App\Entities\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Console\Presets\React;
 
 class BookController extends Controller {
 
@@ -80,13 +81,6 @@ class BookController extends Controller {
     }
 
 
-    public function index() {
-        $categories = Category::all();
-        $books = array();
-        return view('/admin/catalog', ['categories' => $categories, 'books' => $books]);
-    }
-
-
     public function fetchOneBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->get()->first();
         return view('/admin/bookInfo', ['book' => $book]);
@@ -153,80 +147,89 @@ class BookController extends Controller {
 
     public function findBook(Request $request) {
         $categories = Category::all();
-        $searchIn = $request->searchIn;
-        $phrase = $request->phrase;
-        $searchInMode = null;
-        if ($searchIn == "category") {
-            $phrase = $request->searchPhrase;
-            $category = Category::where('id', $phrase)->get()->first();
-            $books = $category->books()->with('bookItems')->with('authors')->with('publisher')->get();
-            $phrase = $category->name;
-            $searchInMode = "kategoria";
-        } elseif ($searchIn == "author") {
-            $words = explode(" ", $phrase);
-            if (count($words) > 1) {
-                $authors = Author::where('last_name', '=~', '.*' . $words[0] . '.*')->get();
 
-                foreach ($words as $index => $word) {
+        if ($request->all()) {
+            $searchIn = $request->searchIn;
+            $phrase = $request->phrase;
+            $searchInMode = null;
+            if ($searchIn == "category") {
+                $phrase = $request->searchPhrase;
+                $category = Category::where('id', $phrase)->get()->first();
+                $books = $category->books()->with('bookItems')->with('authors')->with('publisher')->get();
+                $phrase = $category->name;
+                $searchInMode = "kategoria";
+            } elseif ($searchIn == "author") {
+                $words = explode(" ", $phrase);
+                if (count($words) > 1) {
+                    $authors = Author::where('last_name', '=~', '.*' . $words[0] . '.*')->get();
+
+                    foreach ($words as $index => $word) {
+                        if ($index != 0) {
+                            $subauthor = Author::where('last_name', '=~', '.*' . $word . '.*')->get();
+                            $authors = $authors->merge($subauthor);
+                        }
+                    }
+                } else {
+                    $authors = Author::where('last_name', '=~', '.*' . $words[0] . '.*')->get();
+                }
+
+                if (!$authors->count()) {
+                    $books = array();
+                    return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego autora: " . $phrase);
+                }
+                $authorIds = array();
+                foreach ($authors as $author) {
+                    array_push($authorIds, $author->id);
+                }
+
+                $books = Author::find($authorIds[0])->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+
+                foreach ($authorIds as $index => $authorId) {
                     if ($index != 0) {
-                        $subauthor = Author::where('last_name', '=~', '.*' . $word . '.*')->get();
-                        $authors = $authors->merge($subauthor);
+                        $subquery = Author::find($authorId)->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                        if ($subquery->count() > 0) {
+                            $books = $books->merge($subquery);
+                        }
                     }
                 }
-            } else {
-                $authors = Author::where('last_name', '=~', '.*' . $words[0] . '.*')->get();
-            }
+                $searchInMode = "autor";
+            } elseif ($searchIn == "publisher") {
+                $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
+                if (!$publishers->count()) {
+                    $books = array();
+                    return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
+                }
+                $publisherIds = array();
+                foreach ($publishers as $publisher) {
+                    array_push($publisherIds, $publisher->id);
+                }
 
-            if (!$authors->count()) {
-                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego autora: " . $phrase);
-            }
-            $authorIds = array();
-            foreach ($authors as $author) {
-                array_push($authorIds, $author->id);
-            }
-
-            $books = Author::find($authorIds[0])->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
-
-            foreach ($authorIds as $index => $authorId) {
-                if ($index != 0) {
-                    $subquery = Author::find($authorId)->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
-                    if ($subquery->count() > 0) {
-                        $books = $books->merge($subquery);
+                $books = Publisher::find($publisherIds[0])->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                foreach ($publisherIds as $index => $publisherId) {
+                    if ($index != 0) {
+                        $subquery = Publisher::find($publisherId)->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                        if ($subquery->count() > 0) {
+                            $books = $books->merge($subquery);
+                        }
                     }
                 }
+                $searchInMode = "wydawnictwo";
+            } elseif ($searchIn == "title") {
+                $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                $searchInMode = "tytuł";
+            } elseif ($searchIn == "isbn") {
+                $books = Book::where('isbn', $phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                $searchInMode = "ISBN";
             }
-            $searchInMode = "autor";
-        } elseif ($searchIn == "publisher") {
-            $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
-            if (!$publishers->count()) {
-                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
+            if (!$books->count()) {
+                $books = array();
+                return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
-            $publisherIds = array();
-            foreach ($publishers as $publisher) {
-                array_push($publisherIds, $publisher->id);
-            }
-
-            $books = Publisher::find($publisherIds[0])->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
-            foreach ($publisherIds as $index => $publisherId) {
-                if ($index != 0) {
-                    $subquery = Publisher::find($publisherId)->books()->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
-                    if ($subquery->count() > 0) {
-                        $books = $books->merge($subquery);
-                    }
-                }
-            }
-            $searchInMode = "wydawnictwo";
-        } elseif ($searchIn == "title") {
-            $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
-            $searchInMode = "tytuł";
-        } elseif ($searchIn == "isbn") {
-            $books = Book::where('isbn', $phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
-            $searchInMode = "ISBN";
+            return view('/admin/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
+        } else {
+            $books = Book::all();
+            return view('/admin/catalog', ['categories' => $categories, 'books' => $books]);
         }
-        if (!$books->count()) {
-            return redirect('/pracownik/katalog')->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
-        }
-        return view('/admin/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
     }
 
 
@@ -235,7 +238,7 @@ class BookController extends Controller {
         if ($book->bookItems->count() > 0) {
             return back()->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
         }
-        $book->delete();     
+        $book->delete();
         return redirect('/pracownik/katalog')->with("success", "Książka " . $book->title . " została usunięta na stałe");
     }
 
@@ -277,19 +280,15 @@ class BookController extends Controller {
 
     public function deleteBookItem(Request $request) {
         $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
-       if($item->borrowings->count()>0){
-           foreach($item->borrowings as $b){
-            $item->deleteRelatedBorrowing($b->id);
-
-           }
-       }
+        if ($item->borrowings->count() > 0) {
+            foreach ($item->borrowings as $b) {
+                $item->deleteRelatedBorrowing($b->id);
+            }
+        }
 
         $book = $item->book;
         $book->deleteRelatedBookItem($item->id);
         $item->delete();
         return response()->json(['success' => 'Egzemplarz został usunięty']);
     }
-
-
-    
 }

@@ -10,10 +10,9 @@
                     href="/pracownik/ksiazki/nowa">Nowa książka</a></button>
         </div>
     </div>
-    <div class="row">
-        <form class="form-inline col-12 justify-content-center" action="/pracownik/katalog" method="POST">
-        {{ csrf_field() }}
 
+    <div class="row">
+        <form class="form-inline col-12 justify-content-center" action="/pracownik/katalog" method="GET">
             <div class="input-group mb-2 col-sm-12 col-lg-4 px-1">
                 <div class="input-group-prepend">
                     <div class="input-group-text">Szukaj w:</div>
@@ -49,7 +48,7 @@
     <div class="row mt-4">
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
-
+    @endif
     @if (!empty($books))
     <div class="row mt-2">
         <div class="col-10 mx-auto">
@@ -102,7 +101,6 @@
     </div>
     @else
     <p class="h6 text-center py-5">Nie znaleziono</p>
-    @endif
     @endif
 </div>
 

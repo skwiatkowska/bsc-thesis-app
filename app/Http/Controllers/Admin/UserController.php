@@ -50,29 +50,29 @@ class UserController extends Controller {
         return response()->json(['success' => 'Dane zostały zmienione']);
     }
 
-    public function findUserView() {
-        $users = User::all();
-        return view('/admin/findUser', ['users' => $users]);
-    }
-
     public function findUser(Request $request) {
-        $searchIn = $request->searchIn;
-        $phrase = $request->phrase;
-        $searchInMode = null;
-        if ($searchIn == "pesel") {
-            $users = User::where('pesel', $phrase)->get();
-            $searchInMode = "PESEL";
-        } elseif ($searchIn == "lname") {
-            $users = User::where('last_name', '=~', '.*' . $phrase . '.*')->get();
-            if (!$users->count()) {
-                return redirect('/pracownik/katalog')->withErrors("Nie znaleziono takiego Czytelnika: " . $phrase);
-            }
-            $searchInMode = "nazwisko";
-        }
+        if ($request->all()) {
 
-        if (!$users->count()) {
-            return redirect('/pracownik/czytelnicy/znajdz')->withErrors("Nie znaleziono Czytelników spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
+            $searchIn = $request->searchIn;
+            $phrase = $request->phrase;
+            $searchInMode = null;
+            if ($searchIn == "pesel") {
+                $users = User::where('pesel', $phrase)->get();
+                $searchInMode = "PESEL";
+            } elseif ($searchIn == "lname") {
+                $users = User::where('last_name', '=~', '.*' . $phrase . '.*')->get();
+
+                $searchInMode = "nazwisko";
+            }
+
+            if (!$users->count()) {
+                $users = User::all();
+                return view('/admin/findUser', ['users' => $users])->withErrors("Nie znaleziono Czytelników spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
+            }
+            return view('/admin/findUser', ['users' => $users, 'phrase' => $phrase]);
+        } else {
+            $users = User::all();
+            return view('/admin/findUser', ['users' => $users]);
         }
-        return view('/admin/findUser', ['users' => $users, 'phrase' => $phrase]);
     }
 }
