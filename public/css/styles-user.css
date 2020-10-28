@@ -1,36 +1,40 @@
 /* 
 colors:
-#0081a7
-#00afb9
-#fdfcdc
-#fed9b7
-#f07167
+#2b2d42
+#8d99ae
+#edf2f4
+#ef233c
+#d90429
+
 */
 
-.page-footer, .navbar, .dropdown-menu {
-  background-color: #00afb9;
+body{
+  background-color:#edf2f4;
 }
-.dropdown-item {
-  color: white;
+.page-footer, .navbar, .dropdown-menu {
+  background-color: #2b2d42;
 }
 
 .dropdown-item:hover {
-  background-color: #00afb9;
+  background-color: #2b2d42;
   font-weight: bold;
   color:white;
+}
+.dropdown-item {
+  color: white;
 }
 
 .navbar-dark .navbar-nav .nav-link {
   color: white;
 }
 .top-nav {
-  background-color: #0081a7;
+  background-color: #8d99ae;
   height: 35px;
   padding-top: 1px;
   color: #024059;
 }
 
-#msform {
+/* #msform {
   text-align: center;
   position: relative;
   margin-top: 0px;
@@ -125,19 +129,8 @@ colors:
 #msform .action-button-previous:hover,
 #msform .action-button-previous:focus {
   box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-}
+} */
 
-select.list-dt {
-  border: none;
-  outline: 0;
-  border-bottom: 1px solid #ccc;
-  padding: 2px 5px 3px 5px;
-  margin: 2px;
-}
-
-select.list-dt:focus {
-  border-bottom: 2px solid #f07167;
-}
 
 .card-borderless {
   z-index: 0;
@@ -146,15 +139,15 @@ select.list-dt:focus {
   position: relative;
 }
 
-.fs-title {
+/* .fs-title {
   font-size: 25px;
   color: #2c3e50;
   margin-bottom: 5px;
   font-weight: bold;
   text-align: left;
-}
+} */
 
-#progressbar {
+/* #progressbar {
   margin-bottom: 14px;
   overflow: hidden;
   color: lightgrey;
@@ -170,9 +163,9 @@ select.list-dt:focus {
   width: 25%;
   float: left;
   position: relative;
-}
+} */
 
-#progressbar #account:before {
+/* #progressbar #account:before {
   font-family: FontAwesome;
   content: "\f023";
 }
@@ -189,9 +182,9 @@ select.list-dt:focus {
 #progressbar #confirm:before {
   font-family: FontAwesome;
   content: "\f00c";
-}
+} */
 
-#progressbar li:before {
+/* #progressbar li:before {
   width: 50px;
   height: 50px;
   line-height: 45px;
@@ -213,20 +206,20 @@ select.list-dt:focus {
   left: 0;
   top: 25px;
   z-index: -1;
-}
+} */
 
-#progressbar li.active:before,
+/* #progressbar li.active:before,
 #progressbar li.active:after {
-  background:  #f07167;
-}
+  background:  #ef233c;
+} */
 
 .form-group.required .control-label:after {
   content: "*";
   color: red;
 }
 
-.btn-primary{
-  background:  #f07167;
+/* .btn-primary{
+  background:  #ef233c;
   color: white;
   font-weight: bold;
   border: none;
@@ -237,9 +230,9 @@ select.list-dt:focus {
   color: white;
   font-weight: bold;
   border: none;
-}
+} */
 
-.fit-image {
+/* .fit-image {
   width: 100%;
   object-fit: cover;
 }
@@ -247,12 +240,8 @@ select.list-dt:focus {
 .ul-alert{
   list-style-type: none;
   margin: 0px;
-}
+} */
 
-
-body{
-  background-color:white;
-}
 
 .list-right {
   left: auto !important;
@@ -276,3 +265,85 @@ body{
 }
 
 
+.login-page {
+  width: 460px;
+  padding: 5% 0 5% 0;
+  margin: auto;
+}
+
+.form {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  max-width: 460px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form button {
+  text-transform: uppercase;
+  outline: 0;
+  background: #ef233c;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form button:hover,
+.form button:active,
+.form button:focus {
+  background: #d90429;
+}
+
+.login-body {
+  background: #2b2d42;
+}
+
+
+.card-header{
+background-color: rgb(191,199,210);
+font-size: 16px;
+font-weight: bold;
+
+}
+
+
+.btn-primary{
+  background:  #ef233c;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-primary:hover{
+  background:  #d90429;
+  color: white;
+  font-weight: bold;
+  border: none;
+}
+
+.form-card {
+  position: relative;
+  z-index: 1;
+  background: #ffffff;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+
+.custom-control-label::before {
+  left: auto; 
+}

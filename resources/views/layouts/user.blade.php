@@ -22,7 +22,7 @@
         media="screen" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"
         type="text/css" />
-    <link href="{{ asset('css/styles.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/styles-user.css') }}" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{{PUBLIC_URL}}js/script.js"></script>
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css"
         rel="stylesheet" />

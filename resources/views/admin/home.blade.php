@@ -5,8 +5,8 @@
 @section('content')
 
 <div class="container">
-    <h4 class="text-center">Stan ogólny na {{date('Y-m-d')}}
-    </h4>
+    <h5 class="text-center">Stan ogólny na {{date('Y-m-d')}}
+    </h5>
     <div class="row mt-3 mb-5">
 
         <div class="col-md-6 col-lg-3">
@@ -35,8 +35,8 @@
         </div>
 
     </div>
-    <h5 class="text-center mt-5">W tym tygodniu
-    </h5>
+    <h6 class="text-center mt-5">W tym tygodniu
+    </h6>
     <div class="row my-3">
 
         <div class="col-md-6 col-lg-3">

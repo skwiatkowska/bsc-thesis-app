@@ -3,35 +3,39 @@
 @section('title', 'Logowanie')
 
 @section('content')
+<div class="container-fluid">
+    <div class="row justify-content-center my-4">
+        <div class="col-md-6">
+            <div class="card my-3 form-card">
+                <div class="card-header">Logowanie</div>
+                <div class="card-body">
+                    <form action="/logowanie" method="POST">
+                        {{ csrf_field() }}
 
-<div class="container">
-    <!-- MultiStep Form -->
-    <div class="container-fluid" id="grad1">
-        <div class="row justify-content-center mt-0">
-            <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
-                <div class="card card-borderless px-0 pt-4 pb-0 mt-3 mb-3">
-                    <h2><strong>Logowanie</strong></h2>
-                    <div class="row">
-                        <div class="col-md-12 mx-0">
-                            <form id="msform" action="/logowanie" method="POST">
-                                {{ csrf_field() }}
-
-                                <fieldset>
-                                    <div class="form-card pt-5">
-      
-                                        <input class="pt-4" type="email" name="email" placeholder="Adres e-mail" />
-                                        <input class="pt-4" type="password" name="password" placeholder="Hasło" />
-                                        </div>
-                                
-                                    <button type="submit" name="next" class="action-button">Zaloguj się</button>
-                                </fieldset>
-                               
-
-                               
-                            </form>
-                            <p class="text-center">Nie masz konta? <a href="rejestracja">Kliknij tutaj i zarejestruj się</a></p>
+                        <div class="form-group row required">
+                            <label for="email" class="col-md-4 col-form-label control-label text-md-right">Email</label>
+                            <div class="col-md-6">
+                                <input type="text" id="email" class="form-control" value="{{ old('email') }}"
+                                    name="email" required>
+                            </div>
                         </div>
+                        <div class="form-group row required">
+                            <label for="password"
+                                class="col-md-4 col-form-label control-label text-md-right">Hasło</label>
+                            <div class="col-md-6">
+                                <input type="password" id="password" class="form-control" name="password" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                        
+                        <label for="remember" class="col-form-label control-label mx-auto"><input type="checkbox" id="remember" class="mr-2"><strong>Zapamiętaj mnie</strong></label>
                     </div>
+                        <div class="row d-flex justify-content-center">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                Zaloguj się
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
