@@ -4,10 +4,9 @@
 
 @section('content')
 
-<div class="container my-5" style="min-height: 300px;">
-    <div class="row">
-        <form class="form-inline col-12 justify-content-center" action="/katalog" method="POST">
-            {{ csrf_field() }}
+<div class="container my-5 form-card" style="min-height: 300px;">
+    <div class="row pt-5">
+        <form class="form-inline col-12 justify-content-center" action="/katalog" method="GET">
             <div class="input-group mb-2 col-sm-12 col-lg-4 px-1">
                 <div class="input-group-prepend">
                     <div class="input-group-text">Szukaj w:</div>
@@ -15,6 +14,7 @@
                 <select class="form-control search-in-select" name="searchIn">
                     <option value="title">Tytuł</option>
                     <option value="author">Autor (nazwiska)</option>
+                    <option value="isbn">ISBN</option>
                     <option value="publisher">Wydawnictwo</option>
                     <option value="category">Kategoria</option>
 
@@ -42,17 +42,18 @@
     <div class="row mt-4">
         <p class="h6 text-center searchingInfo mx-auto">Aktualne wyszukiwanie: <strong>{{$phrase}}</strong></p>
     </div>
-
-    @if (!empty($books))
-    <div class="row mt-2">
+    @endif
+    @if ($books->count() > 0)
+    <div class="row mt-5">
         <div class="col-10 mx-auto">
             <table id="dynatable" class="table table-striped table-bordered mt-1">
                 <thead>
                     <tr>
                         <th style="width: 30%">Tytuł</th>
-                        <th style="width: 45%">Autorzy</th>
+                        <th style="width: 35%">Autorzy</th>
                         <th style="width: 15%">Wydawnictwo</th>
                         <th style="width: 10%">ISBN</th>
+                        <th style="width: 10%">Egzemplarze</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -61,6 +62,7 @@
                         <th>Autorzy</th>
                         <th>Wydawnictwo</th>
                         <th>ISBN</th>
+                        <th>Egzemplarze</th>
                     </tr>
                 </tfoot>
 
@@ -68,20 +70,21 @@
                     @foreach ($books as $index => $book)
                     <tr>
                         <td>
-                            <a href="/pracownik/ksiazki/{{$book->id}}"><strong
-                                    class="a-link-navy">{{$book->title}}</strong></a>
+                            <a href="/ksiazki/{{$book->id}}"><strong class="a-link-navy">{{$book->title}}</strong></a>
                         </td>
                         <td>
                             @foreach ($book->authors as $author)
-                            <a href="/pracownik/autorzy/{{$author->id}}"
-                                class="a-link-navy">{{$author->last_name}},
+                            <a href="/autorzy/{{$author->id}}" class="a-link-navy">{{$author->last_name}},
                                 {{$author->first_names}}</a>
                             @endforeach
                         </td>
-                        <td><a href="/pracownik/wydawnictwa/{{$book->publisher->id}}" class="a-link-navy"
-                                >{{$book->publisher->name}}</a>
+                        <td><a href="/wydawnictwa/{{$book->publisher->id}}"
+                                class="a-link-navy">{{$book->publisher->name}}</a>
                         </td>
                         <td>{{$book->isbn}}</td>
+                        <td>
+                            {{$book->bookItems->count()}}
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -90,7 +93,6 @@
     </div>
     @else
     <p class="h6 text-center py-5">Nie znaleziono</p>
-    @endif
     @endif
 </div>
 
@@ -122,7 +124,7 @@
 //       $.ajax({
 //          type:'POST',
 //          dataType : 'json',
-//          url:'/pracownik/katalog',
+//          url:'/katalog',
 //          data: {_token:"{{csrf_token()}}", searchIn: searchIn, searchPhrase:searchPhrase},
 //          success:function(data){
 //             location.reload();

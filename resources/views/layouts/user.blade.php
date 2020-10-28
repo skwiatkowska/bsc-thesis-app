@@ -56,16 +56,16 @@
                     <a class="nav-link" href="/"> Strona główna </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a class="nav-link" href="pierwsze-kroki"> Pierwsze kroki </a>
+                    <a class="nav-link" href="/pierwsze-kroki"> Pierwsze kroki </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a class="nav-link font-weight-bold" href="katalog"> e-Katalog </a>
+                    <a class="nav-link font-weight-bold" href="/katalog"> e-Katalog </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a class="nav-link" href="godziny-otwarcia"> Godziny otwarcia </a>
+                    <a class="nav-link" href="/godziny-otwarcia"> Godziny otwarcia </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a class="nav-link" href="kontakt"> Kontakt </a>
+                    <a class="nav-link" href="/kontakt"> Kontakt </a>
                 </li>
             </ul>
             <ul class="nav navbar-nav ml-auto">
@@ -77,7 +77,7 @@
                     </a>
                     <div class="dropdown-menu list-right">
                         <a class="dropdown-item py-2" href="dane">Moje dane</a>
-                        <hr class="my-0">
+                        <a class="dropdown-item py-2" href="moje-ksiazki">Moje książki</a>
                         <a class="dropdown-item py-2" href="wyloguj">Wyloguj</a>
                     </div>
                 </li>

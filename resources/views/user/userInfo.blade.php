@@ -4,86 +4,111 @@
 
 
 @section('content')
-{{-- source:https://bootsnipp.com/snippets/KA5DX --}}
-<div id="user" class="container profile col-lg-8 mb-5">
-    <div class="row">
-        <div class="col text-center mt-3">
-            <h2 class="mt-3">Dane o koncie</h2>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                        aria-controls="profile" aria-selected="true">Dane osobowe</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
-                        aria-controls="address" aria-selected="false">Dane adresowe</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="account-tab" data-toggle="tab" href="#account" role="tab"
-                        aria-controls="account" aria-selected="false">Zarządzenie kontem</a>
-                </li>
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card my-3 form-card">
+                <div class="card-header">Dane o koncie</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nav>
+                                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <a class="nav-item nav-link active" id="nav-personal-tab" data-toggle="tab"
+                                            href="#nav-personal" role="tab" aria-controls="nav-personal"
+                                            aria-selected="true">Dane osobowe</a>
+                                        <a class="nav-item nav-link" id="nav-address-tab" data-toggle="tab"
+                                            href="#nav-address" role="tab" aria-controls="nav-address"
+                                            aria-selected="false">Dane adresowe</a>
+                                        <a class="nav-item nav-link" id="nav-account-tab" data-toggle="tab"
+                                            href="#nav-account" role="tab" aria-controls="nav-account"
+                                            aria-selected="false">Zarządzanie kontem</a>
+                                    </div>
+                                </nav>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="nav-personal" role="tabpanel"
+                                        aria-labelledby="nav-personal-tab">
+                                        <div class=" col-md-8 mx-auto">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Imię:</td>
+                                                        <td>{{$user->first_name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Nazwisko:</td>
+                                                        <td>{{$user->last_name}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>PESEL:</td>
+                                                        <td>{{$user->pesel}}</td>
+                                                    </tr>
 
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <table class="table table-hover table-sm table-properties">
-                        <tr>
-                            <th>Imię</th>
-                            <td><a class="editable-input" id="fname">{{$user->first_name}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>Nazwisko</th>
-                            <td><a class="editable-input" id="lname">{{$user->last_name}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>PESEL</th>
-                            <td><a class="editable-input" id="pesel">{{$user->pesel}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>Telefon</th>
-                            <td><a class="editable-input" id="phone">{{$user->phone}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>Email</th>
-                            <td><a class="editable-input" id="email">{{$user->email}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                    <table class="table table-hover table-sm table-properties">
-                        <tr>
-                            <th>Ulica i numer domu</th>
-                            <td><a class="editable-input" id="street">{{$user->street}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>Kod pocztowy</th>
-                            <td><a class="editable-input" id="zipcode">{{$user->zipcode}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                        <tr>
-                            <th>Miasto</th>
-                            <td><a class="editable-input" id="city">{{$user->city}}<i class="fa fa-pencil ml-4"></i></a></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="tab-pane fade" id="account" role="tabpanel" aria-labelledby="account-tab">
-                    <table class="table table-hover table-sm table-properties">
-                        <tr>
-                            <th>Data utworzenia konta</th>
-                            <td>{{$user->created_at}}</td>
-                        </tr>
-                        <tr>
-                            <th>Hasło</th>
-                            <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#changePwdModal">Zmień hasło</button>
-                            </td>
-                        </tr>
-                        
-                    </table>
+                                                    <tr>
+                                                        <td>Telefon:</td>
+                                                        <td>{{$user->phone}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>E-mail:</td>
+                                                        <td>{{$user->email}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-address" role="tabpanel"
+                                        aria-labelledby="nav-address-tab">
+                                        <div class=" col-md-8 mx-auto">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td> Ulica:</td>
+                                                        <td>{{$user->street}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="width:50%">
+                                                            Numer domu:</td>
+                                                        <td>{{$user->house_number}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Kod pocztowy:</td>
+                                                        <td>{{$user->zipcode}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Miasto:</td>
+                                                        <td>{{$user->city}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="nav-account" role="tabpanel"
+                                        aria-labelledby="nav-account-tab">
+                                        <div class=" col-md-8 mx-auto">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width:50%"> Data utworzenia konta:</td>
+                                                        <td>{{date('Y-m-d', strtotime($user->created_at))}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Hasło:</td>
+                                                        <td><button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
+                                                            data-target="#changePwdModal">Zmień hasło</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Konto:</td>
+                                                        <td><button type="button" class="btn btn-sm btn-danger">Usuń konto</button></td>
+                                                    </tr> 
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -94,7 +119,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form name="changePwdModalForm" action="/reset" method="POST">
-                {{ csrf_field() }} 
+                {{ csrf_field() }}
                 <div class="modal-header">
                     <h5 class="modal-title" id="changePwdModalLabel">Zmień hasło
                     </h5>
@@ -104,21 +129,26 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row required">
-                        <label for="current_password" class="col-md-4 col-form-label control-label text-md-right">Stare hasło</label>
+                        <label for="current_password" class="col-md-4 col-form-label control-label text-md-right">Stare
+                            hasło</label>
                         <div class="col-md-6">
-                            <input type="password" id="current_password" class="form-control" name="current_password" required>
+                            <input type="password" id="current_password" class="form-control" name="current_password"
+                                required>
                         </div>
                     </div>
                     <div class="form-group required row">
-                        <label for="new_password" class="col-md-4 col-form-label control-label text-md-right">Nowe hasło</label>
+                        <label for="new_password" class="col-md-4 col-form-label control-label text-md-right">Nowe
+                            hasło</label>
                         <div class="col-md-6">
                             <input type="password" id="new_password" class="form-control" name="new_password" required>
                         </div>
                     </div>
                     <div class="form-group required row">
-                        <label for="confirm_password" class="col-md-4 col-form-label control-label text-md-right">Powtórz nowe hasło</label>
+                        <label for="confirm_password"
+                            class="col-md-4 col-form-label control-label text-md-right">Powtórz nowe hasło</label>
                         <div class="col-md-6">
-                            <input type="password" id="confirm_password" class="form-control" name="confirm_password" required>
+                            <input type="password" id="confirm_password" class="form-control" name="confirm_password"
+                                required>
                         </div>
                     </div>
                 </div>
@@ -129,76 +159,44 @@
             </form>
         </div>
     </div>
-</div>
-{{-- <div class="container py-5">
-    <div class="card border-secondary my-1">
-        <div class="h5 card-header">
-            <div class="row px-2">
-                Szczegóły
-                <div class="ml-auto">
+</div> 
 
-                </div>
-            </div>
-        </div>
-
-        <div class="card-body">
-            <div class=card-text">
-                <ul class="list-unstyled">
-                    <li><strong>Imię: </strong><a class="editable-input" id="fname">{{$user->first_name}}<i
-    class="fa fa-pencil-alt ml-2"></i></a></li>
-<li><strong>Nazwisko: </strong><a class="editable-input" id="lname">{{$user->last_name}}<i
-            class="fa fa-pencil-alt ml-2"></i></a></li>
-<li><strong>PESEL: </strong><a class="editable-input" id="pesel">{{$user->pesel}}<i
-            class="fa fa-pencil-alt ml-2"></i></a></li>
-<li><strong>Telefon: </strong><a class="editable-input" id="phone">{{$user->phone}}<i
-            class="fa fa-pencil-alt ml-2"></i></a></li>
-<li><strong>E-mail: </strong><a class="editable-input" id="email">{{$user->email}}<i
-            class="fa fa-pencil-alt ml-2"></i></a></li>
-<li><strong>Data utworzenia konta: </strong>{{$user->created_at}}</li>
-
-
-</ul>
-</div>
-</div>
-</div>
-</div> --}}
 
 
 
 <script>
+    // $.fn.editable.defaults.mode = 'inline';
+    // var id = {!! json_encode($user->id) !!};
 
-    $.fn.editable.defaults.mode = 'inline';
-    var id = {!! json_encode($user->id) !!};
+    // $(document).ready(
+    //     function(){
+    //         $.ajaxSetup({
+    //             headers: {
+    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //             }
+    //         });
 
-    $(document).ready(
-        function(){
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            $('.editable-input').editable({
-                validate: function(value) {
-                    if($.trim(value) == '')
-                        return 'Podaj wartość';
-                },
-                type: 'text',
-                placement: 'right',
-                send:'always',
-                pk: id,
-                url: '/pracownik/czytelnicy/'+ id + '/edycja',
-                ajaxOptions: {
-                    dataType: 'json',
-                    type: 'post'
-                },
-                success:function(data){
-            location.reload();
-            alert(data.success);
-         },
-            });
-        }
-    );
+    //         $('.editable-input').editable({
+    //             validate: function(value) {
+    //                 if($.trim(value) == '')
+    //                     return 'Podaj wartość';
+    //             },
+    //             type: 'text',
+    //             placement: 'right',
+    //             send:'always',
+    //             pk: id,
+    //             url: '/pracownik/czytelnicy/'+ id + '/edycja',
+    //             ajaxOptions: {
+    //                 dataType: 'json',
+    //                 type: 'post'
+    //             },
+    //             success:function(data){
+    //         location.reload();
+    //         alert(data.success);
+    //      },
+    //         });
+    //     }
+    // );
 </script>
 
 @endsection

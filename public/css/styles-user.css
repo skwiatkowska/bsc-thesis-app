@@ -10,6 +10,11 @@ colors:
 
 body{
   background-color:#edf2f4;
+  font-size: 15px;
+}
+
+th{
+  background-color:#8d99ae!important;
 }
 .page-footer, .navbar, .dropdown-menu {
   background-color: #2b2d42;
@@ -34,184 +39,12 @@ body{
   color: #024059;
 }
 
-/* #msform {
-  text-align: center;
-  position: relative;
-  margin-top: 0px;
-}
-
-#msform fieldset .form-card {
-  background: white;
-  border: 0 none;
-  border-radius: 0px;
-  box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-  padding: 20px 40px 20px 40px;
-  box-sizing: border-box;
-  width: 94%;
-  margin: 0 3% 20px 3%;
-  position: relative;
-}
-
-#msform fieldset {
-  background: white;
-  border: 0 none;
-  border-radius: 0.5rem;
-  box-sizing: border-box;
-  width: 100%;
-  margin: 0;
-  padding-bottom: 20px;
-  position: relative;
-}
-
-#msform fieldset:not(:first-of-type) {
-  display: none;
-}
-
-#msform fieldset .form-card {
-  text-align: left;
-  color: #9e9e9e;
-  min-height: 284px;
-}
-
-#msform input,
-#msform textarea {
-  padding: 0px 8px 4px 8px;
-  border: none;
-  border-bottom: 1px solid #ccc;
-  border-radius: 0px;
-  margin-bottom: 20px;
-  margin-top: 2px;
-  width: 100%;
-  box-sizing: border-box;
-  color: #2c3e50;
-  font-size: 16px;
-  letter-spacing: 1px;
-}
-
-#msform input:focus,
-#msform textarea:focus {
-  box-shadow: none !important;
-  border: none;
-  font-weight: bold;
-  border-bottom: 2px solid #f07167;
-  outline-width: 0;
-}
-
-#msform .action-button {
-  width: 100px;
-  background: #f07167;
-  font-weight: bold;
-  color: white;
-  border: 0 none;
-  border-radius: 0px;
-  cursor: pointer;
-  padding: 10px 5px;
-  margin: 10px 5px;
-}
-
-#msform .action-button:hover,
-#msform .action-button:focus {
-  box-shadow: 0 0 0 2px white, 0 0 0 3px skyblue;
-}
-
-#msform .action-button-previous {
-  width: 100px;
-  background: #616161;
-  font-weight: bold;
-  color: white;
-  border: 0 none;
-  border-radius: 0px;
-  cursor: pointer;
-  padding: 10px 5px;
-  margin: 10px 5px;
-}
-
-#msform .action-button-previous:hover,
-#msform .action-button-previous:focus {
-  box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-} */
-
-
 .card-borderless {
   z-index: 0;
   border-radius: 0.5rem;
   border: none;
   position: relative;
 }
-
-/* .fs-title {
-  font-size: 25px;
-  color: #2c3e50;
-  margin-bottom: 5px;
-  font-weight: bold;
-  text-align: left;
-} */
-
-/* #progressbar {
-  margin-bottom: 14px;
-  overflow: hidden;
-  color: lightgrey;
-}
-
-#progressbar .active {
-  color: #000000;
-}
-
-#progressbar li {
-  list-style-type: none;
-  font-size: 12px;
-  width: 25%;
-  float: left;
-  position: relative;
-} */
-
-/* #progressbar #account:before {
-  font-family: FontAwesome;
-  content: "\f023";
-}
-
-#progressbar #personal:before {
-  font-family: FontAwesome;
-  content: "\f007";
-}
-#progressbar #address:before {
-  font-family: FontAwesome;
-  content: "\f015";
-}
-
-#progressbar #confirm:before {
-  font-family: FontAwesome;
-  content: "\f00c";
-} */
-
-/* #progressbar li:before {
-  width: 50px;
-  height: 50px;
-  line-height: 45px;
-  display: block;
-  font-size: 18px;
-  color: #ffffff;
-  background: lightgray;
-  border-radius: 50%;
-  margin: 0 auto 10px auto;
-  padding: 2px;
-}
-
-#progressbar li:after {
-  content: "";
-  width: 100%;
-  height: 2px;
-  background: lightgray;
-  position: absolute;
-  left: 0;
-  top: 25px;
-  z-index: -1;
-} */
-
-/* #progressbar li.active:before,
-#progressbar li.active:after {
-  background:  #ef233c;
-} */
 
 .form-group.required .control-label:after {
   content: "*";
@@ -340,10 +173,48 @@ font-weight: bold;
   position: relative;
   z-index: 1;
   background: #ffffff;
-  text-align: center;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
 .custom-control-label::before {
   left: auto; 
+}
+
+.project-tab {
+  padding: 10%;
+  margin-top: -8%;
+}
+.project-tab #tabs{
+  color: #eee;
+}
+.project-tab #tabs h6.section-title{
+  color: #eee;
+}
+.project-tab #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  color: #ef233c;
+  background-color: transparent;
+  border-color: transparent transparent #f3f3f3;
+  border-bottom: 3px solid !important;
+  font-size: 16px;
+  font-weight: bold;
+}
+.project-tab .nav-link {
+  border: 1px solid transparent;
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+  color: #ef233c;
+  font-size: 16px;
+  font-weight: 600;
+}
+.project-tab .nav-link:hover {
+  border: none;
+}
+.project-tab thead{
+  background: #f3f3f3;
+  color: #333;
+}
+.project-tab a{
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
 }

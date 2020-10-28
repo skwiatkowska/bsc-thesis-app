@@ -8,9 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PublisherController extends Controller {
-
-
-
     public function index() {
         $publishers = Publisher::all();
         return view('/admin/publishers', ['publishers' => $publishers]);

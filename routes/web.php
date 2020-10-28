@@ -26,13 +26,18 @@ Route::get('/', 'HomeController@index');
 Route::get('/kontakt', 'HomeController@contact');
 Route::get('/pierwsze-kroki', 'HomeController@firstSteps');
 Route::get('/godziny-otwarcia', 'HomeController@workingHours');
-Route::get('/katalog', 'User\BookController@index');
-Route::post('/katalog', 'User\BookController@findBook');
+Route::get('/katalog', 'User\BookController@findBook');
+Route::get('/autorzy/{id}', 'User\BookController@fetchAuthor');
+Route::get('/wydawnictwa/{id}', 'User\BookController@fetchPublisher');
+Route::get('/ksiazki/{id}', 'User\BookController@fetchBook');
+
+
 
 Route::group(['middleware' => 'user'], function () {
     Route::get('/wyloguj', 'Auth\LoginController@userLogout')->name('logout');
     Route::post('/reset','Auth\ResetPasswordController@changePassword')->name('changePassword');
     Route::get('/dane', 'User\UserController@userInfo');
+    Route::get('/moje-ksiazki', 'User\BookController@userIndex');
 });
 
 
