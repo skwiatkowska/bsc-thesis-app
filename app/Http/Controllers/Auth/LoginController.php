@@ -49,10 +49,10 @@ class LoginController extends Controller {
     }
 
     public function adminLogin(Request $request) {
-        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
             return redirect()->intended('/pracownik')->with(['success' => 'Zalogowano']);
         }
-        return back()->withErrors("Podano błędne dane logowania");
+        return back()->withErrors("Podano błędne dane logowania")->withInput($request->only('email', 'remember'));
     }
 
 

@@ -27,8 +27,12 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
         integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous">
     </script>
-    <!-- Include the above in your HEAD tag -->
 
+    <style>
+        .custom-control-label::before {
+            top: 0.5rem;
+        }
+    </style>
 </head>
 
 {{-- source: https://bootsnipp.com/snippets/MR9Al --}}
@@ -56,8 +60,16 @@
             <h2 class="mb-5"><strong>Panel pracownika</strong></h2>
             <form class="login-form" action="/pracownik/logowanie" method="POST">
                 {{ csrf_field() }}
-                <input type="text" name="email" placeholder="Login" />
+                <input type="text" name="email" value="{{ old('email') }}" placeholder="Login" />
                 <input type="password" name="password" placeholder="Hasło" />
+
+                {{-- <div class="custom-control text-left">
+                    <input type="checkbox" class="custom-control-input my-auto" id="remember" name="remember"
+                        {{ old('remember') ? 'checked' : '' }}>
+                    <label class="custom-control-label pt-0" for="remember">Zapamiętaj mnie</label>
+                </div> --}}
+
+
                 <button type="submit" class="mt-5">Zaloguj się</button>
             </form>
         </div>
