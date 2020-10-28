@@ -76,9 +76,9 @@
                         <i class="fa fa-user mr-2"></i>Witaj, {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                     </a>
                     <div class="dropdown-menu list-right">
-                        <a class="dropdown-item py-2" href="dane">Moje dane</a>
-                        <a class="dropdown-item py-2" href="moje-ksiazki">Moje książki</a>
-                        <a class="dropdown-item py-2" href="wyloguj">Wyloguj</a>
+                        <a class="dropdown-item py-2" href="/dane">Moje dane</a>
+                        <a class="dropdown-item py-2" href="/moje-ksiazki">Moje książki</a>
+                        <a class="dropdown-item py-2" href="/wyloguj">Wyloguj</a>
                     </div>
                 </li>
                 @else

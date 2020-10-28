@@ -192,7 +192,7 @@
                         <label for="house_number" class="col-md-4 col-form-label control-label text-md-right">Numer
                             domu</label>
                         <div class="col-md-6">
-                            <input type="number" id="house_number" name="house_number" class="form-control" required>
+                            <input type="text" id="house_number" name="house_number" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row required">

@@ -94,13 +94,21 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Hasło:</td>
-                                                        <td><button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
-                                                            data-target="#changePwdModal">Zmień hasło</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-secondary"
+                                                                data-toggle="modal" data-target="#changePwdModal">Zmień
+                                                                hasło</button></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Dane:</td>
+                                                        <td>
+                                                            <a href="/zmien-dane" type="button"
+                                                                class="btn btn-sm btn-secondary">Zmień dane</a></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Konto:</td>
-                                                        <td><button type="button" class="btn btn-sm btn-danger">Usuń konto</button></td>
-                                                    </tr> 
+                                                        <td><button type="button" class="btn btn-sm btn-danger">Usuń
+                                                                konto</button></td>
+                                                    </tr>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -118,7 +126,7 @@
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form name="changePwdModalForm" action="/reset" method="POST">
+            <form name="changePwdModalForm" action="/zmien-haslo" method="POST">
                 {{ csrf_field() }}
                 <div class="modal-header">
                     <h5 class="modal-title" id="changePwdModalLabel">Zmień hasło
@@ -159,7 +167,7 @@
             </form>
         </div>
     </div>
-</div> 
+</div>
 
 
 

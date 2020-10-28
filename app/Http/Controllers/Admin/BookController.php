@@ -139,7 +139,6 @@ class BookController extends Controller {
             $book->authors()->save($a);
         }
 
-
         $book->save();
         return redirect("/pracownik/ksiazki/" . $book->id)->with(['success' => 'Dane książki zostały zaktualizowane']);
     }

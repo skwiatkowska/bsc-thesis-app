@@ -15,16 +15,16 @@
         <div class="card-body">
             <div class="card-text">
                 <ul class="list-unstyled">
-                    <li><strong>Tytuł: </strong>{{$book->title}}</li>
+                    <li><strong>Tytuł: </strong>"{{$book->title}}"</li>
                     <li><strong>ISBN: </strong>{{$book->isbn}}</li>
                     <li><strong>Autorzy: </strong>
                         @foreach ($book->authors as $author)
-                        <a href="/pracownik/autorzy/{{$author->id}}" class="a-link-navy">{{$author->last_name}},
+                        <a href="/autorzy/{{$author->id}}" class="a-link-navy">{{$author->last_name}},
                             {{$author->first_names}}</a>
                         {{ $loop->last ? '' : ' •' }}
                         @endforeach
                     </li>
-                    <li><strong>Wydawnictwo: </strong><a href="/pracownik/wydawnictwa/{{$book->publisher->id}}"
+                    <li><strong>Wydawnictwo: </strong><a href="/wydawnictwa/{{$book->publisher->id}}"
                             class="a-link-navy">{{$book->publisher->name}}</a>
                     </li>
                     <li><strong>Rok wydania: </strong>{{$book->publication_year}}</li>
@@ -51,8 +51,7 @@
                     <tbody class="item-table">
                         @foreach ($book->bookItems as $item)
                         <tr>
-                            <td><a href="/pracownik/egzemplarze/{{$item->id}}"
-                                    class="a-link-navy"><strong>{{$item->book_item_id}}</strong></a>
+                            <td><strong>{{$item->book_item_id}}</strong>
                             </td>
                             @if($item->is_blocked)
                             <td style="text-decoration: line-through;">

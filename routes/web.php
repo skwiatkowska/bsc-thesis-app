@@ -35,8 +35,10 @@ Route::get('/ksiazki/{id}', 'User\BookController@fetchBook');
 
 Route::group(['middleware' => 'user'], function () {
     Route::get('/wyloguj', 'Auth\LoginController@userLogout')->name('logout');
-    Route::post('/reset','Auth\ResetPasswordController@changePassword')->name('changePassword');
+    Route::post('/zmien-haslo','Auth\ResetPasswordController@changePassword')->name('changePassword');
     Route::get('/dane', 'User\UserController@userInfo');
+    Route::get('/zmien-dane', 'User\UserController@editProfile');
+    Route::post('/zmien-dane', 'User\UserController@updateProfile');
     Route::get('/moje-ksiazki', 'User\BookController@userIndex');
 });
 
