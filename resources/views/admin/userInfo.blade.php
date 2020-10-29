@@ -236,7 +236,7 @@
                                     <td>
                                         @if(!$borrowing->was_prolonged)
                                         <form>
-                                            <button type="submit" onclick="confirmProlongation()"
+                                            <button type="submit"
                                                 title="Jednorazowo przedłuż czas oddania o 1 miesiąć"
                                                 class="btn btn-sm btn-light prolong-book">Prolonguj</button>
                                             <input type="hidden" name="id" value="{{$borrowing->bookItem->id}}">
@@ -398,6 +398,9 @@
     //prolong a book
     $(".prolong-book").click(function(e){
         e.preventDefault();
+        var confirmed = confirm('Możesz jednorazowo przedłużyć czas na zwrot tej książki o 1 miesiąc. Czy na pewno chcesz to zrobić?');
+
+        if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
             type:'POST',
@@ -412,6 +415,7 @@
                 alert(data.responseJSON.error);
             }
         });
+    }
     });
 
 

@@ -82,7 +82,7 @@
                             </td>
                             <td> @if($item->status == "Dostępne" && !$item->is_blocked)
                                 @auth
-                                {{-- <form name="newBookingConfirmForm" action="/wypozycz" method="POST">
+                                {{-- <form name="newBookingConfirmForm" action="/zarezerwuj" method="POST">
                                     {{ csrf_field() }}
                                 <input type="hidden" name="bookItemId" value="{{$item->id}}">
 
@@ -107,7 +107,7 @@
                             aria-labelledby="newReservationModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
-                                    <form name="newBookingConfirmForm" action="/wypozycz" method="POST">
+                                    <form name="newBookingConfirmForm" action="/zarezerwuj" method="POST">
                                         {{ csrf_field() }}
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="newReservationModalLabel">Potwierdź rezerwację

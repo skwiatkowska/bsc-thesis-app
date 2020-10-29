@@ -29,7 +29,7 @@
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-reservation" role="tabpanel"
                                         aria-labelledby="nav-reservation-tab">
-                                        <div class=" col-md-8 mx-auto mt-5">
+                                        <div class=" col-md-10 mx-auto mt-5">
                                             <table class="table table-striped table-bordered text-center mt-1">
                                                 <thead>
                                                     <tr>
@@ -66,15 +66,17 @@
 
 
                                                         <td>
-                                                            <button type="button" title="Wypożyczenie"
+                                                            <form action="/anuluj-rezerwacje" method="POST" onsubmit="return confirm('Czy na pewno chcesz anulować rezerwację?');">
+                                                                {{ csrf_field() }}
+                                                            <button type="submit" title="Wypożyczenie"
                                                                 class="btn btn-sm btn-secondary mb-2"
-                                                                data-toggle="modal"
-                                                                data-target="#borrowBookItemModal-{{$reservation->bookItem->id}}">Anuluj
-                                                                rezerwację</button>
+                                                                >Anuluj rezerwację</button>
+                                                                <input type="hidden" name="id" value="{{$reservation->id}}">
+
+                                                            </form>
                                                         </td>
                                                     </tr>
                                                     @endif
-                                                
 
                                                     @endforeach
                                                 </tbody>
@@ -83,7 +85,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-borrowing" role="tabpanel"
                                         aria-labelledby="nav-borrowing-tab">
-                                        <div class=" col-md-8 mx-auto mt-5">
+                                        <div class=" col-md-10 mx-auto mt-5">
                                             <table class="table table-bordered text-center">
                                                 <thead>
                                                     <tr>
@@ -91,7 +93,7 @@
                                                         <th>Autorzy</th>
                                                         <th>Wypożyczono</th>
                                                         <th>Zwrot</th>
-                                                        <th colspan="2">Akcja</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="item-table">
@@ -118,25 +120,19 @@
                                                         <td>
                                                             @if(!$borrowing->was_prolonged)
                                                             <form>
-                                                                <button type="submit" onclick="confirmProlongation()"
+                                                                <button type="submit"
                                                                     title="Jednorazowo przedłuż czas oddania o 1 miesiąć"
-                                                                    class="btn btn-sm btn-light prolong-book">Prolonguj</button>
+                                                                    class="btn btn-sm btn-secondary prolong-book">Prolonguj</button>
                                                                 <input type="hidden" name="id"
                                                                     value="{{$borrowing->bookItem->id}}">
                                                             </form>
                                                             @else
                                                             <button type="submit"
                                                                 title="Brak możliwości ponownej prolongaty"
-                                                                class="btn btn-sm btn-light prolong-book"
+                                                                class="btn btn-sm btn-secondary prolong-book"
                                                                 disabled>Prolonguj</button>
                                                             @endif </td>
-                                                        <td>
-                                                            @if($borrowing->bookItem->status == "Wypożyczone")
-                                                            <button type="button" title="Zwrot"
-                                                                class="btn btn-sm btn-primary mb-2" data-toggle="modal"
-                                                                data-target="#returnBookItemModal-{{$borrowing->bookItem->id}}">Zwrot</button>
-                                                            @endif
-                                                        </td>
+                                                       
                                                     </tr>
                                                     @endif
 
@@ -258,4 +254,29 @@
     }
     });
 </script>
+@endsection
+
+@section('script')
+{{-- //prolong a book
+        $(".prolong-book").click(function(e){
+        e.preventDefault();
+         var confirmed = confirm('Możesz jednorazowo przedłużyć czas na zwrot tej książki o 1 miesiąc. Czy na pewno chcesz to zrobić?');
+
+        if (confirmed) {
+        var id = $("input[name=id]", this.form).val();
+        $.ajax({
+            type:'POST',
+            dataType : 'json',
+            url:'/egzemplarze/'+id+'/prolonguj',
+            data: {_token:"{{csrf_token()}}", id: id},
+            success:function(data){
+                location.reload();
+                alert(data.success);
+            },
+            error: function(data){
+                alert(data.responseJSON.error);
+            }
+        });
+    }
+    }); --}}
 @endsection

@@ -13,9 +13,9 @@
                     <a href="{{$book->id}}/edycja" class="btn px-2 my-auto" title="Edytuj"><i
                             class="fa fa-pencil-alt"></i></a>
 
-                    <form action="/pracownik/ksiazki/{{$book->id}}/usun" method="POST">
+                    <form action="/pracownik/ksiazki/{{$book->id}}/usun" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć na stałe?');">
                         {{ csrf_field() }}
-                        <button type="submit" onclick="confirmDeletion()" title="Usuń książkę na stałe"
+                        <button type="submit" title="Usuń książkę na stałe"
                             class="btn delete-book" style="background:transparent;"><i
                                 class="fa fa-trash-alt"></i></button>
                         <input type="hidden" name="id" value="{{$book->id}}">
@@ -138,7 +138,7 @@
                                         <input type="hidden" name="id" value="{{$item->id}}">
                                     </form>
                                     <form>
-                                        <button type="submit" onclick="confirmDeletion()" title="Usuń na stałe"
+                                        <button type="submit" title="Usuń na stałe"
                                             class="btn btn-sm delete-item" style="background:transparent;"><i
                                                 class="fa fa-trash"></i></button>
                                         <input type="hidden" name="id" value="{{$item->id}}">
@@ -238,6 +238,8 @@ $(".block-item").click(function(e){
       //delete an item
 $(".delete-item").click(function(e){
       e.preventDefault();
+      var confirmed = confirm('Czy na pewno chcesz usunąć na stałe?');
+      if(confirmed){
       var id = $("input[name=id]", this.form).val();
       console.log(id);
       $.ajax({
@@ -253,6 +255,7 @@ $(".delete-item").click(function(e){
             alert(data.responseJSON.error);
           }
     });
+    }
   });
 
 
