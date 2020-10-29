@@ -7,6 +7,7 @@ use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 use App\Entities\Category;
 use App\Entities\Author;
 use App\Entities\Publisher;
+use App\Entities\BookItem;
 
 class Book extends NeoEloquent {
 
@@ -16,9 +17,7 @@ class Book extends NeoEloquent {
         'id',
         'title',
         'isbn',
-        'pages_number',
         'publication_year',
-        'book_items_number',
         'created_at',
         'updated_at'
     ];
@@ -30,7 +29,7 @@ class Book extends NeoEloquent {
     ];
 
     public function categories() {
-        return $this->belongsToMany(Category::class, 'CONSISTS_OF');
+        return $this->belongsToMany(Category::class, 'HAS_BOOK');
     }
 
     public function authors() {
@@ -41,8 +40,12 @@ class Book extends NeoEloquent {
         return $this->belongsTo(Publisher::class, 'PUBLISHED');
     }
 
+    public function bookItems() {
+        return $this->hasMany(BookItem::class, 'HAS_ITEM');
+    }
+
     public function deleteRelatedCategory($categoryId) {
-        $cypher = "MATCH (cat:Category)-[c:CONSISTS_OF]->(book:Book) WHERE ID(cat)=$categoryId AND ID(book)=$this->id DELETE c;";
+        $cypher = "MATCH (cat:Category)-[c:HAS_BOOK]->(book:Book) WHERE ID(cat)=$categoryId AND ID(book)=$this->id DELETE c;";
         return DB::select($cypher);
     }
 
@@ -53,6 +56,11 @@ class Book extends NeoEloquent {
 
     public function deleteRelatedPublisher($publisherId) {
         $cypher = "MATCH (publisher:Publisher)-[p:PUBLISHED]->(book:Book) WHERE ID(publisher)=$publisherId AND ID(book)=$this->id DELETE p;";
+        return DB::select($cypher);
+    }
+
+    public function deleteRelatedBookItem($bookItemId) {
+        $cypher = "MATCH (book:Book)-[h:HAS_ITEM]->(item:BookItem) WHERE ID(item)=$bookItemId AND ID(book)=$this->id DELETE h;";
         return DB::select($cypher);
     }
 }

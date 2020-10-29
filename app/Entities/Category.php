@@ -24,7 +24,7 @@ class Category extends NeoEloquent{
 
 
     public function books(){
-        return $this->hasMany(Book::class,'CONSISTS_OF');
+        return $this->hasMany(Book::class,'HAS_BOOK');
     }
 
 }

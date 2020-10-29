@@ -1,69 +1,95 @@
-@extends('layouts.layout')
+@extends('layouts.user')
 
 @section('title', 'Załóż nowe konto')
 
 @section('content')
 
-{{-- source: https://bbbootstrap.com/snippets/multi-step-form-wizard-30467045 --}}
-<div class="container">
-    <!-- MultiStep Form -->
-    <div class="container-fluid" id="grad1">
-        <div class="row justify-content-center mt-0">
-            <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
-                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                    <h2><strong>Załóż nowe konto Czytelnika</strong></h2>
-                    <div class="row">
-                        <div class="col-md-12 mx-0">
-                            <form id="msform">
-                                {{ csrf_field() }}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card my-3 form-card">
+                <div class="card-header">Rejestracja</div>
+                <div class="card-body">
+                    <form name="newUserForm" action="/rejestracja" method="POST">
+                        {{ csrf_field() }}
 
-                                <!-- progressbar -->
-                                <ul id="progressbar">
-                                    <li class="active" id="account"><strong>Konto</strong></li>
-                                    <li id="personal"><strong>Dane osobowe</strong></li>
-                                    <li id="confirm"><strong>Koniec</strong></li>
-                                </ul> <!-- fieldsets -->
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Informacje o koncie</h2>
-
-                                        <input class="mt-4" type="email" name="email" placeholder="Adres e-mail" required />
-                                        <input type="password" name="pwd" placeholder="Hasło" required />
-                                        <input type="password" name="cpwd" placeholder="Powtórz hasło" required/>
-                                    </div>
-                                    <input type="button" name="next" class="next action-button" value="Dalej" />
-                                </fieldset>
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Informacje osobiste</h2>
-
-                                        <input type="text" name="fname" placeholder="Imię" required/>
-                                        <input type="text" name="lname" placeholder="Nazwisko" required/>
-                                        <input type="text" name="pesel" placeholder="PESEL" required/>
-                                        <input type="text" name="phone" placeholder="Numer telefonu" required/>
-                                    </div> <input type="button" name="previous" class="previous action-button-previous"
-                                        value="Cofnij" /> <input type="button" name="next" class="next action-button"
-                                        value="Zarejestruj" />
-                                </fieldset>
-
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title text-center">Gratulacje</h2> <br><br>
-                                        <div class="row justify-content-center">
-                                            <div class="col-3"> <img
-                                                    src="https://img.icons8.com/color/96/000000/ok--v2.png"
-                                                    class="fit-image"> </div>
-                                        </div> <br><br>
-                                        <div class="row justify-content-center">
-                                            <div class="col-7 text-center">
-                                                <h5>Twoje konto zostało utworzone</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
-                            </form>
+                        <div class="form-group row required">
+                            <label for="fname" class="col-md-4 col-form-label control-label text-md-right">Imię</label>
+                            <div class="col-md-6">
+                                <input type="text" id="fname" class="form-control" name="fname" required>
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group row required">
+                            <label for="lname"
+                                class="col-md-4 col-form-label control-label text-md-right">Nazwisko</label>
+                            <div class="col-md-6">
+                                <input type="text" id="lname" class="form-control" name="lname" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row required">
+                            <label for="pesel" class="col-md-4 col-form-label control-label text-md-right">PESEL
+                            </label>
+                            <div class="col-md-6 col-lg-2">
+                                <input type="text" id="pesel" class="form-control" name="pesel" required>
+
+                            </div>
+                            <label for="phone"
+                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Telefon
+                            </label>
+                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
+                                <input type="text" id="phone" name="phone" class="form-control" required>
+
+                            </div>
+                        </div>
+
+
+                        <div class="form-group row required">
+                            <label for="email"
+                                class="col-md-4 col-form-label control-label text-md-right">E-Mail</label>
+                            <div class="col-md-6">
+                                <input type="text" id="email" class="form-control" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row required">
+                            <label for="street"
+                                class="col-md-4 col-form-label control-label text-md-right">Ulica</label>
+                            <div class="col-md-6">
+                                <input type="text" id="street" class="form-control" name="street" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row required">
+                            <label for="house_number" class="col-md-4 col-form-label control-label text-md-right">Nr
+                                domu</label>
+                            <div class="col-md-6 col-lg-2">
+                                <input type="text" id="house_number" class="form-control" name="house_number"
+                                    required>
+
+                            </div>
+                            <label for="zipcode"
+                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Kod
+                                poczt.
+                            </label>
+                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
+                                <input type="text" id="zipcode" class="form-control" name="zipcode" required>
+                            </div>
+                        </div>
+                        <div class="form-group row required">
+                            <label for="city" class="col-md-4 col-form-label control-label text-md-right">Miasto</label>
+                            <div class="col-md-6">
+                                <input type="text" id="city" class="form-control" name="city" required>
+                            </div>
+                        </div>
+                        <input type="hidden" name="isModal" value="false">
+                        <div class="row d-flex justify-content-center">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                Zarejestruj się
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
