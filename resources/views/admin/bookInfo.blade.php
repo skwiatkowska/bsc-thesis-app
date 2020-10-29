@@ -107,6 +107,8 @@
                                 Zwrot: {{date('Y-m-d', strtotime($b->due_date))}}
                                 @endif
                                 @endforeach
+                                @elseif($item->status == "Zarezerwowane")
+                                Rezerwacja ważna do: {{date('Y-m-d', strtotime($b->due_date))}}
                                 @elseif($item->is_blocked)
                                 Zablokowane
                                 @endif

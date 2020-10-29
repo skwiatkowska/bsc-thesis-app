@@ -66,10 +66,10 @@
 
 
                                                         <td>
-                                                            <form action="/anuluj-rezerwacje" method="POST" onsubmit="return confirm('Czy na pewno chcesz anulować rezerwację?');">
+                                                            <form >
                                                                 {{ csrf_field() }}
-                                                            <button type="submit" title="Wypożyczenie"
-                                                                class="btn btn-sm btn-secondary mb-2"
+                                                            <button type="submit" title="Anuluj rezerwację"
+                                                                class="btn btn-sm btn-secondary mb-2 cancel-reservation"
                                                                 >Anuluj rezerwację</button>
                                                                 <input type="hidden" name="id" value="{{$reservation->id}}">
 
@@ -253,11 +253,8 @@
         $( "<h6 class='text-center'>Brak</h6>" ).insertBefore(this);
     }
     });
-</script>
-@endsection
 
-@section('script')
-{{-- //prolong a book
+    //prolong a book
         $(".prolong-book").click(function(e){
         e.preventDefault();
          var confirmed = confirm('Możesz jednorazowo przedłużyć czas na zwrot tej książki o 1 miesiąc. Czy na pewno chcesz to zrobić?');
@@ -267,16 +264,34 @@
         $.ajax({
             type:'POST',
             dataType : 'json',
-            url:'/egzemplarze/'+id+'/prolonguj',
+            url:'/moje-ksiazki/'+id+'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();
                 alert(data.success);
             },
-            error: function(data){
-                alert(data.responseJSON.error);
-            }
         });
     }
-    }); --}}
+    });
+
+    //cancel a reservation
+    $(".cancel-reservation").click(function(e){
+        e.preventDefault();
+         var confirmed = confirm('Czy na pewno chcesz anulować rezerwację?');
+
+        if (confirmed) {
+        var id = $("input[name=id]", this.form).val();
+        $.ajax({
+            type:'POST',
+            dataType : 'json',
+            url:'/anuluj-rezerwacje',
+            data: {_token:"{{csrf_token()}}", id: id},
+            success:function(data){
+                location.reload();
+                alert(data.success);
+            },
+        });
+    }
+    });
+</script>
 @endsection

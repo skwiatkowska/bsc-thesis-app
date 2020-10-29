@@ -7,10 +7,8 @@ use App\Entities\Book;
 use App\Entities\BookItem;
 use App\Entities\Category;
 use App\Entities\Publisher;
-use App\Entities\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Console\Presets\React;
 
 class BookController extends Controller {
 

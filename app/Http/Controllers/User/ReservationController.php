@@ -31,18 +31,9 @@ class ReservationController extends Controller {
     public function cancelReservation(Request $request){
         $reservation = Reservation::where('id', $request->id)->get()->first();
         $reservation->delete();
-        return redirect('/moje-ksiazki')->with(['success' => 'Rezerwacja została anulowana']);
+        return response()->json(['success' => 'Rezerwacja została anulowana']);
 
-        // $user = Auth::user();
-        // $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
-        // if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
-        //     return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
-        // }
-        // $reservation = new Reservation(['reservation_date' => new DateTime(), 'due_date' => new DateTime("+3 days")]);
-        // $item->update(['status' => BookItem::RESERVED]);
-        // $user->reservations($item)->save($reservation);
-        // return redirect('/moje-ksiazki')->with(['success' => 'Książka ' . $item->book->title . ' została wypożyczona']);
-
+        // return redirect('/moje-ksiazki')->with(['success' => 'Rezerwacja została anulowana']);
     }
     
     // public function confirmReservation(Request $request){

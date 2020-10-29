@@ -4,10 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Entities\Author;
 use App\Entities\Book;
+use App\Entities\BookItem;
 use App\Entities\Category;
 use App\Entities\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DateTime;
 
 use App\Http\Controllers\Controller;
 
@@ -121,5 +123,15 @@ class BookController extends Controller {
         return view('/publisherInfo', ['publisher' => $publisher]);
     }
 
-  
+    public function prolongBookItem(Request $request) {
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
+        foreach ($item->borrowings as $borrowing) {
+            if (!isset($borrowing->actual_return_date) && !$borrowing->was_prolonged) {
+                $due_date = new DateTime($borrowing->due_date);
+                $new_due_date = $due_date->modify('+1 month');
+                $borrowing->update(['due_date' => $new_due_date, 'was_prolonged' => true]);
+            }
+        }
+        return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
+    }
 }
