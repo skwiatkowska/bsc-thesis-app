@@ -44,7 +44,7 @@ class LoginController extends Controller {
 
     public function showAdminLoginForm() {
         // Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
-        
+
         return view('admin.login');
     }
 
@@ -56,13 +56,13 @@ class LoginController extends Controller {
     }
 
 
-    public function adminLogout () {
+    public function adminLogout() {
         Auth::guard('admin')->logout();
         return redirect('/pracownik/logowanie')->with(['success' => 'Wylogowano']);
     }
 
 
-    
+
     public function showUserLoginForm() {
         return view('login');
     }
@@ -74,13 +74,17 @@ class LoginController extends Controller {
         // ]);
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->intended('/')->with(['success' => 'Zalogowano']);
+            if ($request->isModal == 'true') {
+                redirect()->back()->with(['success' => 'Zalogowano']);
+            } else {
+                return redirect()->intended('/')->with(['success' => 'Zalogowano']);
+            }
         }
         return back()->withErrors("Podano błędne dane logowania");
     }
 
 
-    public function userLogout () {
+    public function userLogout() {
         Auth::logout();
         return redirect('/')->with(['success' => 'Wylogowano']);
     }

@@ -54,6 +54,7 @@
                         <th style="width: 15%">Wydawnictwo</th>
                         <th style="width: 10%">ISBN</th>
                         <th style="width: 10%">Egzemplarze</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -63,6 +64,7 @@
                         <th>Wydawnictwo</th>
                         <th>ISBN</th>
                         <th>Egzemplarze</th>
+                        <th></th>
                     </tr>
                 </tfoot>
 
@@ -84,6 +86,9 @@
                         <td>{{$book->isbn}}</td>
                         <td>
                             {{$book->bookItems->count()}}
+                        </td>
+                        <td>
+                            <a href="/ksiazki/{{$book->id}}" type="button" class="btn btn-sm btn-primary">Wybierz</a>
                         </td>
                     </tr>
                     @endforeach

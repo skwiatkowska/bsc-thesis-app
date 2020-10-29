@@ -7,13 +7,22 @@ use App\Entities\Book;
 use App\Entities\Category;
 use App\Entities\Publisher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Controllers\Controller;
 
 class BookController extends Controller {
 
+    public function userIndex() {
+        $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->get()->first();
+        // dd($user);
+        return view('user/userBooks', ['user' => $user]);
+    }
+
     public function fetchBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->get()->first();
-        return view('/bookInfo', ['book' => $book]);
+        $user = Auth::user();
+        return view('/bookInfo', ['book' => $book, 'user' => $user]);
     }
 
     public function findBook(Request $request) {
@@ -111,4 +120,6 @@ class BookController extends Controller {
         $publisher = Publisher::where('id', $id)->with('books')->get()->first();
         return view('/publisherInfo', ['publisher' => $publisher]);
     }
+
+  
 }

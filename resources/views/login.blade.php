@@ -27,9 +27,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                        
-                        <label for="remember" class="col-form-label control-label mx-auto"><input type="checkbox" id="remember" class="mr-2"><strong>Zapamiętaj mnie</strong></label>
-                    </div>
+
+                            <label for="remember" class="col-form-label control-label mx-auto"><input type="checkbox"
+                                    id="remember" class="mr-2"><strong>Zapamiętaj mnie</strong></label>
+                        </div>
+                        <input type="hidden" name="isModal" value="false">
+
                         <div class="row d-flex justify-content-center">
                             <button type="submit" class="btn btn-lg btn-primary">
                                 Zaloguj się

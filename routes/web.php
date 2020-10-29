@@ -40,6 +40,7 @@ Route::group(['middleware' => 'user'], function () {
     Route::get('/zmien-dane', 'User\UserController@editProfile');
     Route::post('/zmien-dane', 'User\UserController@updateProfile');
     Route::get('/moje-ksiazki', 'User\BookController@userIndex');
+    Route::post('/wypozycz', 'User\ReservationController@reserveBook');
 });
 
 

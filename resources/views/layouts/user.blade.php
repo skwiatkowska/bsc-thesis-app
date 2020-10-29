@@ -83,10 +83,10 @@
                 </li>
                 @else
                 <li class="nav-item px-2">
-                    <a class="nav-link" href="rejestracja"> Rejestracja </a>
+                    <a class="nav-link" href="/rejestracja"> Rejestracja </a>
                 </li>
                 <li class="nav-item px-2">
-                    <a class="nav-link" href="logowanie"> Logowanie </a>
+                    <a class="nav-link" href="/logowanie"> Logowanie </a>
                 </li>
                 @endif
             </ul>
