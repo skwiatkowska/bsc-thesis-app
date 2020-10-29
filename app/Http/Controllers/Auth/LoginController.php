@@ -77,7 +77,7 @@ class LoginController extends Controller {
             if ($request->isModal == 'true') {
                 redirect()->back()->with(['success' => 'Zalogowano']);
             } else {
-                return redirect()->intended('/')->with(['success' => 'Zalogowano']);
+                return redirect()->intended('/moje-ksiazki')->with(['success' => 'Zalogowano']);
             }
         }
         return back()->withErrors("Podano błędne dane logowania");

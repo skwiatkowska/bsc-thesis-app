@@ -91,7 +91,7 @@
                         </td>
                         <td>{{$book->isbn}}</td>
                         <td>
-                            {{$book->bookItems->count()}}
+                            {{ count($book->bookItems->where("status", "Dostępne"))}}/{{$book->bookItems->count()}}
                         </td>
                     </tr>
                     @endforeach

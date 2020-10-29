@@ -106,8 +106,13 @@
                                                     </tr>
                                                     <tr>
                                                         <td>Konto:</td>
-                                                        <td><button type="button" class="btn btn-sm btn-danger">Usuń
-                                                                konto</button></td>
+                                                        <td>
+                                                            <form action="/usun-konto" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć swoje konto na stałe?\nWszystkie Twoje dane i historia zostaną usunięte.\nAkcja jest nieodwracalna.');">
+                                                                {{ csrf_field() }}
+                                                            <button type="submit" class="btn btn-sm btn-danger">Usuń
+                                                                konto</button>
+                                                            </form>
+                                                            </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -168,43 +173,5 @@
         </div>
     </div>
 </div>
-
-
-
-
-<script>
-    // $.fn.editable.defaults.mode = 'inline';
-    // var id = {!! json_encode($user->id) !!};
-
-    // $(document).ready(
-    //     function(){
-    //         $.ajaxSetup({
-    //             headers: {
-    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //             }
-    //         });
-
-    //         $('.editable-input').editable({
-    //             validate: function(value) {
-    //                 if($.trim(value) == '')
-    //                     return 'Podaj wartość';
-    //             },
-    //             type: 'text',
-    //             placement: 'right',
-    //             send:'always',
-    //             pk: id,
-    //             url: '/pracownik/czytelnicy/'+ id + '/edycja',
-    //             ajaxOptions: {
-    //                 dataType: 'json',
-    //                 type: 'post'
-    //             },
-    //             success:function(data){
-    //         location.reload();
-    //         alert(data.success);
-    //      },
-    //         });
-    //     }
-    // );
-</script>
 
 @endsection

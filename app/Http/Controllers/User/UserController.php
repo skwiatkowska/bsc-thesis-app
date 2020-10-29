@@ -48,11 +48,40 @@ class UserController extends Controller {
         if ($user->city != $request->city) {
             $user->city = $request->city;
         }
-       
-
-       
         $user->save();
         return redirect("/dane")->with(['success' => 'Twoje dane zostały zaktualizowane']);
+    }
+
+    public function deleteAccount() {
+        $user = Auth::user();
+        if (!empty($user->borrowings)) {
+            foreach ($user->borrowings as $borrowing) {
+                if (!isset($borrowing->actual_return_date)) {
+                    return back()->withErrors("Nie można usunąć konta z wypożyczonymi książkami");
+                }
+            }
+        }
+        if (!empty($user->reservations)) {
+            foreach ($user->reservations as $reservation) {
+                if (!isset($reservation->actual_return_date)) {
+                    return back()->withErrors("Nie można usunąć konta z zarezerwowanymi książkami");
+                }
+            }
+        }
+
+        if (!empty($user->borrowings)) {
+            foreach ($user->borrowings as $borrowing) {
+                $borrowing->bookItem->deleteRelatedBorrowing($borrowing->id);
+            }
+        }
+        if (!empty($user->reservations)) {
+            foreach ($user->reservations as $reservation) {
+                $reservation->bookItem->deleteRelatedReservation($reservation->id);
+            }
+        }
+        Auth::logout();
+        $user->delete();
+        return redirect('/')->with("success", "Twoje konto zostało usunięte na stałe");
     }
 
 }

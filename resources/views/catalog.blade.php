@@ -85,7 +85,7 @@
                         </td>
                         <td>{{$book->isbn}}</td>
                         <td>
-                            {{$book->bookItems->count()}}
+                            {{ count($book->bookItems->where("status", "Dostępne"))}}/{{$book->bookItems->count()}}
                         </td>
                         <td>
                             <a href="/ksiazki/{{$book->id}}" type="button" class="btn btn-sm btn-primary">Wybierz</a>
@@ -112,38 +112,6 @@
     $(".dynatable-per-page-label").css( "margin-right", "8px" );
     $("th").css( "padding", "5px" );
 
-    //submit search a book form
-//     $("#find-book-submit-btn").click(function(e){
-//       e.preventDefault();
-//       var searchIn = $(".search-in-select option:selected").val();
-    
-//       var searchPhraseInput = $("input[name=phrase]").val();
-//       var searchPhraseSelect = $("#choose-category-select option:selected").val();
-//       var searchPhrase;
-//     if(searchIn == "category"){
-//         searchPhrase = searchPhraseSelect;
-//     }
-//     else{
-//         searchPhrase = searchPhraseInput;
-//     }
-//       $.ajax({
-//          type:'POST',
-//          dataType : 'json',
-//          url:'/katalog',
-//          data: {_token:"{{csrf_token()}}", searchIn: searchIn, searchPhrase:searchPhrase},
-//          success:function(data){
-//             location.reload();
-//             alert(data.success);
-//          },
-//         //  error: function(data){
-//         //     alert(data.responseJSON.error);
-//         //   }
-//     });
-
-//   });
-
-
-    $(document).ready(function() {
     $("#choose-category-select").hide();
 
     $(".search-in-select").change(function() {
@@ -156,10 +124,7 @@
             $("#search-phrase-input").show();
             $("#choose-category-select").hide();
         }
-    })
-});
-
-
+    });
 
 </script>
 @endsection

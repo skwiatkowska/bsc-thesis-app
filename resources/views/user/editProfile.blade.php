@@ -93,8 +93,11 @@
                         </div>
                         <input type="hidden" name="isModal" value="false">
                         <div class="row d-flex justify-content-center">
-                            <button type="submit" class="btn btn-lg btn-primary">
+                            <button type="submit" class="btn btn-primary mr-4">
                                 Zapisz zmiany
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="goBack()">
+                                Anuluj
                             </button>
                         </div>
                     </form>

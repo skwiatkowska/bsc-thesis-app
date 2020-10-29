@@ -391,7 +391,7 @@
     $('table').each(function() {
   if($(this).find('tr').children("td").length == 0) {
       $(this).hide();
-      $( "<h6 class='text-center'>Brak</h6>" ).insertBefore(this);
+      $( "<h6 class='text-center py-5'>Brak</h6>" ).insertBefore(this);
   }
 });
 
@@ -417,7 +417,6 @@
         });
     }
     });
-
 
     $.fn.editable.defaults.mode = 'inline';
     var id = {!! json_encode($user->id) !!};

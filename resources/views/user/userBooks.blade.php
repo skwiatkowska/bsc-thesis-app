@@ -250,7 +250,7 @@
     $('table').each(function() {
     if($(this).find('tr').children("td").length == 0) {
         $(this).hide();
-        $( "<h6 class='text-center'>Brak</h6>" ).insertBefore(this);
+        $( "<h6 class='text-center py-5'>Brak</h6>" ).insertBefore(this);
     }
     });
 
@@ -264,7 +264,7 @@
         $.ajax({
             type:'POST',
             dataType : 'json',
-            url:'/moje-ksiazki/'+id+'/prolonguj',
+            url:'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();

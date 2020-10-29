@@ -89,18 +89,17 @@ class UserController extends Controller {
 
     public function deleteUser(Request $request) {
         $user = User::with('borrowings.bookItem')->with('reservations.bookItem')->where('id', $request->id)->get()->first();
-        // dd($user);
         if (!empty($user->borrowings)) {
             foreach ($user->borrowings as $borrowing) {
                 if (!isset($borrowing->actual_return_date)) {
-                    return back()->withErrors("Nie można usunąć użytkownika z zarezerwowanymi lub wypożyczonymi książkami");
+                    return back()->withErrors("Nie można usunąć użytkownika z wypożyczonymi książkami");
                 }
             }
         }
         if (!empty($user->reservations)) {
             foreach ($user->reservations as $reservation) {
                 if (!isset($reservation->actual_return_date)) {
-                    return back()->withErrors("Nie można usunąć użytkownika z zarezerwowanymi lub wypożyczonymi książkami");
+                    return back()->withErrors("Nie można usunąć użytkownika z zarezerwowanymi książkami");
                 }
             }
         }

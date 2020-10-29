@@ -12,6 +12,7 @@ colors:
 body {
   font-family: "Poppins", sans-serif;
   background: #fafafa;
+  font-size: 15px;
 }
 
 p {
