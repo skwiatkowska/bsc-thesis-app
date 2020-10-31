@@ -43,7 +43,7 @@ class LoginController extends Controller {
     public function showAdminLoginForm() {
         // Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
 
-        return view('admin.login');
+        return view('/admin/login');
     }
 
     public function adminLogin(Request $request) {
@@ -62,7 +62,7 @@ class LoginController extends Controller {
 
 
     public function showUserLoginForm() {
-        return view('login');
+        return view('/user/login');
     }
 
     public function userLogin(Request $request) {

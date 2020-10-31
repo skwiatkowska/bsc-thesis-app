@@ -69,7 +69,7 @@ class RegisterController extends Controller {
     }
 
     public function showUserRegisterForm() {
-        return view('register');
+        return view('/user/register');
     }
 
     protected function createUser(Request $request) {

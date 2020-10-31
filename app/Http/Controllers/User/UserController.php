@@ -14,12 +14,12 @@ class UserController extends Controller {
 
     public function userInfo() {
         $user = Auth::user();
-        return view('user/userInfo', ['user' => $user]);
+        return view('/user/userInfo', ['user' => $user]);
     }
 
     public function editProfile() {
         $user = Auth::user();
-        return view('user/editProfile', ['user' => $user]);
+        return view('/user/editProfile', ['user' => $user]);
     }
 
     public function updateProfile(Request $request) {
