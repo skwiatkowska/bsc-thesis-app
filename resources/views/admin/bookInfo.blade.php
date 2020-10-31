@@ -108,7 +108,7 @@
                                 @endif
                                 @endforeach
                                 @elseif($item->status == "Zarezerwowane")
-                                Rezerwacja ważna do: {{date('Y-m-d', strtotime($item->reservations->first()->due_date))}}
+                                Rezerwacja do: {{date('Y-m-d', strtotime($item->reservations->first()->due_date))}}
 
                                 @elseif($item->is_blocked)
                                 Zablokowane
@@ -118,7 +118,14 @@
                                 <a href="/pracownik/egzemplarze/{{$item->id}}/wypozycz" type="button"
                                     class="btn btn-sm btn-primary">Wypożycz
                                 </a>
-
+                                @elseif($item->status == "Zarezerwowane")
+                                <form>
+                                    <button type="submit" title="Anuluj rezerwację"
+                                        class="btn btn-sm btn-secondary mb-2 cancel-reservation">Anuluj
+                                        </button>
+                                    <input type="hidden" name="id"
+                                        value="{{$item->reservations->first()->id}}">
+                                </form>
                                 @endif
                             </td>
                             <td>
@@ -217,6 +224,26 @@ $("#new-item-btn-submit").click(function(e){
 
   });
 
+
+      //cancel a reservation
+      $(".cancel-reservation").click(function(e){
+        e.preventDefault();
+         var confirmed = confirm('Czy na pewno chcesz anulować rezerwację?');
+
+        if (confirmed) {
+        var id = $("input[name=id]", this.form).val();
+        $.ajax({
+            type:'POST',
+            dataType : 'json',
+            url:'/pracownik/rezerwacje/anuluj',
+            data: {_token:"{{csrf_token()}}", id: id},
+            success:function(data){
+                location.reload();
+                alert(data.success);
+            },
+        });
+    }
+    });
 
     //block/unlock item
 $(".block-item").click(function(e){

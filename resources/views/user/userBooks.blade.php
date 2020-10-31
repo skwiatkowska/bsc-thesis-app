@@ -64,17 +64,13 @@
                                                         </td>
                                                         <td>{{date('Y-m-d', strtotime($reservation->due_date))}}
                                                         </td>
-
-
                                                         <td>
                                                             <form>
-                                                                {{ csrf_field() }}
                                                                 <button type="submit" title="Anuluj rezerwację"
                                                                     class="btn btn-sm btn-secondary mb-2 cancel-reservation">Anuluj
-                                                                    rezerwację</button>
+                                                                    </button>
                                                                 <input type="hidden" name="id"
                                                                     value="{{$reservation->id}}">
-
                                                             </form>
                                                         </td>
                                                     </tr>

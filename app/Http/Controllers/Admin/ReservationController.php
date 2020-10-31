@@ -32,4 +32,14 @@ class ReservationController extends Controller {
         Reservation::where('id', $request->reservationId)->delete();
         return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ', (egzemplarz ' . $item->book_item_id . ') została zarezerwowana']);
     }
+
+
+    public function cancelReservation(Request $request) {
+        $reservation = Reservation::where('id', $request->id)->firstOrFail();
+        $item = $reservation->bookItem;
+        $item->update(['status' => BookItem::AVAILABLE]);
+
+        $reservation->delete();
+        return response()->json(['success' => 'Rezerwacja została anulowana']);
+    }
 }

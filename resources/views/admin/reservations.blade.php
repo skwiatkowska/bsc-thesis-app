@@ -23,7 +23,7 @@
                         <th>Autorzy</th>
                         <th>Data rezerwacji</th>
                         <th>Data wygaśnięcia</th>
-                        <th></th>
+                        <th colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody class="item-table">
@@ -58,6 +58,15 @@
                                 data-toggle="modal"
                                 data-target="#borrowBookItemModal-{{$reservation->bookItem->id}}">Wypożyczenie</button>
                         </td>
+                        <td>
+                        <form>
+                            <button type="submit" title="Anuluj rezerwację"
+                                class="btn btn-sm btn-secondary mb-2 cancel-reservation">Anuluj
+                                </button>
+                            <input type="hidden" name="id"
+                                value="{{$reservation->first()->id}}">
+                        </form>
+                    </td>
                     </tr>
                     @endif
                     <div class="modal fade" id="borrowBookItemModal-{{$reservation->bookItem->id}}" tabindex="-1"
@@ -142,46 +151,25 @@
 @endsection
 @section('script')
 <script>
-    // $("#search").keyup(function () {
-//     var value = this.value.toLowerCase().trim();
+    //cancel a reservation
+        $(".cancel-reservation").click(function(e){
+        e.preventDefault();
+         var confirmed = confirm('Czy na pewno chcesz anulować rezerwację?');
 
-//     $("table tr").each(function (index) {
-//         if (!index) return;
-//                 $(this).find("td:not(:has(button))").each(function () {
-//             var id = $(this).text().toLowerCase().trim();
-//             var not_found = (id.indexOf(value) == -1);
-//             $(this).closest('tr').toggle(!not_found);
-//             return not_found;
-//         });
-//     });
-// });
-
-//     $('#dynatable-reserved').dynatable();
-
-//     $(".dynatable-search").hide();
-//     $("tfoot").hide();
-//     $(".dynatable-per-page-label").css( "margin-right", "8px" );
-//     $("th").css( "padding", "5px" );
-
-
-//        //prolong a book
-//        $(".prolong-book").click(function(e){
-//         e.preventDefault();
-//         var id = $("input[name=id]", this.form).val();
-//         $.ajax({
-//             type:'POST',
-//             dataType : 'json',
-//             url:'/pracownik/egzemplarze/'+id+'/prolonguj',
-//             data: {_token:"{{csrf_token()}}", id: id},
-//             success:function(data){
-//                 location.reload();
-//                 alert(data.success);
-//             },
-//             error: function(data){
-//                 alert(data.responseJSON.error);
-//             }
-//         });
-//     });
+        if (confirmed) {
+        var id = $("input[name=id]", this.form).val();
+        $.ajax({
+            type:'POST',
+            dataType : 'json',
+            url:'/pracownik/rezerwacje/anuluj',
+            data: {_token:"{{csrf_token()}}", id: id},
+            success:function(data){
+                location.reload();
+                alert(data.success);
+            },
+        });
+    }
+    });
 </script>
 
 @endsection

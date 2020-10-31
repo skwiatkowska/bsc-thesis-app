@@ -86,6 +86,7 @@ class RegisterController extends Controller {
             'phone' => $request->phone,
             'email' => $request->email,
             'street' => $request->street,
+            'house_number' => $request->house_number,
             'zipcode' => $request->zipcode,
             'city' => $request->city,
             'password' => Hash::make($request->password),
