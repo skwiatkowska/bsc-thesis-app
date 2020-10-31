@@ -77,21 +77,14 @@
                                 @endif
                                 @endforeach
                                 @elseif($item->status == "Zarezerwowane")
-                                {{$item->reservations}}
-                                {{-- Rezerwacja ważna do: {{date('Y-m-d', strtotime($item->reservation->due_date))}} --}}
+                                Rezerwacja ważna do:
+                                {{date('Y-m-d', strtotime($item->reservations->first()->due_date))}}
                                 @elseif($item->is_blocked)
                                 Zablokowane
                                 @endif
                             </td>
                             <td> @if($item->status == "Dostępne" && !$item->is_blocked)
                                 @auth
-                                {{-- <form name="newBookingConfirmForm" action="/zarezerwuj" method="POST">
-                                    {{ csrf_field() }}
-                                <input type="hidden" name="bookItemId" value="{{$item->id}}">
-
-                                <button type="submit" class="btn btn-sm btn-primary"">Zarezerwuj
-                                </button>
-                            </form> --}}
                                 <button type=" button" class="btn btn-sm btn-primary" data-toggle="modal"
                                     data-target="#newReservationModal-{{$item->id}}">Zarezerwuj
                                 </button>
@@ -103,7 +96,6 @@
                                 @endguest
                                 @endif
                             </td>
-
                         </tr>
                         @auth
                         <div class="modal fade" id="newReservationModal-{{$item->id}}" tabindex="-1" role="dialog"
@@ -165,7 +157,6 @@
                             </div>
                         </div>
                         @endauth
-
                         @endforeach
                     </tbody>
                 </table>
@@ -202,7 +193,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-
                         <label for="remember" class="col-form-label control-label mx-auto"><input type="checkbox"
                                 id="remember" class="mr-2"><strong>Zapamiętaj mnie</strong></label>
                     </div>

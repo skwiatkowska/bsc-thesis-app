@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller {
     /*
@@ -77,7 +78,7 @@ class RegisterController extends Controller {
         //     'email' => 'email',
         //     'password' => 'confirmed|min:6',
         // ]);
-        
+
         User::create([
             'first_name' => $request->fname,
             'last_name' => $request->lname,
@@ -89,5 +90,10 @@ class RegisterController extends Controller {
             'city' => $request->city,
             'password' => Hash::make($request->password),
         ]);
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+
+            return redirect()->intended('/moje-dane')->with(['success' => 'Witamy. Konto zostało poprawnie utworzone']);
+        }
     }
 }

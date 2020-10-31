@@ -15,7 +15,6 @@ class ReservationController extends Controller {
 
     public function index() {
         $reservations = Reservation::with('user')->with('bookItem.book')->get();
-        // dd($reservations);
         return view('/admin/reservations', ['reservations' => $reservations]);
     }
 
@@ -31,6 +30,6 @@ class ReservationController extends Controller {
         $item->update(['status' => BookItem::BORROWED]);
         $user->borrowings($item)->save($borrowing);
         Reservation::where('id', $request->reservationId)->delete();
-        return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ' została wypożyczona']);
+        return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ', (egzemplarz ' . $item->book_item_id . ') została zarezerwowana']);
     }
 }

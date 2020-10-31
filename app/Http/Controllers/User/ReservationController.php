@@ -30,28 +30,10 @@ class ReservationController extends Controller {
 
     public function cancelReservation(Request $request){
         $reservation = Reservation::where('id', $request->id)->firstOrFail();
-        $reservation->delete();
-        return response()->json(['success' => 'Rezerwacja została anulowana']);
+        $item = $reservation->bookItem;
+        $item->update(['status' => BookItem::AVAILABLE]);
 
-        // return redirect('/moje-ksiazki')->with(['success' => 'Rezerwacja została anulowana']);
+       $reservation->delete();
+        return response()->json(['success' => 'Rezerwacja została anulowana']);
     }
-    
-    // public function confirmReservation(Request $request){
-    //     // dd($request->all());
-    //     $item = BookItem::with('book')->where('id', $request->bookItemId)->firstOrFail();
-    //     $book = $item->book::with('authors')->firstOrFail();
-    //     return view('/user/confirmReservation', ['item' => $item, 'book' => $book]);
-    
-    //     // $user = Auth::user();
-    //     // $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
-    //     // if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
-    //     //     return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
-    //     // }
-    
-    //     // $reservation = new Reservation(['reservation_date' => new DateTime(), 'due_date' => new DateTime("+3 days")]);
-    //     // $item->update(['status' => BookItem::RESERVED]);
-    //     // $user->reservations($item)->save($reservation);
-    //     // return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ' została wypożyczona']);
-     
-    // }
 }

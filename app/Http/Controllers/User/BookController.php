@@ -17,7 +17,6 @@ class BookController extends Controller {
 
     public function userIndex() {
         $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->firstOrFail();
-        // dd($user);
         return view('user/userBooks', ['user' => $user]);
     }
 

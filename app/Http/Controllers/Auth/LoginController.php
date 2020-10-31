@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Entities\Admin;
-use Illuminate\Support\Facades\Hash;
 
 
 class LoginController extends Controller {
@@ -68,11 +66,6 @@ class LoginController extends Controller {
     }
 
     public function userLogin(Request $request) {
-        // $this->validate($request, [
-        //     'email'   => 'required|email',
-        //     'password' => 'required|min:6'
-        // ]);
-
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             if ($request->isModal == 'true') {
                 redirect()->back()->with(['success' => 'Zalogowano']);

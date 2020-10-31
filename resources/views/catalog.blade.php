@@ -97,7 +97,9 @@
         </div>
     </div>
     @else
+    @if (!empty($phrase))
     <p class="h6 text-center py-5">Nie znaleziono</p>
+    @endif
     @endif
 </div>
 

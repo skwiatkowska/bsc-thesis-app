@@ -57,6 +57,7 @@
                                                             <a href="/autorzy/{{$author->id}}" class="a-link-navy">
                                                                 {{$author->last_name.', '.$author->first_names}}
                                                             </a>
+                                                            {{ $loop->last ? '' : ' •' }}
                                                             @endforeach
                                                         </td>
                                                         <td>{{date('Y-m-d', strtotime($reservation->reservation_date))}}
@@ -66,12 +67,13 @@
 
 
                                                         <td>
-                                                            <form >
+                                                            <form>
                                                                 {{ csrf_field() }}
-                                                            <button type="submit" title="Anuluj rezerwację"
-                                                                class="btn btn-sm btn-secondary mb-2 cancel-reservation"
-                                                                >Anuluj rezerwację</button>
-                                                                <input type="hidden" name="id" value="{{$reservation->id}}">
+                                                                <button type="submit" title="Anuluj rezerwację"
+                                                                    class="btn btn-sm btn-secondary mb-2 cancel-reservation">Anuluj
+                                                                    rezerwację</button>
+                                                                <input type="hidden" name="id"
+                                                                    value="{{$reservation->id}}">
 
                                                             </form>
                                                         </td>
@@ -111,6 +113,7 @@
                                                             <a href="/autorzy/{{$author->id}}"
                                                                 class="a-link-navy">{{$author->last_name}},
                                                                 {{$author->first_names}}</a>
+                                                            {{ $loop->last ? '' : ' •' }}
                                                             @endforeach
                                                         </td>
                                                         <td>{{date('Y-m-d', strtotime($borrowing->borrow_date))}}
@@ -132,7 +135,7 @@
                                                                 class="btn btn-sm btn-light prolong-book"
                                                                 disabled>Prolonguj</button>
                                                             @endif </td>
-                                                       
+
                                                     </tr>
                                                     @endif
 
@@ -170,6 +173,7 @@
                                                             <a href="/autorzy/{{$author->id}}"
                                                                 class="a-link-navy">{{$author->last_name}},
                                                                 {{$author->first_names}}</a>
+                                                            {{ $loop->last ? '' : ' •' }}
                                                             @endforeach
                                                         </td>
                                                         <td>{{date('Y-m-d', strtotime($borrowing->borrow_date))}}
