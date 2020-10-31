@@ -22,10 +22,10 @@ Route::post('/rejestracja', 'Auth\RegisterController@createUser');
 
 
 
-Route::get('/', 'HomeController@index');
-Route::get('/kontakt', 'HomeController@contact');
-Route::get('/pierwsze-kroki', 'HomeController@firstSteps');
-Route::get('/godziny-otwarcia', 'HomeController@workingHours');
+Route::get('/', 'User\HomeController@index');
+Route::get('/kontakt', 'User\HomeController@contact');
+Route::get('/pierwsze-kroki', 'User\HomeController@firstSteps');
+Route::get('/godziny-otwarcia', 'User\HomeController@workingHours');
 Route::get('/katalog', 'User\BookController@findBook');
 Route::get('/autorzy/{id}', 'User\BookController@fetchAuthor');
 Route::get('/wydawnictwa/{id}', 'User\BookController@fetchPublisher');
@@ -60,6 +60,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/czytelnicy/{id}', 'Admin\UserController@fetchUser');
     Route::post('/pracownik/czytelnicy/{id}/edycja', 'Admin\UserController@updateUser');
     Route::post('/pracownik/czytelnicy/{id}/usun', 'Admin\UserController@deleteUser');
+    Route::post('/pracownik/czytelnicy/{id}/resetuj-haslo', 'Admin\UserController@resetPassword');
 
     Route::get('/pracownik/kategorie', 'Admin\CategoryController@index');
     Route::post('/pracownik/kategorie', 'Admin\CategoryController@store');

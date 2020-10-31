@@ -115,6 +115,13 @@ class UserController extends Controller {
             }
         }
         $user->delete();
-        return redirect('/pracownik/katalog')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
+        return redirect('/pracownik/czytelnicy/znajdz')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
     }
+
+    public function resetPassword($id) {
+        $user = User::where('id', $id)->firstOrFail();
+        $user->update(['password' => Hash::make($user->pesel)]);
+        return response()->json(['success' => 'Hasło zostało zresetowane']);
+    }
+
 }

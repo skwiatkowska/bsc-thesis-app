@@ -17,13 +17,13 @@ class BookController extends Controller {
 
     public function userIndex() {
         $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->firstOrFail();
-        return view('user/userBooks', ['user' => $user]);
+        return view('/user/userBooks', ['user' => $user]);
     }
 
     public function fetchBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
         $user = Auth::user();
-        return view('/bookInfo', ['book' => $book, 'user' => $user]);
+        return view('/user/bookInfo', ['book' => $book, 'user' => $user]);
     }
 
     public function findBook(Request $request) {
@@ -76,7 +76,7 @@ class BookController extends Controller {
             } elseif ($searchIn == "publisher") {
                 $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
                 if (!$publishers->count()) {
-                    return view('/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
+                    return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
                 }
                 $publisherIds = array();
                 foreach ($publishers as $publisher) {
@@ -102,24 +102,24 @@ class BookController extends Controller {
             }
             if (!$books->count()) {
                 $books = array();
-                return view('/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
+                return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
-            return view('/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
+            return view('/user/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
         } else {
             $books = Book::all();
-            return view('/catalog', ['categories' => $categories, 'books' => $books]);
+            return view('/user/catalog', ['categories' => $categories, 'books' => $books]);
         }
     }
 
 
     public function fetchAuthor($id) {
         $author = Author::where('id', $id)->with('books')->firstOrFail();
-        return view('/authorInfo', ['author' => $author]);
+        return view('/user/authorInfo', ['author' => $author]);
     }
 
     public function fetchPublisher($id) {
         $publisher = Publisher::where('id', $id)->with('books')->firstOrFail();
-        return view('/publisherInfo', ['publisher' => $publisher]);
+        return view('/user/publisherInfo', ['publisher' => $publisher]);
     }
 
     public function prolongBookItem(Request $request) {

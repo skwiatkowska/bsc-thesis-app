@@ -57,8 +57,6 @@
                 <div class="ml-auto">
                     <a href="#" class="px-2" title="Dodaj" data-toggle="modal" data-target="#newBookItemModal"><i
                             class="fa fa-plus"></i></a>
-                    {{-- <a href="#" class="px-2" title="Edytuj"><i class="fa fa-pencil-alt"></i></a> --}}
-                    {{-- <a href="#" title="Usuń"><i class="fa fa-trash-alt"></i></a> --}}
                 </div>
             </div>
         </div>

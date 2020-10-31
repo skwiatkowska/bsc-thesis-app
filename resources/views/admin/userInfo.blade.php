@@ -10,11 +10,14 @@
         <div class="h5 card-header">
             <div class="row px-2">
                 Szczegóły
-                <div class="ml-auto">
+                <div class="ml-auto row">
+                    <a href="#" class="btn px-2 my-auto" title="Zmień hasło" data-toggle="modal" data-target="#newPasswordItemModal"><i class="fa fa-key"></i></a>
+                                           
                     <form action="/pracownik/czytelnicy/{{$user->id}}/usun" method="POST">
                         {{ csrf_field() }}
-                        <button type="submit" id="delete-publisher-btn-submit"
-                            class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
+                        <button type="submit" title="Usuń konto na stałe"
+                        class="btn" style="background:transparent;"><i
+                            class="fa fa-trash-alt"></i></button>
                         <input type="hidden" value="{{$user->id}}" name="id">
                     </form>
                 </div>
@@ -384,7 +387,31 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="newPasswordItemModal" tabindex="-1" role="dialog" aria-labelledby="newPasswordItemModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form>
+                {{-- {{ csrf_field() }} --}}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newPasswordItemModalLabel">Kolejny egzemplarz</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-md-10 col-form-label control-label text-md-right">Czy na pewno chcesz zresetować hasło? Wartością tymczasową będzie numer PESEL.</label>
+                    </div>
+                </div>
+                {{-- <input type="hidden" id="bookId" name="id" value="{{$user->id}}"> --}}
+                <div class="modal-footer p-3">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                    <button type="submit" id="reset-password-btn-submit" class="btn btn-primary">Zmień hasło</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @section('script')
 <script>
@@ -416,6 +443,23 @@
             }
         });
     }
+    });
+
+
+    //reset password
+    $("#reset-password-btn-submit").click(function(e){
+        e.preventDefault();
+        var id = {!! json_encode($user->id) !!};
+        $.ajax({
+            type:'POST',
+            dataType : 'json',
+            url:'/pracownik/czytelnicy/'+id+'/resetuj-haslo',
+            data: {_token:"{{csrf_token()}}"},
+            success:function(data){
+                location.reload();
+                alert(data.success);
+            },
+        });
     });
 
     $.fn.editable.defaults.mode = 'inline';
