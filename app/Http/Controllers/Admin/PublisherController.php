@@ -26,12 +26,12 @@ class PublisherController extends Controller {
     }
 
     public function fetchPublisher($id) {
-        $publisher = Publisher::where('id', $id)->with('books')->get()->first();
+        $publisher = Publisher::where('id', $id)->with('books')->firstOrFail();
         return view('/admin/publisherInfo', ['publisher' => $publisher]);
     }
 
     public function update(Request $request, $id) {
-        $publisher = Publisher::where('id', $id)->get()->first();
+        $publisher = Publisher::where('id', $id)->firstOrFail();
         if ($publisher->name != $request->value) {
             $publisher->name = $request->value;
         }
@@ -43,7 +43,7 @@ class PublisherController extends Controller {
 
     public function delete($id) {
         try {
-            $publisher = Publisher::where('id', $id)->get()->first();
+            $publisher = Publisher::where('id', $id)->firstOrFail();
             $this->checkIfHasAssignedBooks($publisher);
             $publisher->delete();
         } catch (\Exception $e) {

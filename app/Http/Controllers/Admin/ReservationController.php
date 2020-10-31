@@ -21,8 +21,8 @@ class ReservationController extends Controller {
 
 
     public function borrowReservedBook(Request $request) {
-        $user = User::where('id', $request->userId)->with('borrowings')->get()->first();
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
+        $user = User::where('id', $request->userId)->with('borrowings')->firstOrFail();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
         if ($item->status == BookItem::BORROWED || $item->is_blocked) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         }

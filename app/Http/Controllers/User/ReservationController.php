@@ -16,7 +16,7 @@ class ReservationController extends Controller {
     public function reserveBook(Request $request){
         // dd($request->all());
         $user = Auth::user();
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
         if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         }
@@ -29,7 +29,7 @@ class ReservationController extends Controller {
 
 
     public function cancelReservation(Request $request){
-        $reservation = Reservation::where('id', $request->id)->get()->first();
+        $reservation = Reservation::where('id', $request->id)->firstOrFail();
         $reservation->delete();
         return response()->json(['success' => 'Rezerwacja została anulowana']);
 
@@ -38,12 +38,12 @@ class ReservationController extends Controller {
     
     // public function confirmReservation(Request $request){
     //     // dd($request->all());
-    //     $item = BookItem::with('book')->where('id', $request->bookItemId)->get()->first();
-    //     $book = $item->book::with('authors')->get()->first();
+    //     $item = BookItem::with('book')->where('id', $request->bookItemId)->firstOrFail();
+    //     $book = $item->book::with('authors')->firstOrFail();
     //     return view('/user/confirmReservation', ['item' => $item, 'book' => $book]);
     
     //     // $user = Auth::user();
-    //     // $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
+    //     // $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
     //     // if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
     //     //     return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
     //     // }

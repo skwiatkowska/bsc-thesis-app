@@ -19,8 +19,8 @@ class BorrowingController extends Controller {
     }
 
     public function borrowBookItemAddUser($id) {
-        $item = BookItem::with('book')->where('id', $id)->get()->first();
-        $book = $item->book::with('authors')->get()->first();
+        $item = BookItem::with('book')->where('id', $id)->firstOrFail();
+        $book = $item->book::with('authors')->firstOrFail();
         $users = User::all();
         return view('/admin/addUserToBorrowing', ['item' => $item, 'book' => $book, 'users' => $users]);
     }
@@ -37,14 +37,14 @@ class BorrowingController extends Controller {
                 return back()->withErrors("Nie znaleziono takiego Czytelnika: " . $phrase);
             }
         }
-        $item = BookItem::with('book')->where('id', $id)->get()->first();
-        $book = $item->book::with('authors')->get()->first();
+        $item = BookItem::with('book')->where('id', $id)->firstOrFail();
+        $book = $item->book::with('authors')->firstOrFail();
         return view('/admin/addUserToBorrowing', ['item' => $item, 'users' => $users, 'book' => $book, 'phrase' => $phrase]);
     }
 
     public function borrowBook(Request $request) {
-        $user = User::where('id', $request->userId)->with('borrowings')->get()->first();
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
+        $user = User::where('id', $request->userId)->with('borrowings')->firstOrFail();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
         if ($item->status != BookItem::AVAILABLE || $item->is_blocked) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         }
@@ -56,7 +56,7 @@ class BorrowingController extends Controller {
     }
 
     public function prolongBookItem(Request $request) {
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->firstOrFail();
         foreach ($item->borrowings as $borrowing) {
             if (!isset($borrowing->actual_return_date) && !$borrowing->was_prolonged) {
                 $due_date = new DateTime($borrowing->due_date);
@@ -68,7 +68,7 @@ class BorrowingController extends Controller {
     }
 
     public function returnBookItem(Request $request) {
-        $item = BookItem::with('borrowings')->where('id', $request->id)->get()->first();
+        $item = BookItem::with('borrowings')->where('id', $request->id)->firstOrFail();
         foreach ($item->borrowings as $borrowing) {
             if (!isset($borrowing->actual_return_date)) {
                 $borrowing->update(['actual_return_date' => new DateTime()]);

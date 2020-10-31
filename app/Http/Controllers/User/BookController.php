@@ -16,13 +16,13 @@ use App\Http\Controllers\Controller;
 class BookController extends Controller {
 
     public function userIndex() {
-        $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->get()->first();
+        $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->firstOrFail();
         // dd($user);
         return view('user/userBooks', ['user' => $user]);
     }
 
     public function fetchBook($id) {
-        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->get()->first();
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
         $user = Auth::user();
         return view('/bookInfo', ['book' => $book, 'user' => $user]);
     }
@@ -36,7 +36,7 @@ class BookController extends Controller {
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;
-                $category = Category::where('id', $phrase)->get()->first();
+                $category = Category::where('id', $phrase)->firstOrFail();
                 $books = $category->books()->with('authors')->with('publisher')->get();
                 $phrase = $category->name;
                 $searchInMode = "kategoria";
@@ -114,17 +114,17 @@ class BookController extends Controller {
 
 
     public function fetchAuthor($id) {
-        $author = Author::where('id', $id)->with('books')->get()->first();
+        $author = Author::where('id', $id)->with('books')->firstOrFail();
         return view('/authorInfo', ['author' => $author]);
     }
 
     public function fetchPublisher($id) {
-        $publisher = Publisher::where('id', $id)->with('books')->get()->first();
+        $publisher = Publisher::where('id', $id)->with('books')->firstOrFail();
         return view('/publisherInfo', ['publisher' => $publisher]);
     }
 
     public function prolongBookItem(Request $request) {
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->firstOrFail();
         foreach ($item->borrowings as $borrowing) {
             if (!isset($borrowing->actual_return_date) && !$borrowing->was_prolonged) {
                 $due_date = new DateTime($borrowing->due_date);

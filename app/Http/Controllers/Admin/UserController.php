@@ -33,12 +33,12 @@ class UserController extends Controller {
     }
 
     public function fetchUser($id) {
-        $user = User::where('id', $id)->with('borrowings.bookItem.book.authors')->get()->first();
+        $user = User::where('id', $id)->with('borrowings.bookItem.book.authors')->firstOrFail();
         return view('/admin/userInfo', ['user' => $user]);
     }
 
     public function updateUser(Request $request, $id) {
-        $user = User::where('id', $id)->get()->first();
+        $user = User::where('id', $id)->firstOrFail();
         if ($request->name == "fname" && $user->first_name != $request->value) {
             $user->first_name = $request->value;
         } else if ($request->name == "lname" && $user->last_name != $request->value) {
@@ -88,7 +88,7 @@ class UserController extends Controller {
 
 
     public function deleteUser(Request $request) {
-        $user = User::with('borrowings.bookItem')->with('reservations.bookItem')->where('id', $request->id)->get()->first();
+        $user = User::with('borrowings.bookItem')->with('reservations.bookItem')->where('id', $request->id)->firstOrFail();
         if (!empty($user->borrowings)) {
             foreach ($user->borrowings as $borrowing) {
                 if (!isset($borrowing->actual_return_date)) {

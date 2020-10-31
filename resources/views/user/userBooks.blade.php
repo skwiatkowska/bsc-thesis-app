@@ -129,7 +129,7 @@
                                                             @else
                                                             <button type="submit"
                                                                 title="Brak możliwości ponownej prolongaty"
-                                                                class="btn btn-sm btn-secondary prolong-book"
+                                                                class="btn btn-sm btn-light prolong-book"
                                                                 disabled>Prolonguj</button>
                                                             @endif </td>
                                                        

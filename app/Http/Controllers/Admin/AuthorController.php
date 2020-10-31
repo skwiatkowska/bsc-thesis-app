@@ -26,7 +26,7 @@ class AuthorController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        $author = Author::where('id', $id)->get()->first();
+        $author = Author::where('id', $id)->firstOrFail();
         if ($request->name == "fname" && $author->first_names != $request->value) {
             $author->first_names = $request->value;
         } else if ($request->name == "lname" && $author->last_name != $request->value) {
@@ -38,13 +38,13 @@ class AuthorController extends Controller {
 
 
     public function fetchAuthor($id) {
-        $author = Author::where('id', $id)->with('books')->get()->first();
+        $author = Author::where('id', $id)->with('books')->firstOrFail();
         return view('/admin/authorInfo', ['author' => $author]);
     }
 
     public function delete($id) {
         try {
-            $author = Author::where('id', $id)->get()->first();
+            $author = Author::where('id', $id)->firstOrFail();
             $this->checkIfHasAssignedBooks($author);
             $author->delete();
         } catch (\Exception $e) {
