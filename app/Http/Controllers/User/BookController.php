@@ -16,7 +16,8 @@ use App\Http\Controllers\Controller;
 class BookController extends Controller {
 
     public function userIndex() {
-        $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->firstOrFail();
+        $user = Auth::user();
+        // dd($user);
         return view('/user/userBooks', ['user' => $user]);
     }
 

@@ -94,7 +94,7 @@ class RegisterController extends Controller {
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
-            return redirect()->intended('/moje-dane')->with(['success' => 'Witamy. Konto zostało poprawnie utworzone']);
+            return redirect()->intended('/dane')->with(['success' => 'Witamy. Konto zostało poprawnie utworzone']);
         }
     }
 }
