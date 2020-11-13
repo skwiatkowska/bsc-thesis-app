@@ -3,6 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Auth;
 
 use Tests\TestCase;
+use App\Models\Admin;
 use App\Models\User;
 
 use Illuminate\Foundation\Testing\WithFaker;
@@ -24,29 +25,45 @@ class LoginControllerTest extends TestCase {
     }
 
     /** @test */
-    public function userLoginAuthenticates() {
-    
-        // if(User::where('pesel',100000000000)->get()->first()){
-        //     User::where('pesel',100000000000)->get()->first()->delete();
-        // }
-        // if(User::where('pesel',99999999999)->get()->first()){
-        //     User::where('pesel',99999999999)->get()->first()->delete();
-        // }
-        // if(User::where('pesel',100000000001)->get()->first()){
-        //     User::where('pesel',100000000001)->get()->first()->delete();
-        // }
-
+    public function userLoginAuthenticatesAndRedirects() {
         $user = factory(User::class)->create();
         $this->actingAs($user);
-
         $response = $this->post('/logowanie', [
             'email' => $user->email,
             'password' => bcrypt('password')
         ]);
-
         $response->assertStatus(302);
         $response->assertRedirect('/');
         $this->assertAuthenticatedAs($user);
         $user->delete();
+    }
+
+
+    /** @test */
+    public function adminLoginDisplaysLoginForm() {
+        $response = $this->get('/pracownik/logowanie');
+        $response->assertStatus(200);
+        $response->assertViewIs('.admin.login');
+    }
+
+    /** @test */
+    public function adminLoginDisplaysErrors() {
+        $response = $this->post('/pracownik/logowanie', []);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
+    }
+
+    /** @test */
+    public function adminLoginAuthenticatesAndRedirects() {
+        $admin = factory(Admin::class)->create();
+        $this->actingAs($admin);
+        $response = $this->post('/pracownik/logowanie', [
+            'email' => $admin->email,
+            'password' => bcrypt('password')
+        ]);
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
+        $this->assertAuthenticatedAs($admin);
+        $admin->delete();
     }
 }
