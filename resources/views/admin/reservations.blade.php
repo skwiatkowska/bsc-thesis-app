@@ -59,14 +59,13 @@
                                 data-target="#borrowBookItemModal-{{$reservation->bookItem->id}}">Wypożyczenie</button>
                         </td>
                         <td>
-                        <form>
-                            <button type="submit" title="Anuluj rezerwację"
-                                class="btn btn-sm btn-secondary mb-2 cancel-reservation">Anuluj
+                            <form>
+                                <button type="submit" title="Anuluj rezerwację"
+                                    class="btn btn-sm btn-secondary mb-2 cancel-reservation">Anuluj
                                 </button>
-                            <input type="hidden" name="id"
-                                value="{{$reservation->first()->id}}">
-                        </form>
-                    </td>
+                                <input type="hidden" name="id" value="{{$reservation->first()->id}}">
+                            </form>
+                        </td>
                     </tr>
                     @endif
                     <div class="modal fade" id="borrowBookItemModal-{{$reservation->bookItem->id}}" tabindex="-1"

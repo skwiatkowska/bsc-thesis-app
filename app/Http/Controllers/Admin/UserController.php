@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Entities\User;
-use App\Entities\BookItem;
+use App\Models\User;
+use App\Models\BookItem;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 

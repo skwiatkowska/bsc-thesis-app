@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
-use App\Entities\Borrowing;
+use App\Models\Borrowing;
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
 
 class BookItem extends NeoEloquent {

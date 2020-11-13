@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\BookItem;
-use App\Entities\Borrowing;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\Borrowing;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

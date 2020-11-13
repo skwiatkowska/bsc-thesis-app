@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Entities\BookItem;
-use App\Entities\Reservation;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\Reservation;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 

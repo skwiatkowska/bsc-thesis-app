@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
-use App\Entities\Category;
-use App\Entities\Author;
-use App\Entities\Publisher;
-use App\Entities\BookItem;
+use App\Models\Category;
+use App\Models\Author;
+use App\Models\Publisher;
+use App\Models\BookItem;
 
 class Book extends NeoEloquent {
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\Publisher;
+use App\Models\Publisher;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\Author;
-use App\Entities\Book;
-use App\Entities\BookItem;
-use App\Entities\Category;
-use App\Entities\Publisher;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\BookItem;
+use App\Models\Category;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 

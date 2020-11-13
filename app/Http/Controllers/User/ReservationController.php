@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Entities\BookItem;
-use App\Entities\Reservation;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\Reservation;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

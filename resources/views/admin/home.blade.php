@@ -42,25 +42,25 @@
         <div class="col-md-6 col-lg-3">
             <div class="card-counter gray">
                 <span class="count-name">Nowi Czytelnicy</span>
-                <span class="count-numbers">{{$users->count()}}</span>
+                <span class="count-numbers">{{$newUsers->count()}}</span>
             </div>
         </div>
         <div class="col-md-6 col-lg-3">
             <div class="card-counter gray">
                 <span class="count-name">Nowe wypożyczenia</span>
-                <span class="count-numbers">{{$borrowings->count()}}</span>
+                <span class="count-numbers">{{$newBorrowings->count()}}</span>
             </div>
         </div>
         <div class="col-md-6 col-lg-3">
             <div class="card-counter gray">
                 <span class="count-name">Nowe rezerwacje</span>
-                <span class="count-numbers">{{$reservations->count()}}</span>
+                <span class="count-numbers">{{$newReservations->count()}}</span>
             </div>
         </div>
         <div class="col-md-6 col-lg-3">
             <div class="card-counter gray">
                 <span class="count-name">Nowe egzemplarze</span>
-                <span class="count-numbers">{{$bookItems->count()}}</span>
+                <span class="count-numbers">{{$newBookItems->count()}}</span>
             </div>
         </div>
 

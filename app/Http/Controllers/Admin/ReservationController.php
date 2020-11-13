@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\BookItem;
-use App\Entities\Borrowing;
-use App\Entities\Reservation;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\Borrowing;
+use App\Models\Reservation;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,6 +14,13 @@ use DateTime;
 class ReservationController extends Controller {
 
     public function index() {
+        $now = new \DateTime();
+        $expired = Reservation::with('bookItem')->where('due_date', '<', $now)->get();
+        foreach($expired as $exp){
+            $item = $exp->bookItem;
+            $item->update(['status' => BookItem::AVAILABLE]);
+            $exp->delete();
+        }
         $reservations = Reservation::with('user')->with('bookItem.book')->get();
         return view('/admin/reservations', ['reservations' => $reservations]);
     }

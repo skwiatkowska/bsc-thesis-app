@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 
-use App\Entities\Borrowing;
+use App\Models\Borrowing;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\Authenticatable;
