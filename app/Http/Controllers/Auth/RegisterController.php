@@ -73,12 +73,14 @@ class RegisterController extends Controller {
     }
 
     protected function createUser(Request $request) {
-        // $this->validate($request, [
-        //     'name' => 'required|min:3|max:50',
-        //     'email' => 'email',
-        //     'password' => 'confirmed|min:6',
-        // ]);
-
+        $existingUser = User::where('pesel', $request->pesel)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+        }
+        $existingUser = User::where('email', $request->email)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
+        }
         User::create([
             'first_name' => $request->fname,
             'last_name' => $request->lname,

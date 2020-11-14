@@ -7,7 +7,6 @@ use App\Models\Book;
 use App\Models\BookItem;
 use App\Models\Category;
 use App\Models\Publisher;
-use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
@@ -18,11 +17,9 @@ class BookController extends Controller {
 
     public function userIndex() {
         $user = Auth::user();
-        // dd($user);
         $now = new \DateTime();
         $reservations = $user->reservations;
 
-        // dd($reservations);
         foreach ($reservations as $reservation) {
             if (new \DateTime($reservation->due_date) > $now) {
                 $item = $reservation->bookItem;

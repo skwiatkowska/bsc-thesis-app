@@ -33,6 +33,10 @@ class PublisherController extends Controller {
     public function update(Request $request, $id) {
         $publisher = Publisher::where('id', $id)->firstOrFail();
         if ($publisher->name != $request->value) {
+            $existingPublisher = Publisher::where('name', $request->name)->get();
+            if ($existingPublisher->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już wydawnictwo o tej nazwie');
+            }
             $publisher->name = $request->value;
         }
 

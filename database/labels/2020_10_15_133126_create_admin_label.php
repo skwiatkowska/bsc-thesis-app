@@ -11,8 +11,7 @@ class CreateUserLabel extends Migration {
      * @return void
      */
     public function up() {
-        Neo4jSchema::label('User', function (Blueprint $label) {
-            $label->unique('pesel');
+        Neo4jSchema::label('Admin', function (Blueprint $label) {
             $label->unique('email');
         });
     }

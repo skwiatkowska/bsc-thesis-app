@@ -17,4 +17,13 @@ class RegisterControllerTest extends TestCase
     {
         $this->assertTrue(true);
     }
+    /*
+    $user = factory(User::class)->make(); 
+
+
+    
+    $data = array(
+        'email' => null,
+        'password' => null);*/
+
 }

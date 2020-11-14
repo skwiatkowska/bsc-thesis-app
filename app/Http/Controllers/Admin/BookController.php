@@ -25,8 +25,6 @@ class BookController extends Controller {
 
 
     public function store(Request $request) {
-        //print_r($request->post());
-        //Array ( [_token] => zU6M9DtxHgTwHBdyNEBzySqrJAecH8OdqBjHM4yp [title] => tytuł1 [authors] => Array ( [0] => guia ) [newAuthorName] => Array ( [0] => nowy1 [1] => ) [newAuthorLastName] => Array ( [0] => nowy2 [1] => ) [publisher] => aa [year] => 1998 [categories] => Array ( [0] => a [1] => b ) [numberOfItems] => 4 )
         $authors = $request->authors;
         $categories = $request->categories;
         $items = $request->numberOfItems;
@@ -101,6 +99,10 @@ class BookController extends Controller {
             $book->title = $request->title;
         }
         if ($book->isbn != $request->isbn) {
+            $existingBook = Book::where('isbn', $request->isbn)->get();
+            if ($existingBook->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już książka o danym numerze ISBN');
+            }
             $book->isbn = $request->isbn;
         }
         if ($book->publication_year != $request->year) {

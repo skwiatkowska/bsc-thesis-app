@@ -14,6 +14,14 @@ class UserController extends Controller {
     }
 
     public function storeUser(Request $request) {
+        $existingUser = User::where('pesel', $request->pesel)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+        }
+        $existingUser = User::where('email', $request->email)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
+        }
         $user = User::create([
             'first_name' => $request['fname'],
             'last_name' => $request['lname'],
@@ -27,7 +35,7 @@ class UserController extends Controller {
             'password' => Hash::make($request['pesel'])
         ]);
         if ($request['isModal'] == 'true') {
-            return response()->json(['success' => 'Dodano nowego Czytelnika: ' . $request['fname'] . ' ' . $request['lname']]);
+            return response()->json(['success' => 'Dodano nowego Czytelnika: ' . $request->fname . ' ' . $request->lname]);
         }
         return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request['fname'] . ' ' . $request['lname']]);
     }
@@ -44,10 +52,18 @@ class UserController extends Controller {
         } else if ($request->name == "lname" && $user->last_name != $request->value) {
             $user->last_name = $request->value;
         } else if ($request->name == "pesel" && $user->pesel != $request->value) {
+            $existingUser = User::where('pesel', $request->pesel)->get();
+            if ($existingUser->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+            }
             $user->pesel = $request->value;
         } else if ($request->name == "phone" && $user->phone != $request->value) {
             $user->phone = $request->value;
         } else if ($request->name == "email" && $user->email != $request->value) {
+            $existingUser = User::where('email', $request->email)->get();
+            if ($existingUser->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
+            }
             $user->email = $request->value;
         } else if ($request->name == "street" && $user->street != $request->value) {
             $user->street = $request->value;
@@ -123,5 +139,4 @@ class UserController extends Controller {
         $user->update(['password' => Hash::make($user->pesel)]);
         return response()->json(['success' => 'Hasło zostało zresetowane']);
     }
-
 }
