@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Entities\User;
-use App\Entities\BookItem;
+use App\Models\User;
+use App\Models\BookItem;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
@@ -14,6 +14,14 @@ class UserController extends Controller {
     }
 
     public function storeUser(Request $request) {
+        $existingUser = User::where('pesel', $request->pesel)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+        }
+        $existingUser = User::where('email', $request->email)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
+        }
         $user = User::create([
             'first_name' => $request['fname'],
             'last_name' => $request['lname'],
@@ -27,27 +35,35 @@ class UserController extends Controller {
             'password' => Hash::make($request['pesel'])
         ]);
         if ($request['isModal'] == 'true') {
-            return response()->json(['success' => 'Dodano nowego Czytelnika: ' . $request['fname'] . ' ' . $request['lname']]);
+            return response()->json(['success' => 'Dodano nowego Czytelnika: ' . $request->fname . ' ' . $request->lname]);
         }
         return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request['fname'] . ' ' . $request['lname']]);
     }
 
     public function fetchUser($id) {
-        $user = User::where('id', $id)->with('borrowings.bookItem.book.authors')->get()->first();
+        $user = User::where('id', $id)->with('borrowings.bookItem.book.authors')->firstOrFail();
         return view('/admin/userInfo', ['user' => $user]);
     }
 
     public function updateUser(Request $request, $id) {
-        $user = User::where('id', $id)->get()->first();
+        $user = User::where('id', $id)->firstOrFail();
         if ($request->name == "fname" && $user->first_name != $request->value) {
             $user->first_name = $request->value;
         } else if ($request->name == "lname" && $user->last_name != $request->value) {
             $user->last_name = $request->value;
         } else if ($request->name == "pesel" && $user->pesel != $request->value) {
+            $existingUser = User::where('pesel', $request->pesel)->get();
+            if ($existingUser->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+            }
             $user->pesel = $request->value;
         } else if ($request->name == "phone" && $user->phone != $request->value) {
             $user->phone = $request->value;
         } else if ($request->name == "email" && $user->email != $request->value) {
+            $existingUser = User::where('email', $request->email)->get();
+            if ($existingUser->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
+            }
             $user->email = $request->value;
         } else if ($request->name == "street" && $user->street != $request->value) {
             $user->street = $request->value;
@@ -88,7 +104,7 @@ class UserController extends Controller {
 
 
     public function deleteUser(Request $request) {
-        $user = User::with('borrowings.bookItem')->with('reservations.bookItem')->where('id', $request->id)->get()->first();
+        $user = User::with('borrowings.bookItem')->with('reservations.bookItem')->where('id', $request->id)->firstOrFail();
         if (!empty($user->borrowings)) {
             foreach ($user->borrowings as $borrowing) {
                 if (!isset($borrowing->actual_return_date)) {
@@ -115,6 +131,12 @@ class UserController extends Controller {
             }
         }
         $user->delete();
-        return redirect('/pracownik/katalog')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
+        return redirect('/pracownik/czytelnicy/znajdz')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
+    }
+
+    public function resetPassword($id) {
+        $user = User::where('id', $id)->firstOrFail();
+        $user->update(['password' => Hash::make($user->pesel)]);
+        return response()->json(['success' => 'Hasło zostało zresetowane']);
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\Author;
-use App\Entities\Book;
-use App\Entities\BookItem;
-use App\Entities\Category;
-use App\Entities\Publisher;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\BookItem;
+use App\Models\Category;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -25,8 +25,6 @@ class BookController extends Controller {
 
 
     public function store(Request $request) {
-        //print_r($request->post());
-        //Array ( [_token] => zU6M9DtxHgTwHBdyNEBzySqrJAecH8OdqBjHM4yp [title] => tytuł1 [authors] => Array ( [0] => guia ) [newAuthorName] => Array ( [0] => nowy1 [1] => ) [newAuthorLastName] => Array ( [0] => nowy2 [1] => ) [publisher] => aa [year] => 1998 [categories] => Array ( [0] => a [1] => b ) [numberOfItems] => 4 )
         $authors = $request->authors;
         $categories = $request->categories;
         $items = $request->numberOfItems;
@@ -80,13 +78,13 @@ class BookController extends Controller {
 
 
     public function fetchOneBook($id) {
-        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->get()->first();
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
         return view('/admin/bookInfo', ['book' => $book]);
     }
 
 
     public function editBook($id) {
-        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->get()->first();
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->firstOrFail();
         $categories = Category::all();
         $authors = Author::all();
         $publishers = Publisher::all();
@@ -95,12 +93,16 @@ class BookController extends Controller {
 
 
     public function update(Request $request, $id) {
-        $book = Book::where('id', $id)->with('categories')->get()->first();
+        $book = Book::where('id', $id)->with('categories')->firstOrFail();
 
         if ($book->title != $request->title) {
             $book->title = $request->title;
         }
         if ($book->isbn != $request->isbn) {
+            $existingBook = Book::where('isbn', $request->isbn)->get();
+            if ($existingBook->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już książka o danym numerze ISBN');
+            }
             $book->isbn = $request->isbn;
         }
         if ($book->publication_year != $request->year) {
@@ -109,7 +111,7 @@ class BookController extends Controller {
 
         if ($book->publisher->id != $request->publisher) {
             $book->deleteRelatedPublisher($book->publisher->id);
-            $newPublisher = Publisher::where('id', $request->publisher)->get()->first();
+            $newPublisher = Publisher::where('id', $request->publisher)->firstOrFail();
             $newPublisher->books()->save($book);
         }
 
@@ -151,7 +153,7 @@ class BookController extends Controller {
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;
-                $category = Category::where('id', $phrase)->get()->first();
+                $category = Category::where('id', $phrase)->firstOrFail();
                 $books = $category->books()->with('bookItems')->with('authors')->with('publisher')->get();
                 $phrase = $category->name;
                 $searchInMode = "kategoria";
@@ -231,7 +233,7 @@ class BookController extends Controller {
 
 
     public function deleteBook(Request $request) {
-        $book = Book::with('bookItems')->where('id', $request->id)->get()->first();
+        $book = Book::with('bookItems')->where('id', $request->id)->firstOrFail();
         if ($book->bookItems->count() > 0) {
             return back()->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
         }
@@ -243,14 +245,14 @@ class BookController extends Controller {
 
     // BOOK ITEMS FUNCTIONS
     public function fetchBookItem($id) {
-        $item = BookItem::where('id', $id)->with('book')->with('borrowings.user')->get()->first();
+        $item = BookItem::where('id', $id)->with('book')->with('borrowings.user')->firstOrFail();
         return view('/admin/bookItemInfo', ['item' => $item]);
     }
 
 
     public function blockUnlockBookItem(Request $request) {
         try {
-            $item = BookItem::where('id', $request->id)->get()->first();
+            $item = BookItem::where('id', $request->id)->firstOrFail();
             $blocked = $item->is_blocked;
             $item->update(['is_blocked' => !$blocked]);
         } catch (\Exception $e) {
@@ -260,7 +262,7 @@ class BookController extends Controller {
     }
 
     public function storeBookItem(Request $request) {
-        $book = Book::with('bookItems')->where('id', $request->bookId)->get()->first();
+        $book = Book::with('bookItems')->where('id', $request->bookId)->firstOrFail();
         foreach ($book->bookItems as $exisitingBookItem) {
             if ($exisitingBookItem->book_item_id == $request->order) {
                 return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order]);
@@ -276,7 +278,7 @@ class BookController extends Controller {
     }
 
     public function deleteBookItem(Request $request) {
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->firstOrFail();
         if ($item->status == BookItem::AVAILABLE) {
             if (!empty($item->borrowings)) {
                 foreach ($item->borrowings as $b) {

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Entities\BookItem;
-use App\Entities\Reservation;
+use App\Models\BookItem;
+use App\Models\Reservation;
 
 use Illuminate\Console\Command;
 

@@ -1,18 +1,17 @@
 <?php
-
-namespace App\Entities;
+namespace App\Models;
 
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
-use App\Entities\Book;
+use App\Models\Book;
 
 
-class Author extends NeoEloquent {
-    protected $label = 'Author';
+class Category extends NeoEloquent{
+    
+    protected $label = 'Category';
 
     protected $fillable = [
         'id',
-        'first_names',
-        'last_name',
+        'name',
         'created_at',
         'updated_at'
     ];
@@ -23,9 +22,9 @@ class Author extends NeoEloquent {
         'updated_at'
     ];
 
+
     public function books(){
-        return $this->hasMany(Book::class,'WROTE');
+        return $this->hasMany(Book::class,'HAS_BOOK');
     }
 
-    
 }

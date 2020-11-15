@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Entities\BookItem;
-use App\Entities\Reservation;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\Reservation;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -14,16 +15,16 @@ class UserController extends Controller {
 
     public function userInfo() {
         $user = Auth::user();
-        return view('user/userInfo', ['user' => $user]);
+        return view('/user/userInfo', ['user' => $user]);
     }
 
     public function editProfile() {
         $user = Auth::user();
-        return view('user/editProfile', ['user' => $user]);
+        return view('/user/editProfile', ['user' => $user]);
     }
 
     public function updateProfile(Request $request) {
-        $user = Auth::user();        
+        $user = Auth::user();
         if ($user->first_name != $request->first_name) {
             $user->first_name = $request->first_name;
         }
@@ -31,6 +32,10 @@ class UserController extends Controller {
             $user->last_name = $request->last_name;
         }
         if ($user->pesel != $request->pesel) {
+            $existingUser = User::where('pesel', $request->pesel)->get();
+            if ($existingUser->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+            }
             $user->pesel = $request->pesel;
         }
         if ($user->phone != $request->phone) {
@@ -83,5 +88,4 @@ class UserController extends Controller {
         $user->delete();
         return redirect('/')->with("success", "Twoje konto zostało usunięte na stałe");
     }
-
 }

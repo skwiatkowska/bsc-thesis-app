@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Entities\User;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller {
     /*
@@ -68,16 +69,18 @@ class RegisterController extends Controller {
     }
 
     public function showUserRegisterForm() {
-        return view('register');
+        return view('/user/register');
     }
 
     protected function createUser(Request $request) {
-        // $this->validate($request, [
-        //     'name' => 'required|min:3|max:50',
-        //     'email' => 'email',
-        //     'password' => 'confirmed|min:6',
-        // ]);
-        
+        $existingUser = User::where('pesel', $request->pesel)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+        }
+        $existingUser = User::where('email', $request->email)->get();
+        if ($existingUser->count() > 0) {
+            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
+        }
         User::create([
             'first_name' => $request->fname,
             'last_name' => $request->lname,
@@ -85,9 +88,15 @@ class RegisterController extends Controller {
             'phone' => $request->phone,
             'email' => $request->email,
             'street' => $request->street,
+            'house_number' => $request->house_number,
             'zipcode' => $request->zipcode,
             'city' => $request->city,
             'password' => Hash::make($request->password),
         ]);
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+
+            return redirect()->intended('/dane')->with(['success' => 'Witamy. Konto zostało poprawnie utworzone']);
+        }
     }
 }

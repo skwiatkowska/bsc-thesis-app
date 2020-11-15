@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Entities\Author;
-use App\Entities\Book;
-use App\Entities\BookItem;
-use App\Entities\Category;
-use App\Entities\Publisher;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\BookItem;
+use App\Models\Category;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
@@ -16,15 +16,24 @@ use App\Http\Controllers\Controller;
 class BookController extends Controller {
 
     public function userIndex() {
-        $user = Auth::user()->with('borrowings.bookItem.book')->with('reservations.bookItem.book')->get()->first();
-        // dd($user);
-        return view('user/userBooks', ['user' => $user]);
+        $user = Auth::user();
+        $now = new \DateTime();
+        $reservations = $user->reservations;
+
+        foreach ($reservations as $reservation) {
+            if (new \DateTime($reservation->due_date) > $now) {
+                $item = $reservation->bookItem;
+                $item->update(['status' => BookItem::AVAILABLE]);
+                $reservation->delete();
+            }
+        }
+        return view('/user/userBooks', ['user' => $user]);
     }
 
     public function fetchBook($id) {
-        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->get()->first();
+        $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
         $user = Auth::user();
-        return view('/bookInfo', ['book' => $book, 'user' => $user]);
+        return view('/user/bookInfo', ['book' => $book, 'user' => $user]);
     }
 
     public function findBook(Request $request) {
@@ -36,7 +45,7 @@ class BookController extends Controller {
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;
-                $category = Category::where('id', $phrase)->get()->first();
+                $category = Category::where('id', $phrase)->firstOrFail();
                 $books = $category->books()->with('authors')->with('publisher')->get();
                 $phrase = $category->name;
                 $searchInMode = "kategoria";
@@ -77,7 +86,7 @@ class BookController extends Controller {
             } elseif ($searchIn == "publisher") {
                 $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
                 if (!$publishers->count()) {
-                    return view('/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
+                    return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
                 }
                 $publisherIds = array();
                 foreach ($publishers as $publisher) {
@@ -103,28 +112,28 @@ class BookController extends Controller {
             }
             if (!$books->count()) {
                 $books = array();
-                return view('/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
+                return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
-            return view('/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
+            return view('/user/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
         } else {
             $books = Book::all();
-            return view('/catalog', ['categories' => $categories, 'books' => $books]);
+            return view('/user/catalog', ['categories' => $categories, 'books' => $books]);
         }
     }
 
 
     public function fetchAuthor($id) {
-        $author = Author::where('id', $id)->with('books')->get()->first();
-        return view('/authorInfo', ['author' => $author]);
+        $author = Author::where('id', $id)->with('books')->firstOrFail();
+        return view('/user/authorInfo', ['author' => $author]);
     }
 
     public function fetchPublisher($id) {
-        $publisher = Publisher::where('id', $id)->with('books')->get()->first();
-        return view('/publisherInfo', ['publisher' => $publisher]);
+        $publisher = Publisher::where('id', $id)->with('books')->firstOrFail();
+        return view('/user/publisherInfo', ['publisher' => $publisher]);
     }
 
     public function prolongBookItem(Request $request) {
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->get()->first();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->id)->firstOrFail();
         foreach ($item->borrowings as $borrowing) {
             if (!isset($borrowing->actual_return_date) && !$borrowing->was_prolonged) {
                 $due_date = new DateTime($borrowing->due_date);

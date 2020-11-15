@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\Publisher;
+use App\Models\Publisher;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,13 +26,17 @@ class PublisherController extends Controller {
     }
 
     public function fetchPublisher($id) {
-        $publisher = Publisher::where('id', $id)->with('books')->get()->first();
+        $publisher = Publisher::where('id', $id)->with('books')->firstOrFail();
         return view('/admin/publisherInfo', ['publisher' => $publisher]);
     }
 
     public function update(Request $request, $id) {
-        $publisher = Publisher::where('id', $id)->get()->first();
+        $publisher = Publisher::where('id', $id)->firstOrFail();
         if ($publisher->name != $request->value) {
+            $existingPublisher = Publisher::where('name', $request->name)->get();
+            if ($existingPublisher->count() > 0) {
+                return redirect()->back()->withErrors('Istnieje już wydawnictwo o tej nazwie');
+            }
             $publisher->name = $request->value;
         }
 
@@ -43,7 +47,7 @@ class PublisherController extends Controller {
 
     public function delete($id) {
         try {
-            $publisher = Publisher::where('id', $id)->get()->first();
+            $publisher = Publisher::where('id', $id)->firstOrFail();
             $this->checkIfHasAssignedBooks($publisher);
             $publisher->delete();
         } catch (\Exception $e) {

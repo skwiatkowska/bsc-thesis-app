@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Entities\BookItem;
-use App\Entities\Borrowing;
-use App\Entities\Reservation;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\Borrowing;
+use App\Models\Reservation;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,15 +14,21 @@ use DateTime;
 class ReservationController extends Controller {
 
     public function index() {
+        $now = new \DateTime();
+        $expired = Reservation::with('bookItem')->where('due_date', '<', $now)->get();
+        foreach($expired as $exp){
+            $item = $exp->bookItem;
+            $item->update(['status' => BookItem::AVAILABLE]);
+            $exp->delete();
+        }
         $reservations = Reservation::with('user')->with('bookItem.book')->get();
-        // dd($reservations);
         return view('/admin/reservations', ['reservations' => $reservations]);
     }
 
 
     public function borrowReservedBook(Request $request) {
-        $user = User::where('id', $request->userId)->with('borrowings')->get()->first();
-        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->get()->first();
+        $user = User::where('id', $request->userId)->with('borrowings')->firstOrFail();
+        $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
         if ($item->status == BookItem::BORROWED || $item->is_blocked) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         }
@@ -31,6 +37,16 @@ class ReservationController extends Controller {
         $item->update(['status' => BookItem::BORROWED]);
         $user->borrowings($item)->save($borrowing);
         Reservation::where('id', $request->reservationId)->delete();
-        return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ' została wypożyczona']);
+        return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ', (egzemplarz ' . $item->book_item_id . ') została zarezerwowana']);
+    }
+
+
+    public function cancelReservation(Request $request) {
+        $reservation = Reservation::where('id', $request->id)->firstOrFail();
+        $item = $reservation->bookItem;
+        $item->update(['status' => BookItem::AVAILABLE]);
+
+        $reservation->delete();
+        return response()->json(['success' => 'Rezerwacja została anulowana']);
     }
 }

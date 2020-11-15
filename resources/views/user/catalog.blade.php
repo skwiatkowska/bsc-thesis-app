@@ -78,6 +78,8 @@
                             @foreach ($book->authors as $author)
                             <a href="/autorzy/{{$author->id}}" class="a-link-navy">{{$author->last_name}},
                                 {{$author->first_names}}</a>
+                                {{ $loop->last ? '' : ' •' }}
+
                             @endforeach
                         </td>
                         <td><a href="/wydawnictwa/{{$book->publisher->id}}"
@@ -97,7 +99,9 @@
         </div>
     </div>
     @else
+    @if (!empty($phrase))
     <p class="h6 text-center py-5">Nie znaleziono</p>
+    @endif
     @endif
 </div>
 
@@ -105,6 +109,7 @@
 @endsection
 @section('script')
 <script>
+    
     $('#dynatable').dynatable();
 
     $(".dynatable-search").hide();
@@ -126,5 +131,6 @@
         }
     });
 
+ 
 </script>
 @endsection

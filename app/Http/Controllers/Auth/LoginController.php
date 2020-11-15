@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Entities\Admin;
-use Illuminate\Support\Facades\Hash;
 
 
 class LoginController extends Controller {
@@ -45,7 +43,7 @@ class LoginController extends Controller {
     public function showAdminLoginForm() {
         // Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
 
-        return view('admin.login');
+        return view('/admin/login');
     }
 
     public function adminLogin(Request $request) {
@@ -64,15 +62,10 @@ class LoginController extends Controller {
 
 
     public function showUserLoginForm() {
-        return view('login');
+        return view('/user/login');
     }
 
     public function userLogin(Request $request) {
-        // $this->validate($request, [
-        //     'email'   => 'required|email',
-        //     'password' => 'required|min:6'
-        // ]);
-
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             if ($request->isModal == 'true') {
                 redirect()->back()->with(['success' => 'Zalogowano']);

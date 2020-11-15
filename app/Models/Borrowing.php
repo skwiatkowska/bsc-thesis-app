@@ -1,20 +1,23 @@
 <?php
 
-namespace App\Entities;
+namespace App\Models;
 use Illuminate\Support\Facades\DB;
 
 use Vinelab\NeoEloquent\Eloquent\Model as NeoEloquent;
-use App\Entities\BookItem;
-use App\Entities\User;
+use App\Models\BookItem;
+use App\Models\User;
 
-class Reservation extends NeoEloquent {
+class Borrowing extends NeoEloquent {
 
-    protected $label = 'Reservation';
+    protected $label = 'Borrowing';
 
     protected $fillable = [
         'id',
-        'reservation_date',
+        'borrow_date',
         'due_date',
+        'actual_return_date',
+        'was_prolonged',
+        'overdue_fee',
         'created_at',
         'updated_at'
     ];
@@ -31,7 +34,6 @@ class Reservation extends NeoEloquent {
     }
 
     public function user() {
-        return $this->belongsTo(User::class, 'RESERVED');
+        return $this->belongsTo(User::class, 'BORROWED');
     }
-
 }
