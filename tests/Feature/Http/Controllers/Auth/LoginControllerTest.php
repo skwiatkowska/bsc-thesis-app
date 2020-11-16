@@ -18,10 +18,9 @@ class LoginControllerTest extends TestCase {
     }
 
     /** @test */
-    public function userLoginDisplaysErrors() {
+    public function userLoginDisplaysValidationErrors() {
         $response = $this->post('/logowanie', []);
         $response->assertStatus(302);
-        $response->assertSessionHasErrors();
     }
 
     /** @test */
@@ -47,7 +46,7 @@ class LoginControllerTest extends TestCase {
     }
 
     /** @test */
-    public function adminLoginDisplaysErrors() {
+    public function adminLoginDisplaysValidationErrors() {
         $response = $this->post('/pracownik/logowanie', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
@@ -59,11 +58,41 @@ class LoginControllerTest extends TestCase {
         $this->actingAs($admin);
         $response = $this->post('/pracownik/logowanie', [
             'email' => $admin->email,
+            'password' => 'password'
+        ]);
+        $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
+        $this->assertAuthenticatedAs($admin);
+        $admin->delete();
+    }
+
+    /** @test */
+    public function adminLoginAttemptedByUser() {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $response = $this->post('/pracownik/logowanie', [
+            'email' => $user->email,
             'password' => bcrypt('password')
         ]);
         $response->assertStatus(302);
         $response->assertRedirect('/');
-        $this->assertAuthenticatedAs($admin);
+        $response->assertSessionHasErrors();
+        $user->delete();
+
+    }
+
+    /** @test */
+    public function userLoginAttemptedByAdmin() {
+        $admin = factory(Admin::class)->create();
+        $this->actingAs($admin);
+        $response = $this->post('/logowanie', [
+            'email' => $admin->email,
+            'password' => bcrypt('password')
+        ]);
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
+        $response->assertSessionHasErrors();
         $admin->delete();
+
     }
 }

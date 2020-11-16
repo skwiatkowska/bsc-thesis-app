@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -41,7 +44,7 @@ class LoginController extends Controller {
 
 
     public function showAdminLoginForm() {
-        // Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
+        Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
 
         return view('/admin/login');
     }
