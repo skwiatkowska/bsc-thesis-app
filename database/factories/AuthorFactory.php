@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use App\Models\Book;
+use App\Models\Author;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +14,15 @@ use App\Models\Book;
 |
 */
 
-$factory->define(App\Models\Book::class, function (Faker $faker) {
+$factory->define(App\Models\Author::class, function (Faker $faker) {
+    $fname = $faker->unique()->firstName;
+    $lname = $faker->unique()->lastName;
+    $exisitingAuthor = Author::where('first_names', $fname)->where('last_name', $lname)->get()->first();
+    if ($exisitingAuthor) {
+        $exisitingAuthor->delete();
+    }
     return [
-        'title' => $faker->unique()->name,
-        'isbn' => $faker->unique()->numberBetween(1,999999999), 
-        'publication_year' => $faker->numberBetween(1910,2020),
+        'first_names' => $fname,
+        'last_name' => $lname,
     ];
 });
-

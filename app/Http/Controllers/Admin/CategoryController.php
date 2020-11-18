@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller {
-
-
-
+    
     public function index() {
         $categories = Category::all();
         return view('/admin/categories', ['categories' => $categories]);
@@ -23,9 +21,9 @@ class CategoryController extends Controller {
                 'name' => $request->name,
             ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Kategoria ' . $request->input('name') . ' już istnieje'], 409);
+            return response()->json(['error' => 'Kategoria ' . $request->name . ' już istnieje'], 409);
         }
 
-        return response()->json(['success' => 'Kategoria ' . $request->input('name') . ' utworzona']);
+        return response()->json(['success' => 'Kategoria ' . $request->name . ' utworzona']);
     }
 }

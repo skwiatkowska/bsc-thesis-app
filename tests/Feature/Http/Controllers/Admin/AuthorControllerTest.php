@@ -4,12 +4,16 @@ namespace Tests\Feature\Http\Controllers\Admin;
 
 use App\Models\Admin;
 use App\Models\Author;
+use App\Models\Book;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthorControllerTest extends TestCase {
+    use WithFaker;
+
+
     public function logIn() {
         $admin = factory(Admin::class)->create();
         $this->actingAs($admin);
@@ -37,16 +41,18 @@ class AuthorControllerTest extends TestCase {
     public function createNewAuthorSuccess() {
         $admin = $this->logIn();
         $authorsBefore = Author::all()->count();
+        $fname = $this->faker->unique()->firstName;
+        $lname = $this->faker->unique()->lastName;
         $data = array(
-            'fname' => 'test123',
-            'lname' => 'test123',
+            'fname' => $fname,
+            'lname' => $lname,
         );
         $response = $this->post('/pracownik/autorzy', $data);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(200);
         $authorsAfter = Author::all()->count();
         $this->assertGreaterThan($authorsBefore, $authorsAfter);
-        $author = Author::where('first_names', 'test123')->where('last_name', 'test123')->get()->first();
+        $author = Author::where('first_names', $fname)->where('last_name', $lname)->get()->first();
         $author->delete();
         $admin->delete();
     }
@@ -54,13 +60,9 @@ class AuthorControllerTest extends TestCase {
     /** @test */
     public function updateAuthorSuccess() {
         $admin = $this->logIn();
-        $author = Author::create([
-            'first_names' => 'test_test12345',
-            'last_name' => 'test_test12345',
-        ]);
-        
-        $newName = 'new_name123';
-        $response = $this->post('/pracownik/autorzy/'.$author->id.'/edycja', [
+        $author = factory(Author::class)->create();
+        $newName = $this->faker->unique()->name;
+        $response = $this->post('/pracownik/autorzy/' . $author->id . '/edycja', [
             'name' => 'fname',
             'value' => $newName
         ]);
@@ -68,17 +70,14 @@ class AuthorControllerTest extends TestCase {
         $this->assertEquals($authorUpdated->first_names, $newName);
         $response->assertSessionHasNoErrors();
         $author->delete();
-        $admin->delete();      
+        $admin->delete();
     }
 
     /** @test */
     public function authorInfoCorrectId() {
         $admin = $this->logIn();
-        $author = Author::create([
-            'first_names' => 'test_fname111',
-            'last_name' => 'test_lname111',
-        ]);
-        $response = $this->get('/pracownik/autorzy/'.$author->id);
+        $author = factory(Author::class)->create();
+        $response = $this->get('/pracownik/autorzy/' . $author->id);
         $response->assertStatus(200);
         $response->assertViewIs('.admin.authorInfo');
         $response->assertSessionHasNoErrors();
@@ -97,7 +96,33 @@ class AuthorControllerTest extends TestCase {
         $admin->delete();
     }
 
+    /** @test */
+    public function deleteAuthorWithoutBooks() {
+        $admin = $this->logIn();
+        $author = factory(Author::class)->create();
+        $this->assertEquals($author->books->count(), 0);
+        $response = $this->post('/pracownik/autorzy/' . $author->id . '/usun', []);
+        $response->assertStatus(302);
+        $response->assertRedirect('/pracownik/autorzy');
+        $authorAfter = Author::where('id', $author->id)->get();
+        $this->assertEquals($authorAfter->count(), 0);
+        $admin->delete();
+    }
 
+    /** @test */
+    public function deleteAuthorWithBooks() {
+        $admin = $this->logIn();
+        $author = factory(Author::class)->create();
+        $book = factory(Book::class)->create();
+        $author->books()->save($book);
+        $this->assertGreaterThan(0, $author->books->count());
+        $response = $this->post('/pracownik/autorzy/' . $author->id . '/usun', []);
 
-    ////delete
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
+        $authorAfter = Author::where('id', $author->id)->get();
+        $this->assertNotEquals($authorAfter->count(), 0);
+        $author->delete();
+        $book->delete();
+    }
 }

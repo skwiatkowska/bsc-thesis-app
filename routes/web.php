@@ -50,11 +50,11 @@ Route::group(['middleware' => 'user'], function () {
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/wyloguj', 'Auth\LoginController@adminLogout')->name('logout');
-    Route::get('/pracownik/czytelnicy/nowy', 'Admin\UserController@createUser');
     Route::get('/pracownik', 'Admin\HomeController@index');
 
     Route::get('/pracownik/info', 'Admin\HomeController@info');
 
+    Route::get('/pracownik/czytelnicy/nowy', 'Admin\UserController@createUser');
     Route::post('/pracownik/czytelnicy/nowy', 'Admin\UserController@storeUser');
     Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
     Route::get('/pracownik/czytelnicy/{id}', 'Admin\UserController@fetchUser');

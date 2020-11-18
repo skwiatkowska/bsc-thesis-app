@@ -11,8 +11,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class BookControllerTest extends TestCase {
-    
+class BookControllerTest extends TestCase {    
     /** @test */
     public function userBooksViewAfterSuccessfullyLogin() {
         $user = factory(User::class)->create();
@@ -42,12 +41,19 @@ class BookControllerTest extends TestCase {
 
     /** @test */
     public function bookInfoCorrectId() {
-        $book = Book::all()->first();
+        $book = factory(Book::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
         $response = $this->get('/ksiazki/'.$book->id);
         $response->assertStatus(200);
         $response->assertViewIs('.user.bookInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('book');
+        $author->delete();
+        $publisher->delete();
+        $book->delete();
     }
 
     /** @test */
@@ -60,10 +66,7 @@ class BookControllerTest extends TestCase {
 
     /** @test */
     public function authorInfoCorrectId() {
-        $author = Author::create([
-            'first_names' => 'test_fname1',
-            'last_name' => 'test_lname1',
-        ]);
+        $author = factory(Author::class)->create();
         $response = $this->get('/autorzy/'.$author->id);
         $response->assertStatus(200);
         $response->assertViewIs('.user.authorInfo');
@@ -83,9 +86,7 @@ class BookControllerTest extends TestCase {
 
     /** @test */
     public function publisherInfoCorrectId() {
-        $publisher = Publisher::create([
-            'name' => 'testpublisher',
-        ]);
+        $publisher = factory(Publisher::class)->create();
         $response = $this->get('/wydawnictwa/'.$publisher->id);
         $response->assertStatus(200);
         $response->assertViewIs('.user.publisherInfo');

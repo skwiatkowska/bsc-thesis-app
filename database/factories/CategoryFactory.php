@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use App\Models\Book;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +14,13 @@ use App\Models\Book;
 |
 */
 
-$factory->define(App\Models\Book::class, function (Faker $faker) {
+$factory->define(App\Models\Category::class, function (Faker $faker) {
+    $name = $faker->unique()->name;
+    $exisitingCategory = Category::where('name', $name)->get()->first();
+    if ($exisitingCategory) {
+        $exisitingCategory->delete();
+    }
     return [
-        'title' => $faker->unique()->name,
-        'isbn' => $faker->unique()->numberBetween(1,999999999), 
-        'publication_year' => $faker->numberBetween(1910,2020),
+        'name' => $name
     ];
 });
-

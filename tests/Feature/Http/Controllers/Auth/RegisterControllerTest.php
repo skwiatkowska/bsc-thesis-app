@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegisterControllerTest extends TestCase {
+
+    use WithFaker;
     /** @test */
     public function userRegisterDisplaysRegisterForm() {
         $response = $this->get('/rejestracja');
@@ -24,18 +26,18 @@ class RegisterControllerTest extends TestCase {
 
     /** @test */
     public function userRegisterSuccess() {
-        $pesel = 1234567890;
+        $pesel = $this->faker->unique()->numberBetween(1, 99999999);
         $data = array(
-            'email' => 'testemail123455@test.test',
-            'fname' => 'test',
-            'lname' => 'test',
+            'email' => $this->faker->unique()->safeEmail,
+            'fname' => $this->faker->firstName(),
+            'lname' => $this->faker->lastName,
             'pesel' => $pesel,
-            'phone' => '123',
-            'street' => 'street',
-            'house_number' => 1,
-            'zipcode' => 1,
-            'city' => 'bigcity',
-            'password' => bcrypt('strongpassword')
+            'phone' => $this->faker->unique()->numberBetween(1, 999999),
+            'street' => $this->faker->name,
+            'house_number' => $this->faker->numberBetween(1, 999999),
+            'zipcode' => $this->faker->numberBetween(1, 999999),
+            'city' => $this->faker->name,
+            'password' => $this->faker->name
         );
 
         $response = $this->post('/rejestracja', $data);
@@ -51,16 +53,16 @@ class RegisterControllerTest extends TestCase {
         $user = factory(User::class)->create();
 
         $data = array(
-            'email' => 'testemail123455@test.test',
-            'fname' => 'test',
-            'lname' => 'test',
+            'email' => $this->faker->unique()->safeEmail,
+            'fname' => $this->faker->firstName,
+            'lname' => $this->faker->lastName,
             'pesel' => $user->pesel,
-            'phone' => '123',
-            'street' => 'street',
-            'house_number' => 1,
-            'zipcode' => 1,
-            'city' => 'bigcity',
-            'password' => bcrypt('strongpassword')
+            'phone' => $this->faker->unique()->numberBetween(1, 999999),
+            'street' => $this->faker->name,
+            'house_number' => $this->faker->numberBetween(1, 999999),
+            'zipcode' => $this->faker->numberBetween(1, 999999),
+            'city' => $this->faker->name,
+            'password' => $this->faker->name
         );
 
         $response = $this->post('/rejestracja', $data);
@@ -77,15 +79,15 @@ class RegisterControllerTest extends TestCase {
 
         $data = array(
             'email' => $user->email,
-            'fname' => 'test',
-            'lname' => 'test',
-            'pesel' => 123456,
-            'phone' => '123',
-            'street' => 'street',
-            'house_number' => 1,
-            'zipcode' => 1,
-            'city' => 'bigcity',
-            'password' => bcrypt('strongpassword')
+            'fname' => $this->faker->firstName,
+            'lname' => $this->faker->lastName,
+            'pesel' => $this->faker->unique()->numberBetween(1, 999999999),
+            'phone' => $this->faker->unique()->numberBetween(1, 999999),
+            'street' => $this->faker->name,
+            'house_number' => $this->faker->numberBetween(1, 999999),
+            'zipcode' => $this->faker->numberBetween(1, 999999),
+            'city' => $this->faker->name,
+            'password' => $this->faker->name
         );
 
         $response = $this->post('/rejestracja', $data);

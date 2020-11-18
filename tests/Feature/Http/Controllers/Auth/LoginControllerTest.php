@@ -29,10 +29,10 @@ class LoginControllerTest extends TestCase {
         $this->actingAs($user);
         $response = $this->post('/logowanie', [
             'email' => $user->email,
-            'password' => bcrypt('password')
+            'password' => 'password'
         ]);
         $response->assertStatus(302);
-        $response->assertRedirect('/');
+        $response->assertRedirect('/moje-ksiazki');
         $this->assertAuthenticatedAs($user);
         $user->delete();
     }
@@ -72,7 +72,7 @@ class LoginControllerTest extends TestCase {
         $this->actingAs($user);
         $response = $this->post('/pracownik/logowanie', [
             'email' => $user->email,
-            'password' => bcrypt('password')
+            'password' => 'password'
         ]);
         $response->assertStatus(302);
         $response->assertRedirect('/');
@@ -87,7 +87,7 @@ class LoginControllerTest extends TestCase {
         $this->actingAs($admin);
         $response = $this->post('/logowanie', [
             'email' => $admin->email,
-            'password' => bcrypt('password')
+            'password' => 'password'
         ]);
         $response->assertStatus(302);
         $response->assertRedirect('/');

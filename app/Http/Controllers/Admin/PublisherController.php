@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PublisherController extends Controller {
+    
     public function index() {
         $publishers = Publisher::all();
         return view('/admin/publishers', ['publishers' => $publishers]);
@@ -31,7 +32,7 @@ class PublisherController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        $publisher = Publisher::where('id', $id)->firstOrFail();
+        $publisher = Publisher::where('id', '=', $id)->firstOrFail();
         if ($publisher->name != $request->value) {
             $existingPublisher = Publisher::where('name', $request->name)->get();
             if ($existingPublisher->count() > 0) {

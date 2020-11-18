@@ -1,7 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use App\Models\Book;
+use App\Models\BookItem;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +14,10 @@ use App\Models\Book;
 |
 */
 
-$factory->define(App\Models\Book::class, function (Faker $faker) {
+$factory->define(App\Models\BookItem::class, function (Faker $faker) {
     return [
-        'title' => $faker->unique()->name,
-        'isbn' => $faker->unique()->numberBetween(1,999999999), 
-        'publication_year' => $faker->numberBetween(1910,2020),
+        'book_item_id' => $faker->numberBetween(1, 9999),
+        'status' => BookItem::AVAILABLE,
+        'is_blocked' => false,
     ];
 });
-

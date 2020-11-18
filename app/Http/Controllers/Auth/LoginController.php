@@ -44,8 +44,10 @@ class LoginController extends Controller {
 
 
     public function showAdminLoginForm() {
-        Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
-
+        $existing = Admin::where('email', 'admin@admin.admin')->get();
+        if (!$existing) {
+            Admin::create(['email' => 'admin@admin.admin', 'password' => Hash::make('admin')]);
+        }
         return view('/admin/login');
     }
 

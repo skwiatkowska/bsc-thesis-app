@@ -15,7 +15,7 @@ use App\Models\User;
 */
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
-    $pesel = $faker->unique()->numberBetween(100000000001, 99999999999);
+    $pesel = $faker->unique()->numberBetween(1, 99999999999);
     $exisitingUser = User::where('pesel', $pesel)->get()->first();
     if ($exisitingUser) {
         $exisitingUser->delete();

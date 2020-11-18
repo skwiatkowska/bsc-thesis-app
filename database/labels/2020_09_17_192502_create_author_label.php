@@ -12,7 +12,7 @@ class CreateAuthorLabel extends Migration {
      */
     public function up() {
         Neo4jSchema::label('Author', function (Blueprint $label) {
-            //$label->unique(array('first_names', 'last_name'));
+            $label->unique('first_names' . ' ' . 'last_name');
         });
     }
 
