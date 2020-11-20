@@ -50,8 +50,8 @@ class PublisherControllerTest extends TestCase {
         $admin->delete();
     }
 
-    /** @test */
-    public function createNewPublisherDuplicatedError() {
+     /** @test */
+     public function createNewPublisherDuplicatedError() {
         $admin = $this->logIn();
         $anotherPublisher = factory(Publisher::class)->create();
         $publishersBefore = Publisher::all()->count();
@@ -62,6 +62,7 @@ class PublisherControllerTest extends TestCase {
         $anotherPublisher->delete();
         $admin->delete();
     }
+
 
     /** @test */
     public function updatePublisherSuccess() {
@@ -75,7 +76,7 @@ class PublisherControllerTest extends TestCase {
 
         $this->assertEquals($publisherUpdated->name, $newName);
         $response->assertSessionHasNoErrors();
-        // $publisher->delete();
+        $publisher->delete();
         $admin->delete();
     }
 
@@ -112,6 +113,7 @@ class PublisherControllerTest extends TestCase {
         $response->assertRedirect('/pracownik/wydawnictwa');
         $publisherAfter = Publisher::where('id', $publisher->id)->get();
         $this->assertEquals($publisherAfter->count(), 0);
+        $publisher->delete();
         $admin->delete();
     }
 
@@ -130,5 +132,6 @@ class PublisherControllerTest extends TestCase {
         $this->assertNotEquals($publisherAfter->count(), 0);
         $publisher->delete();
         $book->delete();
+        $admin->delete();
     }
 }

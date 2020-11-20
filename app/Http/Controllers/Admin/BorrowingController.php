@@ -62,9 +62,10 @@ class BorrowingController extends Controller {
                 $due_date = new DateTime($borrowing->due_date);
                 $new_due_date = $due_date->modify('+1 month');
                 $borrowing->update(['due_date' => $new_due_date, 'was_prolonged' => true]);
+                return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
             }
         }
-        return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
+        return response()->json(['error' => 'Nie znaleziono wypożyczenia']);
     }
 
     public function returnBookItem(Request $request) {

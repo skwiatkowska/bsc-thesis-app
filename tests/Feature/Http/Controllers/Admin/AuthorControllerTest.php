@@ -22,7 +22,6 @@ class AuthorControllerTest extends TestCase {
             'password' => 'password'
         ]);
         $response->assertStatus(302);
-        // $this->assertAuthenticatedAs($admin);
         return $admin;
     }
 
@@ -124,5 +123,6 @@ class AuthorControllerTest extends TestCase {
         $this->assertNotEquals($authorAfter->count(), 0);
         $author->delete();
         $book->delete();
+        $admin->delete();
     }
 }

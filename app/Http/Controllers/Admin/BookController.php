@@ -101,7 +101,7 @@ class BookController extends Controller {
         if ($book->isbn != $request->isbn) {
             $existingBook = Book::where('isbn', $request->isbn)->get();
             if ($existingBook->count() > 0) {
-                return redirect()->back()->withErrors('Istnieje już książka o danym numerze ISBN');
+                return redirect('/pracownik/ksiazki/' . $book->id . '/edycja')->withErrors('Istnieje już książka o danym numerze ISBN');
             }
             $book->isbn = $request->isbn;
         }
@@ -173,7 +173,7 @@ class BookController extends Controller {
                 }
 
                 if (!$authors->count()) {
-                    $books = array();
+                    $books = collect();
                     return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego autora: " . $phrase);
                 }
                 $authorIds = array();
@@ -195,7 +195,7 @@ class BookController extends Controller {
             } elseif ($searchIn == "publisher") {
                 $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
                 if (!$publishers->count()) {
-                    $books = array();
+                    $books = collect();
                     return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
                 }
                 $publisherIds = array();
@@ -221,7 +221,7 @@ class BookController extends Controller {
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {
-                $books = array();
+                $books = collect();
                 return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
             return view('/admin/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
@@ -235,7 +235,7 @@ class BookController extends Controller {
     public function deleteBook(Request $request) {
         $book = Book::with('bookItems')->where('id', $request->id)->firstOrFail();
         if ($book->bookItems->count() > 0) {
-            return back()->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
+            return redirect('/pracownik/ksiazki/' . $book->id)->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
         }
         $book->delete();
         return redirect('/pracownik/katalog')->with("success", "Książka " . $book->title . " została usunięta na stałe");

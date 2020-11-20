@@ -207,7 +207,7 @@ class UserControllerTest extends TestCase {
         $response->assertRedirect('/pracownik/czytelnicy/znajdz');
         $userAfter = User::where('id', $user->id)->get();
         $this->assertEquals($userAfter->count(), 0);
-        $admin->delete;
+        $admin->delete();
     }
 
 
@@ -227,6 +227,7 @@ class UserControllerTest extends TestCase {
         $this->assertNotEquals($userAfter->count(), 0);
         $admin->delete();
         $borrowing->delete();
+        $bookItem->delete();
         $user->delete();
     }
 
@@ -246,6 +247,7 @@ class UserControllerTest extends TestCase {
         $this->assertNotEquals($userAfter->count(), 0);
         $admin->delete();
         $reservation->delete();
+        $bookItem->delete();
         $user->delete();
     }
 
@@ -263,7 +265,7 @@ class UserControllerTest extends TestCase {
         ]);
         $this->assertAuthenticatedAs($user);
         $user->delete();
-        $admin->delete;
+        $admin->delete();
     }
 
 

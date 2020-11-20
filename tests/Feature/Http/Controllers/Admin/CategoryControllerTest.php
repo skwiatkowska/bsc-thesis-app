@@ -40,7 +40,7 @@ class CategoryControllerTest extends TestCase {
         $admin = $this->logIn();
         $categoriesBefore = Category::all()->count();
         $name = $this->faker->unique()->name;
-     
+
         $response = $this->post('/pracownik/kategorie', ['name' => $name]);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(200);
@@ -51,16 +51,17 @@ class CategoryControllerTest extends TestCase {
         $admin->delete();
     }
 
-     /** @test */
-     public function createNewCategoryDuplicatedError() {
+
+    /** @test */
+    public function createNewCategoryDuplicatedError() {
         $admin = $this->logIn();
         $anotherCategory = factory(Category::class)->create();
         $categoriesBefore = Category::all()->count();
-        $response = $this->post('/pracownik/wydawnictwa', ['name' => $anotherCategory->name]);
+        $response = $this->post('/pracownik/kategorie', ['name' => $anotherCategory->name]);
+        $response->assertStatus(409);
         $categoriesAfter = Category::all()->count();
         $this->assertEquals($categoriesBefore, $categoriesAfter);
         $anotherCategory->delete();
         $admin->delete();
     }
-
 }

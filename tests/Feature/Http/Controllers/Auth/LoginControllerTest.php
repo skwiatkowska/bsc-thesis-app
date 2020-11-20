@@ -63,6 +63,7 @@ class LoginControllerTest extends TestCase {
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $this->assertAuthenticatedAs($admin);
+        $response->assertRedirect('/pracownik');
         $admin->delete();
     }
 

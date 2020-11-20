@@ -21,6 +21,10 @@ $factory->define(App\Models\Author::class, function (Faker $faker) {
     if ($exisitingAuthor) {
         $exisitingAuthor->delete();
     }
+    $exisitingAuthor = Author::where('last_name', $lname)->get()->first();
+    if ($exisitingAuthor) {
+        $exisitingAuthor->delete();
+    }
     return [
         'first_names' => $fname,
         'last_name' => $lname,

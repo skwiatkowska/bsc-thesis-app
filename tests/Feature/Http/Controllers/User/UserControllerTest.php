@@ -132,6 +132,7 @@ class UserControllerTest extends TestCase {
         $this->assertNotEquals($userAfter->count(), 0);
         $user->delete();
         $borrowing->delete();
+        $bookItem->delete();
     }
 
     /** @test */
@@ -148,5 +149,6 @@ class UserControllerTest extends TestCase {
         $this->assertNotEquals($userAfter->count(), 0);
         $user->delete();
         $reservation->delete();
+        $bookItem->delete();
     }
 }
