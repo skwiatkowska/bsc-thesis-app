@@ -380,6 +380,8 @@ class BookControllerTest extends TestCase {
         $response = $this->post('/prolonguj', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $borrowing->delete();
         $user->delete();
         $bookItem->delete();
@@ -394,6 +396,9 @@ class BookControllerTest extends TestCase {
         );
         $response = $this->post('/prolonguj', $data);
         $response->assertSessionHasErrors();
+        $response->assertStatus(404);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $content);
         $user->delete();
         $bookItem->delete();
     }

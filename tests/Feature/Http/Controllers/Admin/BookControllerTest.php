@@ -9,6 +9,7 @@ use App\Models\BookItem;
 use App\Models\Category;
 use App\Models\Publisher;
 use App\Models\Borrowing;
+use App\Models\Reservation;
 use App\Models\User;
 use DateTime;
 use Tests\TestCase;
@@ -569,44 +570,249 @@ class BookControllerTest extends TestCase {
 
     //BOOK ITEMS
 
+    /** @test */
+    public function bookItemInfoCorrectId() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
+        $response = $this->get('/pracownik/egzemplarze/' . $bookItem->id);
+        $response->assertStatus(200);
+        $response->assertViewIs('.admin.bookItemInfo');
+        $response->assertSessionHasNoErrors();
+        $response->assertViewHas('item');
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        $bookItem->delete();
+        $book->delete();
+        $admin->delete();
+    }
+
+
+    /** @test */
+    public function bookItemInfoWrongId() {
+        $admin = $this->logIn();
+        $response = $this->get('/pracownik/egzemplarze/-1');
+        $response->assertStatus(404);
+        $response->assertNotFound();
+        $admin->delete();
+    }
+
+
+    /** @test */
+    public function blockUnlockBookItemSuccess() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
+
+        $bookItemIsBlockedBefore = $bookItem->is_blocked;
+        $data = array(
+            'bookId' => $book->id,
+            'order' => $bookItem->book_item_id
+        );
+        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/blokuj', $data);
+        $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
+        $bookItem = BookItem::where('id', $bookItem->id)->get()->first();
+        $bookItemIsBlockedAfter = $bookItem->is_blocked;
+        $this->assertNotEquals($bookItemIsBlockedAfter, $bookItemIsBlockedBefore);
+
+        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/blokuj', $data);
+        $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
+        $bookItem = BookItem::where('id', $bookItem->id)->get()->first();
+        $bookItemIsBlockedAfter2 = $bookItem->is_blocked;
+        $this->assertEquals($bookItemIsBlockedAfter2, $bookItemIsBlockedBefore);
+
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        $bookItem->delete();
+        $book->delete();
+        $admin->delete();
+    }
+
+
+    /** @test */
+    public function blockUnlockBookItemErrorBookItemNotAvailable() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
+        $bookItem->update(['status' => BookItem::RESERVED]);
+
+        $bookItemIsBlockedBefore = $bookItem->is_blocked;
+        $data = array(
+            'bookId' => $book->id,
+            'order' => $bookItem->book_item_id
+        );
+        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/blokuj', $data);
+        $response->assertStatus(403);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $content);
+        $bookItem = BookItem::where('id', $bookItem->id)->get()->first();
+        $bookItemIsBlockedAfter = $bookItem->is_blocked;
+        $this->assertEquals($bookItemIsBlockedAfter, $bookItemIsBlockedBefore);
+
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        $bookItem->delete();
+        $book->delete();
+        $admin->delete();
+    }
 
 
 
-    
+    /** @test */
+    public function createBookItemSuccess() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
 
-    // /** @test */
-    // public function prolongBookItemSuccess() {
-    //         $admin = $this->logIn();
+        $bookItemsBefore = BookItem::all()->count();
+        $data = array(
+            'bookId' => $book->id,
+            'order' => $bookItem->book_item_id + 1
+        );
+        $response = $this->post('/pracownik/ksiazki/' . $book->id . '/nowy-egzemplarz', $data);
+        $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
 
-    //     $bookItem = factory(BookItem::class)->create();
-    //     $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
-    //     $user->borrowings($bookItem)->save($borrowing);
-    //     $this->assertEquals($user->borrowings->count(), 1);
-    //     $data = array(
-    //         'id' => $bookItem->id,
-    //     );
-    //     $response = $this->post('/prolonguj', $data);
-    //     $response->assertStatus(200);
-    //     $response->assertSessionHasNoErrors();
-    //     $borrowing->delete();
-    //     $bookItem->delete();
-    //     $admin->delete();
+        $bookItemsAfter = BookItem::all()->count();
+        $this->assertGreaterThan($bookItemsBefore, $bookItemsAfter);
 
-    // }
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        foreach ($book->bookItems as $bookItem) {
+            $bookItem->delete();
+        }
+        $book->delete();
+        $admin->delete();
+    }
 
-    // public function prolongBookItemError() {
-    //             $admin = $this->logIn();
 
-    //     $bookItem = factory(BookItem::class)->create();
-    //     $this->assertEquals($user->borrowings->count(), 1);
-    //     $data = array(
-    //         'id' => $bookItem->id,
-    //     );
-    //     $response = $this->post('/prolonguj', $data);
-    //     $response->assertSessionHasErrors();
-    //     $bookItem->delete();
-    //     $admin->delete();
+    /** @test */
+    public function createBookItemDuplicatedError() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
 
-    // }
+        $bookItemsBefore = BookItem::all()->count();
+        $data = array(
+            'bookId' => $book->id,
+            'order' => $bookItem->book_item_id
+        );
+        $response = $this->post('/pracownik/ksiazki/' . $book->id . '/nowy-egzemplarz', $data);
+        $response->assertStatus(409);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $content);
 
+        $bookItemsAfter = BookItem::all()->count();
+        $this->assertEquals($bookItemsBefore, $bookItemsAfter);
+
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        $bookItem->delete();
+        $book->delete();
+        $admin->delete();
+    }
+
+
+    /** @test */
+    public function deleteBookItemAvailableStatus() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
+
+        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/usun', ['id' => $bookItem->id]);
+        $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
+
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        $bookItem->delete();
+        $book->delete();
+        $admin->delete();
+    }
+
+
+    /** @test */
+    public function deleteBookItemNotAvailableStatus() {
+        $admin = $this->logIn();
+        $book = factory(Book::class)->create();
+        $bookItem = factory(BookItem::class)->create();
+        $author = factory(Author::class)->create();
+        $publisher = factory(Publisher::class)->create();
+        $category = factory(Category::class)->create();
+
+        $publisher->books()->save($book);
+        $author->books()->save($book);
+        $category->books()->save($book);
+        $book->bookItems()->save($bookItem);
+
+        $bookItem->update(['status' => BookItem::RESERVED]);
+
+        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/usun', ['id' => $bookItem->id]);
+        $response->assertStatus(403);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $content);
+
+        $author->delete();
+        $publisher->delete();
+        $category->delete();
+        $bookItem->delete();
+        $book->delete();
+        $admin->delete();
+    }
 }

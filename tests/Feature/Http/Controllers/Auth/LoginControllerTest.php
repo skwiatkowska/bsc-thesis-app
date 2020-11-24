@@ -79,7 +79,6 @@ class LoginControllerTest extends TestCase {
         $response->assertRedirect('/');
         $response->assertSessionHasErrors();
         $user->delete();
-
     }
 
     /** @test */
@@ -94,6 +93,51 @@ class LoginControllerTest extends TestCase {
         $response->assertRedirect('/');
         $response->assertSessionHasErrors();
         $admin->delete();
+    }
 
+
+    /** @test */
+    public function userLogout() {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $response = $this->post('/logowanie', [
+            'email' => $user->email,
+            'password' => 'password'
+        ]);
+        $this->assertAuthenticatedAs($user);
+
+        $response = $this->get('/wyloguj');
+        $response->assertStatus(302);
+        $response->assertRedirect('/');
+        $response->assertSessionHasNoErrors();
+
+        $response = $this->get('/dane');
+        $response->assertRedirect('/logowanie');
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
+        $user->delete();
+    }
+
+
+    /** @test */
+    public function adminLogout() {
+        $admin = factory(Admin::class)->create();
+        $this->actingAs($admin);
+        $response = $this->post('/pracownik/logowanie', [
+            'email' => $admin->email,
+            'password' => 'password'
+        ]);
+        $this->assertAuthenticatedAs($admin);
+
+        $response = $this->get('/pracownik/wyloguj');
+        $response->assertStatus(302);
+        $response->assertRedirect('/pracownik/logowanie');
+        $response->assertSessionHasNoErrors();
+
+        $response = $this->get('/pracownik/wypozyczenia');
+        $response->assertRedirect('/pracownik/logowanie');
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
+        $admin->delete();
     }
 }

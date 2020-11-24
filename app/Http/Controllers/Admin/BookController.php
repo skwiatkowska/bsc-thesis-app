@@ -251,21 +251,22 @@ class BookController extends Controller {
 
 
     public function blockUnlockBookItem(Request $request) {
-        try {
-            $item = BookItem::where('id', $request->id)->firstOrFail();
-            $blocked = $item->is_blocked;
-            $item->update(['is_blocked' => !$blocked]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Błąd podczas zmiany statusu egzemplarza']);
+        $item = BookItem::where('id', $request->id)->firstOrFail();
+        $blocked = $item->is_blocked;
+        if ($item->status != BookItem::AVAILABLE) {
+            return response()->json(['error' => 'Egzemplarz nie jest dostępny. Status egzemplarza nie został zmieniony'], 403);
         }
+        $item->update(['is_blocked' => !$blocked]);
         return response()->json(['success' => 'Status egzemplarza został zmieniony']);
     }
+
+
 
     public function storeBookItem(Request $request) {
         $book = Book::with('bookItems')->where('id', $request->bookId)->firstOrFail();
         foreach ($book->bookItems as $exisitingBookItem) {
             if ($exisitingBookItem->book_item_id == $request->order) {
-                return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order]);
+                return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order], 409);
             }
         }
 
@@ -286,12 +287,18 @@ class BookController extends Controller {
                 }
             }
 
+            if (!empty($item->reservations)) {
+                foreach ($item->reservations as $r) {
+                    $item->deleteRelatedReservation($r->id);
+                }
+            }
+
             $book = $item->book;
             $book->deleteRelatedBookItem($item->id);
             $item->delete();
             return response()->json(['success' => 'Egzemplarz został usunięty']);
         } else {
-            return response()->json(['error' => 'Nie można usunąć niedostępnego egzemplarza']);
+            return response()->json(['error' => 'Nie można usunąć niedostępnego egzemplarza'], 403);
         }
     }
 }

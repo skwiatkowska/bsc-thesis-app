@@ -83,6 +83,8 @@ class UserControllerTest extends TestCase {
 
         $response = $this->post('/pracownik/czytelnicy/nowy', $data);
         $response->assertStatus(200);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $user = User::where('pesel', $pesel)->get()->first();
         $user->delete();
         $admin->delete();
@@ -152,6 +154,8 @@ class UserControllerTest extends TestCase {
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $userUpdated = User::where('id', $user->id)->firstOrFail();
         $this->assertEquals($userUpdated->phone, $new);
         $user->delete();
@@ -258,6 +262,8 @@ class UserControllerTest extends TestCase {
         $user = factory(User::class)->create();
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/resetuj-haslo', []);
         $response->assertStatus(200);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $this->actingAs($user);
         $response = $this->post('/logowanie', [
             'email' => $user->email,
@@ -295,7 +301,6 @@ class UserControllerTest extends TestCase {
             'phrase' => $user->pesel,
         );
         $response = $this->call('GET', '/pracownik/czytelnicy/znajdz', $data);
-        // dd($response);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');
@@ -347,8 +352,8 @@ class UserControllerTest extends TestCase {
     }
 
 
-     /** @test */
-     public function findUserWrongLastName() {
+    /** @test */
+    public function findUserWrongLastName() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
         $data = array(

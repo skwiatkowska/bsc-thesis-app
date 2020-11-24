@@ -19,9 +19,8 @@ class BookController extends Controller {
         $user = Auth::user();
         $now = new \DateTime();
         $reservations = $user->reservations;
-
         foreach ($reservations as $reservation) {
-            if (new \DateTime($reservation->due_date) > $now) {
+            if (new \DateTime($reservation->due_date) < $now) {
                 $item = $reservation->bookItem;
                 $item->update(['status' => BookItem::AVAILABLE]);
                 $reservation->delete();
@@ -144,7 +143,7 @@ class BookController extends Controller {
                 return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
             }
         }
-        return response()->json(['error' => 'Nie znaleziono wypożyczenia']);
+        return response()->json(['error' => 'Nie znaleziono wypożyczenia'], 404);
 
     }
 }

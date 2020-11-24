@@ -44,6 +44,8 @@ class CategoryControllerTest extends TestCase {
         $response = $this->post('/pracownik/kategorie', ['name' => $name]);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(200);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $categoriesAfter = Category::all()->count();
         $this->assertGreaterThan($categoriesBefore, $categoriesAfter);
         $category = Category::where('name', $name)->get()->first();
@@ -59,6 +61,8 @@ class CategoryControllerTest extends TestCase {
         $categoriesBefore = Category::all()->count();
         $response = $this->post('/pracownik/kategorie', ['name' => $anotherCategory->name]);
         $response->assertStatus(409);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $content);
         $categoriesAfter = Category::all()->count();
         $this->assertEquals($categoriesBefore, $categoriesAfter);
         $anotherCategory->delete();

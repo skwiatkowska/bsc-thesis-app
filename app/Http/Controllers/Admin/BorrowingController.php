@@ -14,7 +14,6 @@ class BorrowingController extends Controller {
 
     public function index() {
         $borrowings = Borrowing::with('user')->with('bookItem.book')->get();
-        // dd($borrowings);
         return view('/admin/borrowings', ['borrowings' => $borrowings]);
     }
 
@@ -65,7 +64,7 @@ class BorrowingController extends Controller {
                 return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
             }
         }
-        return response()->json(['error' => 'Nie znaleziono wypożyczenia']);
+        return response()->json(['error' => 'Nie znaleziono wypożyczenia'], 404);
     }
 
     public function returnBookItem(Request $request) {
@@ -82,7 +81,6 @@ class BorrowingController extends Controller {
                 }
             }
         }
-        // return response()->json(['success' => 'Egzemplarz został zwrócony']);
         return back()->with('success', 'Egzemplarz został zwrócony');
     }
 }

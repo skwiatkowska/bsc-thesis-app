@@ -43,6 +43,8 @@ class PublisherControllerTest extends TestCase {
         $response = $this->post('/pracownik/wydawnictwa', ['name' => $newName]);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(200);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $publishersAfter = Publisher::all()->count();
         $this->assertGreaterThan($publishersBefore, $publishersAfter);
         $publisher = Publisher::where('name', $newName)->get()->first();
@@ -50,13 +52,15 @@ class PublisherControllerTest extends TestCase {
         $admin->delete();
     }
 
-     /** @test */
-     public function createNewPublisherDuplicatedError() {
+    /** @test */
+    public function createNewPublisherDuplicatedError() {
         $admin = $this->logIn();
         $anotherPublisher = factory(Publisher::class)->create();
         $publishersBefore = Publisher::all()->count();
         $response = $this->post('/pracownik/wydawnictwa', ['name' => $anotherPublisher->name]);
         $response->assertStatus(409);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('error', $content);
         $publishersAfter = Publisher::all()->count();
         $this->assertEquals($publishersBefore, $publishersAfter);
         $anotherPublisher->delete();
@@ -76,9 +80,12 @@ class PublisherControllerTest extends TestCase {
 
         $this->assertEquals($publisherUpdated->name, $newName);
         $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $publisher->delete();
         $admin->delete();
     }
+
 
     /** @test */
     public function publisherInfoCorrectId() {

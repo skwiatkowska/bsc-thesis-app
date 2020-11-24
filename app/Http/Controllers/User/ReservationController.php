@@ -34,10 +34,14 @@ class ReservationController extends Controller {
 
     public function cancelReservation(Request $request) {
         $reservation = Reservation::where('id', $request->id)->firstOrFail();
-        $item = $reservation->bookItem;
-        $item->update(['status' => BookItem::AVAILABLE]);
+        if ($reservation->user->id == Auth::user()->id) {
+            $item = $reservation->bookItem;
+            $item->update(['status' => BookItem::AVAILABLE]);
 
-        $reservation->delete();
-        return response()->json(['success' => 'Rezerwacja została anulowana']);
+            $reservation->delete();
+            return response()->json(['success' => 'Rezerwacja została anulowana']);
+        } else {
+            return response()->json(['error' => 'Nie znaleziono rezerwacji przypisanej do Twojego konta'], 403);
+        }
     }
 }

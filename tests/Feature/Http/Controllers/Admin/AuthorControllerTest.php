@@ -49,6 +49,8 @@ class AuthorControllerTest extends TestCase {
         $response = $this->post('/pracownik/autorzy', $data);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(200);
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $authorsAfter = Author::all()->count();
         $this->assertGreaterThan($authorsBefore, $authorsAfter);
         $author = Author::where('first_names', $fname)->where('last_name', $lname)->get()->first();
@@ -68,6 +70,8 @@ class AuthorControllerTest extends TestCase {
         $authorUpdated = Author::where('id', $author->id)->firstOrFail();
         $this->assertEquals($authorUpdated->first_names, $newName);
         $response->assertSessionHasNoErrors();
+        $content = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('success', $content);
         $author->delete();
         $admin->delete();
     }
