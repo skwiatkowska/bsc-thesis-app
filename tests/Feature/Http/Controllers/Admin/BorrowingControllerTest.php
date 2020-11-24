@@ -48,16 +48,17 @@ class BorrowingControllerTest extends TestCase {
         $author = factory(Author::class)->create();
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $response = $this->get('/pracownik/egzemplarze/' . $bookItem->id . '/wypozycz');
         $response->assertViewIs('.admin.addUserToBorrowing');
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewHas(['item', 'book', 'users']);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -75,22 +76,25 @@ class BorrowingControllerTest extends TestCase {
         $author = factory(Author::class)->create();
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
+
         $data = array(
             'searchIn' => 'pesel',
             'phrase' => $user->pesel,
         );
         $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/wypozycz', $data);
         $response->assertSessionHasNoErrors();
+        $response->assertStatus(200);
+        $response->assertViewIs('.admin.addUserToBorrowing');
         $response->assertViewHas(['item', 'book', 'users']);
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['users']->count(), 1);
+
         $user->delete();
         $user2->delete();
         $author->delete();
@@ -116,6 +120,7 @@ class BorrowingControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
         $user = factory(User::class)->create();
+
         $data = array(
             'userId' => $user->id,
             'bookItemId' => $bookItem->id,
@@ -128,6 +133,7 @@ class BorrowingControllerTest extends TestCase {
         $borrowingsAfter = $user->borrowings()->count();
         $this->assertGreaterThan(0, $borrowingsAfter);
         $borrowing = $user->borrowings()->first();
+
         $user->delete();
         $author->delete();
         $publisher->delete();
@@ -147,7 +153,6 @@ class BorrowingControllerTest extends TestCase {
         $author = factory(Author::class)->create();
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
@@ -163,9 +168,9 @@ class BorrowingControllerTest extends TestCase {
         $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/wypozycz/zapisz', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
-
         $borrowingsAfter = $user->borrowings()->count();
         $this->assertEquals(0, $borrowingsAfter);
+
         $user->delete();
         $author->delete();
         $publisher->delete();
@@ -184,6 +189,7 @@ class BorrowingControllerTest extends TestCase {
         $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
         $user->borrowings($bookItem)->save($borrowing);
         $this->assertEquals($user->borrowings->count(), 1);
+
         $data = array(
             'id' => $bookItem->id,
         );
@@ -192,6 +198,7 @@ class BorrowingControllerTest extends TestCase {
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
+
         $borrowing->delete();
         $user->delete();
         $bookItem->delete();
@@ -211,6 +218,7 @@ class BorrowingControllerTest extends TestCase {
         $response->assertStatus(404);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);
+
         $user->delete();
         $bookItem->delete();
         $admin->delete();
@@ -225,6 +233,7 @@ class BorrowingControllerTest extends TestCase {
         $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
         $user->borrowings($bookItem)->save($borrowing);
         $borrowingsBefore = $user->borrowings()->count();
+
         $data = array(
             'id' => $bookItem->id,
         );
@@ -235,6 +244,7 @@ class BorrowingControllerTest extends TestCase {
         $this->assertEquals($borrowingsBefore, $borrowingsAfter);
         $bookItemStatusAfter = $bookItem->status;
         $this->assertEquals($bookItemStatusAfter, BookItem::AVAILABLE);
+
         $user->delete();
         $bookItem->delete();
         $borrowing->delete();

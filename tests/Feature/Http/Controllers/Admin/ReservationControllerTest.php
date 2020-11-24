@@ -43,24 +43,22 @@ class ReservationControllerTest extends TestCase {
     /** @test */
     public function cancelReservationSuccess() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
         $user = factory(User::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
-
         $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
 
         $response = $this->post('/pracownik/rezerwacje/anuluj', ['id' => $reservation->id]);
         $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
 
@@ -77,14 +75,12 @@ class ReservationControllerTest extends TestCase {
     /** @test */
     public function borrowBookSuccess() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
         $user = factory(User::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
@@ -92,10 +88,9 @@ class ReservationControllerTest extends TestCase {
 
         $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
-
-
         $reservationsBefore = $user->reservations()->count();
         $borrowingsBefore = $user->borrowings()->count();
+
         $data = array(
             'userId' => $user->id,
             'bookItemId' => $bookItem->id,
@@ -112,6 +107,7 @@ class ReservationControllerTest extends TestCase {
         $this->assertLessThan($reservationsBefore, $reservationsAfter);
         $this->assertGreaterThan($borrowingsBefore, $borrowingsAfter);
         $borrowing = $user->borrowings()->first();
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -127,14 +123,12 @@ class ReservationControllerTest extends TestCase {
     /** @test */
     public function borrowBookNotAvailableError() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
         $user = factory(User::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
@@ -142,11 +136,10 @@ class ReservationControllerTest extends TestCase {
 
         $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
-
         $bookItem->update(['status' => BookItem::BORROWED]);
-
         $reservationsBefore = $user->reservations()->count();
         $borrowingsBefore = $user->borrowings()->count();
+
         $data = array(
             'userId' => $user->id,
             'bookItemId' => $bookItem->id,
@@ -160,6 +153,7 @@ class ReservationControllerTest extends TestCase {
         $borrowingsAfter = $user->borrowings()->count();
         $this->assertEquals($reservationsBefore, $reservationsAfter);
         $this->assertEquals($borrowingsBefore, $borrowingsAfter);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -171,11 +165,9 @@ class ReservationControllerTest extends TestCase {
     }
 
 
-
     /** @test */
     public function borrowBookWrongUserError() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -183,7 +175,6 @@ class ReservationControllerTest extends TestCase {
         $category = factory(Category::class)->create();
         $user = factory(User::class)->create();
         $user2 = factory(User::class)->create();
-
         $publisher->books()->save($book);
         $author->books()->save($book);
         $category->books()->save($book);
@@ -191,10 +182,9 @@ class ReservationControllerTest extends TestCase {
 
         $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
-
-
         $reservationsBefore = $user->reservations()->count();
         $borrowingsBefore = $user->borrowings()->count();
+
         $data = array(
             'userId' => $user2->id,
             'bookItemId' => $bookItem->id,
@@ -208,6 +198,7 @@ class ReservationControllerTest extends TestCase {
         $borrowingsAfter = $user->borrowings()->count();
         $this->assertEquals($reservationsBefore, $reservationsAfter);
         $this->assertEquals($borrowingsBefore, $borrowingsAfter);
+        
         $author->delete();
         $publisher->delete();
         $category->delete();

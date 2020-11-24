@@ -7,7 +7,6 @@ use App\Models\Book;
 use App\Models\BookItem;
 use App\Models\Category;
 use App\Models\Publisher;
-use App\Models\Borrowing;
 use App\Models\Reservation;
 use App\Models\User;
 use DateTime;
@@ -17,7 +16,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ReservationControllerTest extends TestCase {
 
-
     public function logIn() {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -25,6 +23,7 @@ class ReservationControllerTest extends TestCase {
             'email' => $user->email,
             'password' => 'password'
         ]);
+        $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
         return $user;
     }
@@ -32,7 +31,6 @@ class ReservationControllerTest extends TestCase {
     /** @test */
     public function cancelReservationSuccess() {
         $user = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -49,6 +47,7 @@ class ReservationControllerTest extends TestCase {
 
         $response = $this->post('/anuluj-rezerwacje', ['id' => $reservation->id]);
         $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
 
@@ -64,7 +63,6 @@ class ReservationControllerTest extends TestCase {
     /** @test */
     public function cancelReservationForAnotherUser() {
         $user = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -99,7 +97,6 @@ class ReservationControllerTest extends TestCase {
     /** @test */
     public function reserveBookSuccess() {
         $user = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -128,10 +125,9 @@ class ReservationControllerTest extends TestCase {
     }
 
 
-     /** @test */
-     public function reserveBookNotAvailableError() {
+    /** @test */
+    public function reserveBookNotAvailableError() {
         $user = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -142,7 +138,6 @@ class ReservationControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
-
         $bookItem->update(['status' => BookItem::RESERVED]);
 
         $response = $this->post('/zarezerwuj', ['bookItemId' => $bookItem->id]);

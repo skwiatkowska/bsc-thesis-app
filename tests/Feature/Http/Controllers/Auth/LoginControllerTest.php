@@ -27,6 +27,7 @@ class LoginControllerTest extends TestCase {
     public function userLoginAuthenticatesAndRedirects() {
         $user = factory(User::class)->create();
         $this->actingAs($user);
+
         $response = $this->post('/logowanie', [
             'email' => $user->email,
             'password' => 'password'
@@ -34,6 +35,7 @@ class LoginControllerTest extends TestCase {
         $response->assertStatus(302);
         $response->assertRedirect('/moje-ksiazki');
         $this->assertAuthenticatedAs($user);
+
         $user->delete();
     }
 
@@ -56,6 +58,7 @@ class LoginControllerTest extends TestCase {
     public function adminLoginAuthenticatesAndRedirects() {
         $admin = factory(Admin::class)->create();
         $this->actingAs($admin);
+
         $response = $this->post('/pracownik/logowanie', [
             'email' => $admin->email,
             'password' => 'password'
@@ -64,6 +67,7 @@ class LoginControllerTest extends TestCase {
         $response->assertSessionHasNoErrors();
         $this->assertAuthenticatedAs($admin);
         $response->assertRedirect('/pracownik');
+
         $admin->delete();
     }
 
@@ -71,6 +75,7 @@ class LoginControllerTest extends TestCase {
     public function adminLoginAttemptedByUser() {
         $user = factory(User::class)->create();
         $this->actingAs($user);
+
         $response = $this->post('/pracownik/logowanie', [
             'email' => $user->email,
             'password' => 'password'
@@ -78,6 +83,7 @@ class LoginControllerTest extends TestCase {
         $response->assertStatus(302);
         $response->assertRedirect('/');
         $response->assertSessionHasErrors();
+
         $user->delete();
     }
 
@@ -85,6 +91,7 @@ class LoginControllerTest extends TestCase {
     public function userLoginAttemptedByAdmin() {
         $admin = factory(Admin::class)->create();
         $this->actingAs($admin);
+
         $response = $this->post('/logowanie', [
             'email' => $admin->email,
             'password' => 'password'
@@ -92,6 +99,7 @@ class LoginControllerTest extends TestCase {
         $response->assertStatus(302);
         $response->assertRedirect('/');
         $response->assertSessionHasErrors();
+
         $admin->delete();
     }
 
@@ -100,6 +108,7 @@ class LoginControllerTest extends TestCase {
     public function userLogout() {
         $user = factory(User::class)->create();
         $this->actingAs($user);
+
         $response = $this->post('/logowanie', [
             'email' => $user->email,
             'password' => 'password'
@@ -115,6 +124,7 @@ class LoginControllerTest extends TestCase {
         $response->assertRedirect('/logowanie');
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+
         $user->delete();
     }
 
@@ -123,6 +133,7 @@ class LoginControllerTest extends TestCase {
     public function adminLogout() {
         $admin = factory(Admin::class)->create();
         $this->actingAs($admin);
+        
         $response = $this->post('/pracownik/logowanie', [
             'email' => $admin->email,
             'password' => 'password'
@@ -138,6 +149,7 @@ class LoginControllerTest extends TestCase {
         $response->assertRedirect('/pracownik/logowanie');
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+
         $admin->delete();
     }
 }

@@ -40,6 +40,7 @@ class PublisherControllerTest extends TestCase {
         $admin = $this->logIn();
         $publishersBefore = Publisher::all()->count();
         $newName = $this->faker->unique()->name;
+
         $response = $this->post('/pracownik/wydawnictwa', ['name' => $newName]);
         $response->assertSessionHasNoErrors();
         $response->assertStatus(200);
@@ -48,6 +49,7 @@ class PublisherControllerTest extends TestCase {
         $publishersAfter = Publisher::all()->count();
         $this->assertGreaterThan($publishersBefore, $publishersAfter);
         $publisher = Publisher::where('name', $newName)->get()->first();
+
         $publisher->delete();
         $admin->delete();
     }
@@ -57,12 +59,14 @@ class PublisherControllerTest extends TestCase {
         $admin = $this->logIn();
         $anotherPublisher = factory(Publisher::class)->create();
         $publishersBefore = Publisher::all()->count();
+
         $response = $this->post('/pracownik/wydawnictwa', ['name' => $anotherPublisher->name]);
         $response->assertStatus(409);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);
         $publishersAfter = Publisher::all()->count();
         $this->assertEquals($publishersBefore, $publishersAfter);
+
         $anotherPublisher->delete();
         $admin->delete();
     }
@@ -73,15 +77,17 @@ class PublisherControllerTest extends TestCase {
         $admin = $this->logIn();
         $publisher = factory(Publisher::class)->create();
         $newName = $this->faker->unique()->name;
+
         $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/edycja', [
             'value' => $newName
         ]);
         $publisherUpdated = Publisher::where('id', $publisher->id)->firstOrFail();
-
         $this->assertEquals($publisherUpdated->name, $newName);
         $response->assertSessionHasNoErrors();
+        $response->assertStatus(200);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
+
         $publisher->delete();
         $admin->delete();
     }
@@ -91,11 +97,13 @@ class PublisherControllerTest extends TestCase {
     public function publisherInfoCorrectId() {
         $admin = $this->logIn();
         $publisher = factory(Publisher::class)->create();
+
         $response = $this->get('/pracownik/wydawnictwa/' . $publisher->id);
         $response->assertStatus(200);
         $response->assertViewIs('.admin.publisherInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('publisher');
+
         $publisher->delete();
         $admin->delete();
     }
@@ -115,11 +123,14 @@ class PublisherControllerTest extends TestCase {
         $admin = $this->logIn();
         $publisher = factory(Publisher::class)->create();
         $this->assertEquals($publisher->books->count(), 0);
+
         $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/usun', []);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/wydawnictwa');
         $publisherAfter = Publisher::where('id', $publisher->id)->get();
         $this->assertEquals($publisherAfter->count(), 0);
+
         $publisher->delete();
         $admin->delete();
     }
@@ -131,12 +142,13 @@ class PublisherControllerTest extends TestCase {
         $book = factory(Book::class)->create();
         $publisher->books()->save($book);
         $this->assertGreaterThan(0, $publisher->books->count());
-        $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/usun', []);
 
+        $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/usun', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $publisherAfter = Publisher::where('id', $publisher->id)->get();
         $this->assertNotEquals($publisherAfter->count(), 0);
+
         $publisher->delete();
         $book->delete();
         $admin->delete();

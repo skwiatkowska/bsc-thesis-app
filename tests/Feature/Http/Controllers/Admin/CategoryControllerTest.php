@@ -12,7 +12,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CategoryControllerTest extends TestCase {
     use WithFaker;
 
-
     public function logIn() {
         $admin = factory(Admin::class)->create();
         $this->actingAs($admin);
@@ -49,6 +48,7 @@ class CategoryControllerTest extends TestCase {
         $categoriesAfter = Category::all()->count();
         $this->assertGreaterThan($categoriesBefore, $categoriesAfter);
         $category = Category::where('name', $name)->get()->first();
+
         $category->delete();
         $admin->delete();
     }
@@ -59,12 +59,14 @@ class CategoryControllerTest extends TestCase {
         $admin = $this->logIn();
         $anotherCategory = factory(Category::class)->create();
         $categoriesBefore = Category::all()->count();
+        
         $response = $this->post('/pracownik/kategorie', ['name' => $anotherCategory->name]);
         $response->assertStatus(409);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);
         $categoriesAfter = Category::all()->count();
         $this->assertEquals($categoriesBefore, $categoriesAfter);
+
         $anotherCategory->delete();
         $admin->delete();
     }

@@ -25,6 +25,7 @@ class BookControllerTest extends TestCase {
             'email' => $user->email,
             'password' => 'password'
         ]);
+        $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
         return $user;
     }
@@ -33,17 +34,20 @@ class BookControllerTest extends TestCase {
     public function userBooksViewAfterSuccessfullyLogin() {
         $user = factory(User::class)->create();
         $this->actingAs($user);
+
         $response = $this->post('/logowanie', [
             'email' => $user->email,
             'password' => bcrypt('password')
         ]);
         $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
+
         $response = $this->get('/moje-ksiazki');
         $response->assertStatus(200);
         $response->assertViewIs('.user.userBooks');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('user');
+
         $user->delete();
     }
 
@@ -63,11 +67,13 @@ class BookControllerTest extends TestCase {
         $publisher = factory(Publisher::class)->create();
         $publisher->books()->save($book);
         $author->books()->save($book);
+
         $response = $this->get('/ksiazki/' . $book->id);
         $response->assertStatus(200);
         $response->assertViewIs('.user.bookInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('book');
+
         $author->delete();
         $publisher->delete();
         $book->delete();
@@ -84,11 +90,13 @@ class BookControllerTest extends TestCase {
     /** @test */
     public function authorInfoCorrectId() {
         $author = factory(Author::class)->create();
+
         $response = $this->get('/autorzy/' . $author->id);
         $response->assertStatus(200);
         $response->assertViewIs('.user.authorInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('author');
+
         $author->delete();
     }
 
@@ -104,11 +112,13 @@ class BookControllerTest extends TestCase {
     /** @test */
     public function publisherInfoCorrectId() {
         $publisher = factory(Publisher::class)->create();
+
         $response = $this->get('/wydawnictwa/' . $publisher->id);
         $response->assertStatus(200);
         $response->assertViewIs('.user.publisherInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('publisher');
+
         $publisher->delete();
     }
 
@@ -120,7 +130,6 @@ class BookControllerTest extends TestCase {
     }
 
 
-
     /** @test */
     public function findBookInit() {
         $book = factory(Book::class)->create();
@@ -130,6 +139,7 @@ class BookControllerTest extends TestCase {
         $publisher->books()->save($book);
         $author->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $response = $this->get('/katalog');
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
@@ -137,6 +147,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertGreaterThanOrEqual(1, $content['books']->count());
+
         $author->delete();
         $publisher->delete();
         $bookItem->delete();
@@ -154,6 +165,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'category',
             'searchPhrase' => $category->id,
@@ -201,6 +213,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'author',
             'phrase' => $author->last_name,
@@ -227,6 +240,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $author2->delete();
         $publisher->delete();
@@ -247,6 +261,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'publisher',
             'phrase' => $publisher->name,
@@ -272,6 +287,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $publisher->delete();
         $publisher2->delete();
@@ -292,6 +308,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'title',
             'phrase' => $book->title,
@@ -316,6 +333,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -335,6 +353,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'isbn',
             'phrase' => $book->isbn,
@@ -359,6 +378,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -374,6 +394,7 @@ class BookControllerTest extends TestCase {
         $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
         $user->borrowings($bookItem)->save($borrowing);
         $this->assertEquals($user->borrowings->count(), 1);
+
         $data = array(
             'id' => $bookItem->id,
         );
@@ -382,6 +403,7 @@ class BookControllerTest extends TestCase {
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
+
         $borrowing->delete();
         $user->delete();
         $bookItem->delete();
@@ -391,6 +413,7 @@ class BookControllerTest extends TestCase {
         $user = $this->logIn();
         $bookItem = factory(BookItem::class)->create();
         $this->assertEquals($user->borrowings->count(), 1);
+        
         $data = array(
             'id' => $bookItem->id,
         );

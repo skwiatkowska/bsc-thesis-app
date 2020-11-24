@@ -36,11 +36,13 @@ class BookControllerTest extends TestCase {
     public function createNewBookDisplaysFormView() {
         $admin = $this->logIn();
         $category = factory(Category::class)->create();
+
         $response = $this->get('/pracownik/ksiazki/nowa');
         $response->assertStatus(200);
         $response->assertViewIs('.admin.newBook');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas(['categories', 'authors', 'publishers']);
+
         $category->delete();
         $admin->delete();
     }
@@ -52,6 +54,7 @@ class BookControllerTest extends TestCase {
         $publisher = factory(Publisher::class)->create();
         $category = factory(Category::class)->create();
         $isbn = $this->faker->unique()->numberBetween(1, 999999999);
+
         $data = array(
             'title' => $this->faker->unique()->name,
             'isbn' => $isbn,
@@ -64,8 +67,10 @@ class BookControllerTest extends TestCase {
 
         $response = $this->post('/pracownik/ksiazki/nowa', $data);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $book = Book::where('isbn', $isbn)->get()->first();
         $response->assertRedirect('/pracownik/ksiazki/' . $book->id);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -120,11 +125,13 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $response = $this->get('/pracownik/ksiazki/' . $book->id);
         $response->assertStatus(200);
         $response->assertViewIs('.admin.bookInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('book');
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -144,7 +151,6 @@ class BookControllerTest extends TestCase {
     }
 
 
-
     /** @test */
     public function editBookView() {
         $admin = $this->logIn();
@@ -157,6 +163,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $response = $this->get('/pracownik/ksiazki/' . $book->id . '/edycja');
         $response->assertStatus(200);
         $response->assertViewIs('.admin.editBook');
@@ -164,6 +171,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('book');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['book']['id'], $book->id);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -185,6 +193,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $new = $this->faker->unique()->numberBetween(1, 999999999);
+
         $data = array(
             'title' => $book->title,
             'isbn' => $new,
@@ -196,9 +205,11 @@ class BookControllerTest extends TestCase {
 
         $response = $this->post('/pracownik/ksiazki/' . $book->id . '/edycja', $data);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
+        $response->assertRedirect('/pracownik/ksiazki/' . $book->id);
         $bookUpdated = Book::where('id', $book->id)->firstOrFail();
         $this->assertEquals($bookUpdated->isbn, $new);
-        $response->assertRedirect('/pracownik/ksiazki/' . $book->id);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -223,6 +234,7 @@ class BookControllerTest extends TestCase {
         $publisher->books()->save($book2);
         $author->books()->save($book2);
         $category->books()->save($book2);
+
         $data = array(
             'title' => $book->title,
             'isbn' => $book2->isbn,
@@ -231,11 +243,11 @@ class BookControllerTest extends TestCase {
             'categories' => array($book->categories->first()->id),
             'publisher' => $book->publisher->id,
         );
-
         $response = $this->post('/pracownik/ksiazki/' . $book->id . '/edycja', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $response->assertRedirect('/pracownik/ksiazki/' . $book->id . '/edycja');
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -275,7 +287,6 @@ class BookControllerTest extends TestCase {
     /** @test */
     public function findBookByCategory() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -285,6 +296,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'category',
             'searchPhrase' => $category->id,
@@ -335,6 +347,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'author',
             'phrase' => $author->last_name,
@@ -361,6 +374,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $author2->delete();
         $publisher->delete();
@@ -374,7 +388,6 @@ class BookControllerTest extends TestCase {
     /** @test */
     public function findBookByPublisher() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -384,6 +397,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'publisher',
             'phrase' => $publisher->name,
@@ -409,6 +423,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $publisher->delete();
         $publisher2->delete();
@@ -422,7 +437,6 @@ class BookControllerTest extends TestCase {
     /** @test */
     public function findBookByTitle() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -432,6 +446,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'title',
             'phrase' => $book->title,
@@ -456,6 +471,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -468,7 +484,6 @@ class BookControllerTest extends TestCase {
     /** @test */
     public function findBookByISBN() {
         $admin = $this->logIn();
-
         $book = factory(Book::class)->create();
         $bookItem = factory(BookItem::class)->create();
         $author = factory(Author::class)->create();
@@ -478,6 +493,7 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $data = array(
             'searchIn' => 'isbn',
             'phrase' => $book->isbn,
@@ -502,6 +518,7 @@ class BookControllerTest extends TestCase {
         $response->assertViewHas('books');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['books']->count(), 0);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -524,13 +541,13 @@ class BookControllerTest extends TestCase {
         $category->books()->save($book);
 
         $bookBefore = Book::all()->count();
-
         $response = $this->post('/pracownik/ksiazki/' . $book->id . '/usun', ['id' => $book->id]);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/katalog');
         $bookAfter = Book::all()->count();
         $this->assertLessThan($bookBefore, $bookAfter);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -550,15 +567,15 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
-
         $bookBefore = Book::all()->count();
+
         $response = $this->post('/pracownik/ksiazki/' . $book->id . '/usun', ['id' => $book->id]);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $response->assertRedirect('/pracownik/ksiazki/' . $book->id);
-
         $bookAfter = Book::all()->count();
         $this->assertEquals($bookBefore, $bookAfter);
+
         $author->delete();
         $publisher->delete();
         $category->delete();
@@ -582,11 +599,13 @@ class BookControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
+
         $response = $this->get('/pracownik/egzemplarze/' . $bookItem->id);
         $response->assertStatus(200);
         $response->assertViewIs('.admin.bookItemInfo');
         $response->assertSessionHasNoErrors();
         $response->assertViewHas('item');
+
         $author->delete();
         $publisher->delete();
         $category->delete();

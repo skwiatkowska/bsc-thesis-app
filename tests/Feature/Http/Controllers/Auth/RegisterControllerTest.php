@@ -27,6 +27,7 @@ class RegisterControllerTest extends TestCase {
     /** @test */
     public function userRegisterSuccess() {
         $pesel = $this->faker->unique()->numberBetween(1, 99999999);
+
         $data = array(
             'email' => $this->faker->unique()->safeEmail,
             'fname' => $this->faker->firstName(),
@@ -39,12 +40,13 @@ class RegisterControllerTest extends TestCase {
             'city' => $this->faker->name,
             'password' => $this->faker->name
         );
-
         $response = $this->post('/rejestracja', $data);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $response->assertRedirect('/dane');
         $user = User::where('pesel', $pesel)->get()->first();
         $this->assertAuthenticatedAs($user);
+
         $user->delete();
     }
 
@@ -64,12 +66,12 @@ class RegisterControllerTest extends TestCase {
             'city' => $this->faker->name,
             'password' => $this->faker->name
         );
-
         $response = $this->post('/rejestracja', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
-        $user->delete();
         $response->assertRedirect('/rejestracja');
+
+        $user->delete();
     }
 
 
@@ -89,11 +91,11 @@ class RegisterControllerTest extends TestCase {
             'city' => $this->faker->name,
             'password' => $this->faker->name
         );
-
         $response = $this->post('/rejestracja', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
-        $user->delete();
         $response->assertRedirect('/rejestracja');
+        
+        $user->delete();
     }
 }

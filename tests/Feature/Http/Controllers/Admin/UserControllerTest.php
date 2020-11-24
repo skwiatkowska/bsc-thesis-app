@@ -27,6 +27,8 @@ class UserControllerTest extends TestCase {
         $response->assertStatus(302);
         return $admin;
     }
+
+
     /** @test */
     public function createUserView() {
         $admin = $this->logIn();
@@ -56,8 +58,10 @@ class UserControllerTest extends TestCase {
 
         $response = $this->post('/pracownik/czytelnicy/nowy', $data);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $user = User::where('pesel', $pesel)->get()->first();
         $response->assertRedirect('/pracownik/czytelnicy/' . $user->id);
+
         $user->delete();
         $admin->delete();
     }
@@ -85,6 +89,7 @@ class UserControllerTest extends TestCase {
         $response->assertStatus(200);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
+
         $user = User::where('pesel', $pesel)->get()->first();
         $user->delete();
         $admin->delete();
@@ -95,6 +100,8 @@ class UserControllerTest extends TestCase {
     public function createNewUserDuplicatedPESEL() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
+        $userBefore = User::all()->count();
+
         $data = array(
             'email' => $this->faker->unique()->safeEmail,
             'fname' => $this->faker->firstName(),
@@ -112,6 +119,9 @@ class UserControllerTest extends TestCase {
         $response = $this->post('/pracownik/czytelnicy/nowy', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+        $userAfter = User::all()->count();
+        $this->assertEquals($userAfter, $userBefore);
+
         $user->delete();
         $admin->delete();
     }
@@ -150,7 +160,6 @@ class UserControllerTest extends TestCase {
             'name' => 'phone',
             'value' => $new,
         );
-
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
@@ -158,6 +167,7 @@ class UserControllerTest extends TestCase {
         $this->assertArrayHasKey('success', $content);
         $userUpdated = User::where('id', $user->id)->firstOrFail();
         $this->assertEquals($userUpdated->phone, $new);
+
         $user->delete();
         $admin->delete();
     }
@@ -167,14 +177,15 @@ class UserControllerTest extends TestCase {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
+
         $data = array(
             'name' => 'pesel',
             'value' => $anotherUser->pesel,
         );
-
         $response =  $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+
         $anotherUser->delete();
         $user->delete();
         $admin->delete();
@@ -186,14 +197,15 @@ class UserControllerTest extends TestCase {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
         $anotherUser = factory(User::class)->create();
+
         $data = array(
             'name' => 'email',
             'value' => $anotherUser->email,
         );
-
         $response =  $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+
         $anotherUser->delete();
         $user->delete();
         $admin->delete();
@@ -206,11 +218,14 @@ class UserControllerTest extends TestCase {
         $user = factory(User::class)->create();
         $this->assertEquals($user->borrowings->count(), 0);
         $this->assertEquals($user->reservations->count(), 0);
+
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/usun', []);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/czytelnicy/znajdz');
         $userAfter = User::where('id', $user->id)->get();
         $this->assertEquals($userAfter->count(), 0);
+
         $admin->delete();
     }
 
@@ -219,16 +234,17 @@ class UserControllerTest extends TestCase {
     public function deleteAccountWithBorrowedBooks() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
-
         $bookItem = factory(BookItem::class)->create();
         $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
         $user->borrowings($bookItem)->save($borrowing);
         $this->assertGreaterThan(0, $user->borrowings->count());
+
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/usun', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
         $this->assertNotEquals($userAfter->count(), 0);
+
         $admin->delete();
         $borrowing->delete();
         $bookItem->delete();
@@ -239,16 +255,17 @@ class UserControllerTest extends TestCase {
     public function deleteAccountWithReservedBooks() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
-
         $bookItem = factory(BookItem::class)->create();
         $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $this->assertGreaterThan(0, $user->reservations->count());
+
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/usun', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
         $this->assertNotEquals($userAfter->count(), 0);
+
         $admin->delete();
         $reservation->delete();
         $bookItem->delete();
@@ -260,16 +277,26 @@ class UserControllerTest extends TestCase {
     public function resetPassword() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
+
         $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/resetuj-haslo', []);
         $response->assertStatus(200);
+        $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
+
+        $response = $this->get('/pracownik/wyloguj');
+        $response->assertStatus(302);
+        $response->assertRedirect('/pracownik/logowanie');
+        $response->assertSessionHasNoErrors();
+
         $this->actingAs($user);
         $response = $this->post('/logowanie', [
             'email' => $user->email,
             'password' => $user->pesel
         ]);
         $this->assertAuthenticatedAs($user);
+        $response->assertRedirect('/moje-ksiazki');
+
         $user->delete();
         $admin->delete();
     }
@@ -280,6 +307,7 @@ class UserControllerTest extends TestCase {
         $admin = $this->logIn();
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
+
         $response = $this->get('/pracownik/czytelnicy/znajdz', []);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
@@ -287,6 +315,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('users');
         $content = $response->getOriginalContent()->getData();
         $this->assertGreaterThanOrEqual(2, $content['users']->count());
+
         $user1->delete();
         $user2->delete();
         $admin->delete();
@@ -307,6 +336,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('users');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['users']->count(), 1);
+
         $user->delete();
         $admin->delete();
     }
@@ -316,6 +346,7 @@ class UserControllerTest extends TestCase {
     public function findUserWrongPesel() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
+
         $data = array(
             'searchIn' => 'pesel',
             'phrase' => -1,
@@ -327,6 +358,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('users');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['users']->count(), 0);
+
         $user->delete();
         $admin->delete();
     }
@@ -336,6 +368,7 @@ class UserControllerTest extends TestCase {
     public function findUserByLastName() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
+
         $data = array(
             'searchIn' => 'lname',
             'phrase' => $user->last_name,
@@ -347,6 +380,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('users');
         $content = $response->getOriginalContent()->getData();
         $this->assertGreaterThanOrEqual(1, $content['users']->count());
+
         $user->delete();
         $admin->delete();
     }
@@ -356,6 +390,7 @@ class UserControllerTest extends TestCase {
     public function findUserWrongLastName() {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
+
         $data = array(
             'searchIn' => 'lname',
             'phrase' => -1,
@@ -367,6 +402,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('users');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['users']->count(), 0);
+        
         $user->delete();
         $admin->delete();
     }

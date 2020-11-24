@@ -26,6 +26,7 @@ class UserControllerTest extends TestCase {
             'email' => $user->email,
             'password' => 'password'
         ]);
+        $response->assertStatus(302);
         $this->assertAuthenticatedAs($user);
         return $user;
     }
@@ -33,6 +34,7 @@ class UserControllerTest extends TestCase {
     /** @test */
     public function userInfoAfterSuccessfullyLogin() {
         $user = $this->logIn();
+
         $response = $this->get('/dane');
         $response->assertStatus(200);
         $response->assertViewIs('.user.userInfo');
@@ -40,6 +42,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('user');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['user']['id'], $user->id);
+
         $user->delete();
     }
 
@@ -54,6 +57,7 @@ class UserControllerTest extends TestCase {
     /** @test */
     public function editProfileView() {
         $user = $this->logIn();
+
         $response = $this->get('/zmien-dane');
         $response->assertStatus(200);
         $response->assertViewIs('.user.editProfile');
@@ -61,13 +65,14 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('user');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['user']['id'], $user->id);
+
         $user->delete();
     }
 
     /** @test */
     public function updateProfileSuccess() {
         $user = $this->logIn();
-        $new = $this->faker->unique()->numberBetween(1,999999);
+        $new = $this->faker->unique()->numberBetween(1, 999999);
 
         $data = array(
             'email' => $user->email,
@@ -76,12 +81,13 @@ class UserControllerTest extends TestCase {
             'pesel' => $user->pesel,
             'phone' => $new,
         );
-
         $response = $this->post('/zmien-dane', $data);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $userUpdated = User::where('id', $user->id)->firstOrFail();
         $this->assertEquals($userUpdated->phone, $new);
         $response->assertRedirect('/dane');
+
         $user->delete();
     }
 
@@ -89,6 +95,7 @@ class UserControllerTest extends TestCase {
     public function updateProfileDuplicatedPESEL() {
         $user = $this->logIn();
         $anotherUser = factory(User::class)->create();
+
         $data = array(
             'email' => $user->email,
             'first_name' => $user->first_name,
@@ -96,10 +103,10 @@ class UserControllerTest extends TestCase {
             'pesel' => $anotherUser->pesel,
             'phone' => $user->phone,
         );
-
         $response = $this->post('/zmien-dane', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
+
         $anotherUser->delete();
         $user->delete();
     }
@@ -110,8 +117,10 @@ class UserControllerTest extends TestCase {
         $user = $this->logIn();
         $this->assertEquals($user->borrowings->count(), 0);
         $this->assertEquals($user->reservations->count(), 0);
+
         $response = $this->post('/usun-konto', []);
         $response->assertStatus(302);
+        $response->assertSessionHasNoErrors();
         $response->assertRedirect('/');
         $userAfter = User::where('id', $user->id)->get();
         $this->assertEquals($userAfter->count(), 0);
@@ -125,11 +134,13 @@ class UserControllerTest extends TestCase {
         $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
         $user->borrowings($bookItem)->save($borrowing);
         $this->assertGreaterThan(0, $user->borrowings->count());
+
         $response = $this->post('/usun-konto', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
         $this->assertNotEquals($userAfter->count(), 0);
+
         $user->delete();
         $borrowing->delete();
         $bookItem->delete();
@@ -142,11 +153,13 @@ class UserControllerTest extends TestCase {
         $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $this->assertGreaterThan(0, $user->reservations->count());
+
         $response = $this->post('/usun-konto', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
         $this->assertNotEquals($userAfter->count(), 0);
+
         $user->delete();
         $reservation->delete();
         $bookItem->delete();
