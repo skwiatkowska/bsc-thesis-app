@@ -101,7 +101,7 @@ class BookController extends Controller {
         if ($book->isbn != $request->isbn) {
             $existingBook = Book::where('isbn', $request->isbn)->get();
             if ($existingBook->count() > 0) {
-                return redirect()->back()->withErrors('Istnieje już książka o danym numerze ISBN');
+                return redirect('/pracownik/ksiazki/' . $book->id . '/edycja')->withErrors('Istnieje już książka o danym numerze ISBN');
             }
             $book->isbn = $request->isbn;
         }
@@ -173,7 +173,7 @@ class BookController extends Controller {
                 }
 
                 if (!$authors->count()) {
-                    $books = array();
+                    $books = collect();
                     return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego autora: " . $phrase);
                 }
                 $authorIds = array();
@@ -195,7 +195,7 @@ class BookController extends Controller {
             } elseif ($searchIn == "publisher") {
                 $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
                 if (!$publishers->count()) {
-                    $books = array();
+                    $books = collect();
                     return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
                 }
                 $publisherIds = array();
@@ -221,7 +221,7 @@ class BookController extends Controller {
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {
-                $books = array();
+                $books = collect();
                 return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
             return view('/admin/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
@@ -235,7 +235,7 @@ class BookController extends Controller {
     public function deleteBook(Request $request) {
         $book = Book::with('bookItems')->where('id', $request->id)->firstOrFail();
         if ($book->bookItems->count() > 0) {
-            return back()->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
+            return redirect('/pracownik/ksiazki/' . $book->id)->withErrors("Nie można usunąć książki z dostępnymi egzemplarzami");
         }
         $book->delete();
         return redirect('/pracownik/katalog')->with("success", "Książka " . $book->title . " została usunięta na stałe");
@@ -251,21 +251,22 @@ class BookController extends Controller {
 
 
     public function blockUnlockBookItem(Request $request) {
-        try {
-            $item = BookItem::where('id', $request->id)->firstOrFail();
-            $blocked = $item->is_blocked;
-            $item->update(['is_blocked' => !$blocked]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Błąd podczas zmiany statusu egzemplarza']);
+        $item = BookItem::where('id', $request->id)->firstOrFail();
+        $blocked = $item->is_blocked;
+        if ($item->status != BookItem::AVAILABLE) {
+            return response()->json(['error' => 'Egzemplarz nie jest dostępny. Status egzemplarza nie został zmieniony'], 403);
         }
+        $item->update(['is_blocked' => !$blocked]);
         return response()->json(['success' => 'Status egzemplarza został zmieniony']);
     }
+
+
 
     public function storeBookItem(Request $request) {
         $book = Book::with('bookItems')->where('id', $request->bookId)->firstOrFail();
         foreach ($book->bookItems as $exisitingBookItem) {
             if ($exisitingBookItem->book_item_id == $request->order) {
-                return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order]);
+                return response()->json(['error' => 'Istnieje już egzemplarz o podanym numerze porządkowym: ' . $request->order], 409);
             }
         }
 
@@ -286,12 +287,18 @@ class BookController extends Controller {
                 }
             }
 
+            if (!empty($item->reservations)) {
+                foreach ($item->reservations as $r) {
+                    $item->deleteRelatedReservation($r->id);
+                }
+            }
+
             $book = $item->book;
             $book->deleteRelatedBookItem($item->id);
             $item->delete();
             return response()->json(['success' => 'Egzemplarz został usunięty']);
         } else {
-            return response()->json(['error' => 'Nie można usunąć niedostępnego egzemplarza']);
+            return response()->json(['error' => 'Nie można usunąć niedostępnego egzemplarza'], 403);
         }
     }
 }

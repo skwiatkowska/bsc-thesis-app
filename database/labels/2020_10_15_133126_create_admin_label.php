@@ -3,7 +3,7 @@
 use Vinelab\NeoEloquent\Schema\Blueprint;
 use Vinelab\NeoEloquent\Migrations\Migration;
 
-class CreateUserLabel extends Migration {
+class CreateAdminLabel extends Migration {
 
     /**
      * Run the migrations.

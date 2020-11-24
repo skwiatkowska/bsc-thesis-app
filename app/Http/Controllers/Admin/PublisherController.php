@@ -8,20 +8,18 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class PublisherController extends Controller {
+
     public function index() {
         $publishers = Publisher::all();
         return view('/admin/publishers', ['publishers' => $publishers]);
     }
 
     public function store(Request $request) {
-        try {
-            Publisher::create([
-                'name' => $request->name,
-            ]);
-        } catch (\Exception $e) {
+        $exisitingPublisher = Publisher::where('name', $request->name)->get()->first();
+        if ($exisitingPublisher) {
             return response()->json(['error' => 'Wydawnictwo ' . $request->name . ' już istnieje'], 409);
         }
-
+        Publisher::create(['name' => $request->name]);
         return response()->json(['success' => 'Wydawnictwo ' . $request->name . ' dodane']);
     }
 
@@ -31,7 +29,7 @@ class PublisherController extends Controller {
     }
 
     public function update(Request $request, $id) {
-        $publisher = Publisher::where('id', $id)->firstOrFail();
+        $publisher = Publisher::where('id', '=', $id)->firstOrFail();
         if ($publisher->name != $request->value) {
             $existingPublisher = Publisher::where('name', $request->name)->get();
             if ($existingPublisher->count() > 0) {

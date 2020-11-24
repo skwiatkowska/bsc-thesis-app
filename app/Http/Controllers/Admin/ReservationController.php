@@ -16,7 +16,7 @@ class ReservationController extends Controller {
     public function index() {
         $now = new \DateTime();
         $expired = Reservation::with('bookItem')->where('due_date', '<', $now)->get();
-        foreach($expired as $exp){
+        foreach ($expired as $exp) {
             $item = $exp->bookItem;
             $item->update(['status' => BookItem::AVAILABLE]);
             $exp->delete();
@@ -29,15 +29,19 @@ class ReservationController extends Controller {
     public function borrowReservedBook(Request $request) {
         $user = User::where('id', $request->userId)->with('borrowings')->firstOrFail();
         $item = BookItem::with('book')->with('borrowings')->where('id', $request->bookItemId)->firstOrFail();
+        $reservation = Reservation::where('id', $request->reservationId)->get()->first();
         if ($item->status == BookItem::BORROWED || $item->is_blocked) {
             return back()->withErrors("Ten egzemplarz jest już wypożyczony lub niedostępny");
         }
-
-        $borrowing = new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
-        $item->update(['status' => BookItem::BORROWED]);
-        $user->borrowings($item)->save($borrowing);
-        Reservation::where('id', $request->reservationId)->delete();
-        return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ', (egzemplarz ' . $item->book_item_id . ') została zarezerwowana']);
+        if ($reservation->user->id == $user->id) {
+            $borrowing = new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
+            $item->update(['status' => BookItem::BORROWED]);
+            $user->borrowings($item)->save($borrowing);
+            $reservation->delete();
+            return redirect('/pracownik/czytelnicy/' . $request->userId)->with(['success' => 'Książka ' . $item->book->title . ', (egzemplarz ' . $item->book_item_id . ') została zarezerwowana']);
+        } else {
+            return back()->withErrors(['Egzemplarz jest zarezerwowany przez inną osobę']);
+        }
     }
 
 

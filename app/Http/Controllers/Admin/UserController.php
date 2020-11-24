@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller {
+
+
     public function createUser() {
         return view('/admin/newUser');
     }
@@ -23,21 +25,21 @@ class UserController extends Controller {
             return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
         }
         $user = User::create([
-            'first_name' => $request['fname'],
-            'last_name' => $request['lname'],
-            'pesel' => $request['pesel'],
-            'email' => $request['email'],
-            'phone' => $request['phone'],
-            'street' => $request['street'],
-            'house_number' => $request['house_number'],
-            'zipcode' => $request['zipcode'],
-            'city' => $request['city'],
-            'password' => Hash::make($request['pesel'])
+            'first_name' => $request->fname,
+            'last_name' => $request->lname,
+            'pesel' => $request->pesel,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'street' => $request->street,
+            'house_number' => $request->house_number,
+            'zipcode' => $request->zipcode,
+            'city' => $request->city,
+            'password' => Hash::make($request->pesel)
         ]);
-        if ($request['isModal'] == 'true') {
+        if ($request->isModal == 'true') {
             return response()->json(['success' => 'Dodano nowego Czytelnika: ' . $request->fname . ' ' . $request->lname]);
         }
-        return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request['fname'] . ' ' . $request['lname']]);
+        return redirect('/pracownik/czytelnicy/' . $user->id)->with(['success' => 'Dodano nowego użytkownika: ' . $request->fname . ' ' . $request->lname]);
     }
 
     public function fetchUser($id) {
@@ -52,7 +54,7 @@ class UserController extends Controller {
         } else if ($request->name == "lname" && $user->last_name != $request->value) {
             $user->last_name = $request->value;
         } else if ($request->name == "pesel" && $user->pesel != $request->value) {
-            $existingUser = User::where('pesel', $request->pesel)->get();
+            $existingUser = User::where('pesel', $request->value)->get();
             if ($existingUser->count() > 0) {
                 return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
             }
@@ -60,7 +62,7 @@ class UserController extends Controller {
         } else if ($request->name == "phone" && $user->phone != $request->value) {
             $user->phone = $request->value;
         } else if ($request->name == "email" && $user->email != $request->value) {
-            $existingUser = User::where('email', $request->email)->get();
+            $existingUser = User::where('email', $request->value)->get();
             if ($existingUser->count() > 0) {
                 return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
             }
@@ -92,7 +94,7 @@ class UserController extends Controller {
             }
 
             if (!$users->count()) {
-                $users = array();
+                $users = collect();
                 return view('/admin/findUser', ['users' => $users])->withErrors("Nie znaleziono Czytelników spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
             return view('/admin/findUser', ['users' => $users, 'phrase' => $phrase]);

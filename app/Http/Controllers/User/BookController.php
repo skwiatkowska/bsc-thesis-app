@@ -19,9 +19,8 @@ class BookController extends Controller {
         $user = Auth::user();
         $now = new \DateTime();
         $reservations = $user->reservations;
-
         foreach ($reservations as $reservation) {
-            if (new \DateTime($reservation->due_date) > $now) {
+            if (new \DateTime($reservation->due_date) < $now) {
                 $item = $reservation->bookItem;
                 $item->update(['status' => BookItem::AVAILABLE]);
                 $reservation->delete();
@@ -65,7 +64,8 @@ class BookController extends Controller {
                 }
 
                 if (!$authors->count()) {
-                    return redirect('/katalog')->withErrors("Nie znaleziono takiego autora: " . $phrase);
+                    $books = collect();
+                    return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego autora: " . $phrase);
                 }
                 $authorIds = array();
                 foreach ($authors as $author) {
@@ -86,6 +86,7 @@ class BookController extends Controller {
             } elseif ($searchIn == "publisher") {
                 $publishers = Publisher::where('name', '=~', '.*' . $phrase . '.*')->get();
                 if (!$publishers->count()) {
+                    $books = collect();
                     return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono takiego wydawnictwa: " . $phrase);
                 }
                 $publisherIds = array();
@@ -111,7 +112,7 @@ class BookController extends Controller {
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {
-                $books = array();
+                $books = collect();
                 return view('/user/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }
             return view('/user/catalog', ['books' => $books, 'categories' => $categories, 'phrase' => $phrase]);
@@ -139,8 +140,10 @@ class BookController extends Controller {
                 $due_date = new DateTime($borrowing->due_date);
                 $new_due_date = $due_date->modify('+1 month');
                 $borrowing->update(['due_date' => $new_due_date, 'was_prolonged' => true]);
+                return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
             }
         }
-        return response()->json(['success' => 'Czas na oddanie książki został przedłużony o 1 miesiąc']);
+        return response()->json(['error' => 'Nie znaleziono wypożyczenia'], 404);
+
     }
 }

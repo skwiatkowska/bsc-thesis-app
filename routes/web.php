@@ -15,12 +15,10 @@ Auth::routes();
 Route::get('/pracownik/logowanie', 'Auth\LoginController@showAdminLoginForm');
 Route::post('/pracownik/logowanie', 'Auth\LoginController@adminLogin');
 
-Route::get('/logowanie','Auth\LoginController@showUserLoginForm');
-Route::post('/logowanie','Auth\LoginController@userLogin');
+Route::get('/logowanie', 'Auth\LoginController@showUserLoginForm');
+Route::post('/logowanie', 'Auth\LoginController@userLogin');
 Route::get('/rejestracja', 'Auth\RegisterController@showUserRegisterForm');
 Route::post('/rejestracja', 'Auth\RegisterController@createUser');
-
-
 
 Route::get('/', 'User\HomeController@index');
 Route::get('/kontakt', 'User\HomeController@contact');
@@ -32,10 +30,9 @@ Route::get('/wydawnictwa/{id}', 'User\BookController@fetchPublisher');
 Route::get('/ksiazki/{id}', 'User\BookController@fetchBook');
 
 
-
 Route::group(['middleware' => 'user'], function () {
     Route::get('/wyloguj', 'Auth\LoginController@userLogout')->name('logout');
-    Route::post('/zmien-haslo','Auth\ResetPasswordController@changePassword')->name('changePassword');
+    Route::post('/zmien-haslo', 'Auth\ResetPasswordController@changePassword')->name('changePassword');
     Route::get('/dane', 'User\UserController@userInfo');
     Route::get('/zmien-dane', 'User\UserController@editProfile');
     Route::post('/zmien-dane', 'User\UserController@updateProfile');
@@ -47,14 +44,12 @@ Route::group(['middleware' => 'user'], function () {
 });
 
 
-
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/wyloguj', 'Auth\LoginController@adminLogout')->name('logout');
-    Route::get('/pracownik/czytelnicy/nowy', 'Admin\UserController@createUser');
     Route::get('/pracownik', 'Admin\HomeController@index');
-
     Route::get('/pracownik/info', 'Admin\HomeController@info');
 
+    Route::get('/pracownik/czytelnicy/nowy', 'Admin\UserController@createUser');
     Route::post('/pracownik/czytelnicy/nowy', 'Admin\UserController@storeUser');
     Route::get('/pracownik/czytelnicy/znajdz', 'Admin\UserController@findUser');
     Route::get('/pracownik/czytelnicy/{id}', 'Admin\UserController@fetchUser');
@@ -101,6 +96,4 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/pracownik/rezerwacje', 'Admin\ReservationController@index');
     Route::post('/pracownik/rezerwacje/anuluj', 'Admin\ReservationController@cancelReservation');
     Route::post('/pracownik/egzemplarze/{id}/rezerwacja/wypozycz', 'Admin\ReservationController@borrowReservedBook');
-
-
 });

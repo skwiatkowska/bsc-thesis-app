@@ -73,30 +73,34 @@ class RegisterController extends Controller {
     }
 
     protected function createUser(Request $request) {
-        $existingUser = User::where('pesel', $request->pesel)->get();
-        if ($existingUser->count() > 0) {
-            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
-        }
-        $existingUser = User::where('email', $request->email)->get();
-        if ($existingUser->count() > 0) {
-            return redirect()->back()->withErrors('Istnieje już użytkownik o podanym adresie email');
-        }
-        User::create([
-            'first_name' => $request->fname,
-            'last_name' => $request->lname,
-            'pesel' => $request->pesel,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'street' => $request->street,
-            'house_number' => $request->house_number,
-            'zipcode' => $request->zipcode,
-            'city' => $request->city,
-            'password' => Hash::make($request->password),
-        ]);
+        if (count($request->all())) {
+            $existingUser = User::where('pesel', $request->pesel)->get();
+            if ($existingUser->count() > 0) {
+                return redirect('/rejestracja')->withErrors('Istnieje już użytkownik o podanym numerze PESEL');
+            }
+            $existingUser = User::where('email', $request->email)->get();
+            if ($existingUser->count() > 0) {
+                return redirect('/rejestracja')->withErrors('Istnieje już użytkownik o podanym adresie email');
+            }
+            User::create([
+                'first_name' => $request->fname,
+                'last_name' => $request->lname,
+                'pesel' => $request->pesel,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'street' => $request->street,
+                'house_number' => $request->house_number,
+                'zipcode' => $request->zipcode,
+                'city' => $request->city,
+                'password' => Hash::make($request->password),
+            ]);
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
 
-            return redirect()->intended('/dane')->with(['success' => 'Witamy. Konto zostało poprawnie utworzone']);
+                return redirect()->intended('/dane')->with(['success' => 'Witamy. Konto zostało poprawnie utworzone']);
+            }
+        } else {
+            return back()->withErrors("Brakujące dane");
         }
     }
 }
