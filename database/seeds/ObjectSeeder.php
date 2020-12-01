@@ -21,25 +21,25 @@ class ObjectSeeder extends Seeder {
         $cypher = "MATCH (n) DETACH DELETE n;";
         DB::select($cypher);
 
-        $users = factory(User::class)->times(50)->create();
-        $books = factory(Book::class)->times(50)->create();
-        $authors = factory(Author::class)->times(20)->create();
-        $publishers = factory(Publisher::class)->times(15)->create();
+        $users = factory(User::class)->times(15)->create();
+        $books = factory(Book::class)->times(10)->create();
+        $authors = factory(Author::class)->times(10)->create();
+        $publishers = factory(Publisher::class)->times(5)->create();
         $categories = factory(Category::class)->times(5)->create();
 
-        $action = ["reservation", "borrowing", "return", null];
+        $action = ["reservation", "borrowing", "return", "reservation", "borrowing", "return", null];
 
         foreach ($books as $book) {
-            $bookItems = factory(BookItem::class)->times(rand(1, 4))->create();
+            $bookItems = factory(BookItem::class)->times(rand(1, 2))->create();
             foreach ($bookItems as $bookItem) {
                 $book->bookItems()->save($bookItem);
                 $randomAction = array_rand($action);
 
-                if ($randomAction == 0) { //reservation
+                if ($randomAction == 0 || $randomAction == 3) { //reservation
                     $user = $users[rand(0, $users->count() - 1)];
                     $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
                     $user->reservations($bookItem)->save($reservation);
-                } elseif ($randomAction == 1) { //borrowing
+                } elseif ($randomAction == 1 || $randomAction == 4) { //borrowing
                     $borrowDate = [null, "-1 day", "-2 days", "-3 days"];
                     $randomBorrowDate = $borrowDate[array_rand($borrowDate)];
                     $dueDate = ["+1 month", "+14 days", "+3 days"];
@@ -47,7 +47,7 @@ class ObjectSeeder extends Seeder {
                     $user = $users[rand(0, $users->count() - 1)];
                     $borrowing =  new Borrowing(['borrow_date' => new DateTime($randomBorrowDate), 'due_date' => new DateTime($randomDueDate), 'was_prolonged' => false]);
                     $user->borrowings($bookItem)->save($borrowing);
-                } elseif ($randomAction == 2) { //return
+                } elseif ($randomAction == 2 || $randomAction == 5) { //return
                     $borrowDate = [null, "-1 month", "-2 months", "-14 days"];
                     $randomBorrowDate = $borrowDate[array_rand($borrowDate)];
                     $dueDate = ["+1 day", "-10 days", "-5 days", "+2 days"];
@@ -70,14 +70,24 @@ class ObjectSeeder extends Seeder {
 
             for ($i = 0; $i <= rand(1, 3); $i++) {
                 $author = $authors[rand(0, $authors->count() - 1)];
+                foreach ($book->authors() as $a) {
+                    if ($a->id == $author->id) {
+                        continue;
+                    }
+                }
                 $book->authors()->save($author);
             }
-            
+
             $publisher = $publishers[rand(0, $publishers->count() - 1)];
             $publisher->books()->save($book);
 
             for ($i = 0; $i <= rand(1, 3); $i++) {
                 $category = $categories[rand(0, $categories->count() - 1)];
+                foreach ($book->categories() as $c) {
+                    if ($c->id == $c->id) {
+                        continue;
+                    }
+                }
                 $book->categories()->save($category);
             }
         }
