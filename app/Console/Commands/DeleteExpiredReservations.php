@@ -40,13 +40,12 @@ class DeleteExpiredReservations extends Command {
         \Log::info("Deleting expired reservations");
         $now = new \DateTime();
         $expired = Reservation::with('bookItem')->where('due_date', '<', $now)->get();
-        \Log::info($expired->count());
 
-        foreach($expired as $exp){
-            $item = $exp->bookItem;
+        foreach($expired as $e){
+            $item = $e->bookItem;
             $item->update(['status' => BookItem::AVAILABLE]);
-            $exp->delete();
-            \Log::info("Deleting ".$exp->id);
+            $e->delete();
+            \Log::info("Deleting ".$e->id);
         }
 
         \Log::info('Deleted '.$expired->count(). ' reservation(s)');

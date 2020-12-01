@@ -16,7 +16,7 @@
   <li class="node" data-node-id="7" data-x="-466.40289549673753" data-y="-1153.6835937499995">
     <span class="caption">Borrowing</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>borrow_date</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd><dt>actual_return_date</dt><dd>Date</dd><dt>was_prolonged'</dt><dd>Boolean</dd><dt>overdue_fee</dt><dd>Integer</dd></dl></li>
   <li class="node" data-node-id="8" data-x="-624.4677758678313" data-y="-694.1765825825356">
-    <span class="caption">Reservation</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>reservation_date</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd></dl></li>
+    <span class="caption">Reservation</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>created_at</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd></dl></li>
   <li class="relationship" data-from="1" data-to="2">
     <span class="type">HAS_ITEM</span>
   </li>

@@ -150,7 +150,7 @@ class UserControllerTest extends TestCase {
     public function deleteAccountWithReservedBooks() {
         $user = $this->logIn();
         $bookItem = factory(BookItem::class)->create();
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  strtotime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $this->assertGreaterThan(0, $user->reservations->count());
 

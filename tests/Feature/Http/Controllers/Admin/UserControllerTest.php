@@ -256,7 +256,7 @@ class UserControllerTest extends TestCase {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
         $bookItem = factory(BookItem::class)->create();
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $this->assertGreaterThan(0, $user->reservations->count());
 
@@ -402,7 +402,7 @@ class UserControllerTest extends TestCase {
         $response->assertViewHas('users');
         $content = $response->getOriginalContent()->getData();
         $this->assertEquals($content['users']->count(), 0);
-        
+
         $user->delete();
         $admin->delete();
     }

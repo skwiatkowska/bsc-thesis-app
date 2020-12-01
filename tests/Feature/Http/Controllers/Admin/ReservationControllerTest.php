@@ -53,7 +53,7 @@ class ReservationControllerTest extends TestCase {
         $author->books()->save($book);
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
 
         $response = $this->post('/pracownik/rezerwacje/anuluj', ['id' => $reservation->id]);
@@ -86,7 +86,7 @@ class ReservationControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
 
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $reservationsBefore = $user->reservations()->count();
         $borrowingsBefore = $user->borrowings()->count();
@@ -134,7 +134,7 @@ class ReservationControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
 
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $bookItem->update(['status' => BookItem::BORROWED]);
         $reservationsBefore = $user->reservations()->count();
@@ -157,10 +157,10 @@ class ReservationControllerTest extends TestCase {
         $author->delete();
         $publisher->delete();
         $category->delete();
-        $bookItem->delete();
+        // $bookItem->delete();
         $book->delete();
-        $reservation->delete();
-        $user->delete();
+        // $reservation->delete();
+        // $user->delete();
         $admin->delete();
     }
 
@@ -180,7 +180,7 @@ class ReservationControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
 
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
         $reservationsBefore = $user->reservations()->count();
         $borrowingsBefore = $user->borrowings()->count();

@@ -199,9 +199,9 @@ class BorrowingControllerTest extends TestCase {
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
 
-        $borrowing->delete();
-        $user->delete();
-        $bookItem->delete();
+        // $borrowing->delete();
+        // $user->delete();
+        // $bookItem->delete();
         $admin->delete();
     }
 

@@ -11,7 +11,6 @@ class Reservation extends NeoEloquent {
 
     protected $fillable = [
         'id',
-        'reservation_date',
         'due_date',
         'created_at',
         'updated_at'

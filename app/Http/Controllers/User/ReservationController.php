@@ -25,7 +25,7 @@ class ReservationController extends Controller {
         } else if (date('w', strtotime("+3 days")) == 6) { //saturday
             $dueDate = new DateTime("+5 days");
         }
-        $reservation = new Reservation(['reservation_date' => new DateTime(), 'due_date' => $dueDate]);
+        $reservation = new Reservation(['due_date' => $dueDate]);
         $item->update(['status' => BookItem::RESERVED]);
         $user->reservations($item)->save($reservation);
         return redirect('/moje-ksiazki')->with(['success' => 'Książka ' . $item->book->title . ' została wypożyczona']);

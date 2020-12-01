@@ -42,7 +42,7 @@ class ReservationControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
 
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
 
         $response = $this->post('/anuluj-rezerwacje', ['id' => $reservation->id]);
@@ -75,7 +75,7 @@ class ReservationControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
 
-        $reservation =  new Reservation(['reservation_date' => new DateTime(), 'due_date' =>  strtotime("+3 days")]);
+        $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user2->reservations($bookItem)->save($reservation);
 
         $response = $this->post('/anuluj-rezerwacje', ['id' => $reservation->id]);

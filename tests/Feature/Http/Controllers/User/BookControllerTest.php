@@ -413,7 +413,7 @@ class BookControllerTest extends TestCase {
         $user = $this->logIn();
         $bookItem = factory(BookItem::class)->create();
         $this->assertEquals($user->borrowings->count(), 1);
-        
+
         $data = array(
             'id' => $bookItem->id,
         );

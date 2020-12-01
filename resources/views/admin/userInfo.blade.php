@@ -107,7 +107,7 @@
                                         </a>
                                         @endforeach
                                     </td>
-                                    <td>{{date('Y-m-d', strtotime($reservation->reservation_date))}}
+                                    <td>{{date('Y-m-d', strtotime($reservation->created_at))}}
                                     </td>
                                     <td>{{date('Y-m-d', strtotime($reservation->due_date))}}
                                     </td>

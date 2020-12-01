@@ -29,11 +29,10 @@ class BookController extends Controller {
         $categories = $request->categories;
         $items = $request->numberOfItems;
 
-        $categoriesToAssign = array();
         $authorsToAssign = array();
-        $publisherToAssign = Publisher::find($request->publisher);
         $bookItemsToAssign = array();
-
+        $categoriesToAssign = array();
+        $publisherToAssign = Publisher::find($request->publisher);
 
         $isbn = $request->isbn;
         if (Book::where('isbn', $isbn)->count() > 0) {
