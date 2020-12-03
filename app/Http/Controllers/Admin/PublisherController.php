@@ -44,20 +44,12 @@ class PublisherController extends Controller {
 
 
     public function delete($id) {
-        try {
-            $publisher = Publisher::where('id', $id)->firstOrFail();
-            $this->checkIfHasAssignedBooks($publisher);
-            $publisher->delete();
-        } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage());
-        }
-        return redirect('/pracownik/wydawnictwa')->with(['success' => "Wydawnictwo " . $publisher->name . "zostało usunięte"]);
-    }
-
-    public function checkIfHasAssignedBooks($publisher) {
+        $publisher = Publisher::where('id', $id)->firstOrFail();
         $numberOfBooks = $publisher->books()->count();
-        if ($numberOfBooks > 0) {
-            throw new \Exception("Nie można usunąć wydawnictwa z przypisanymi książkami");
+        if ($numberOfBooks) {
+            return back()->withErrors("Nie można usunąć wydawnictwa z przypisanymi książkami");
         }
+        $publisher->delete();
+        return redirect('/pracownik/wydawnictwa')->with(['success' => "Wydawnictwo " . $publisher->name . "zostało usunięte"]);
     }
 }

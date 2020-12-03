@@ -76,7 +76,7 @@ class BookController extends Controller {
     }
 
 
-    public function fetchOneBook($id) {
+    public function fetchBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
         return view('/admin/bookInfo', ['book' => $book]);
     }
