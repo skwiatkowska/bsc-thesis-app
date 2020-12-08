@@ -14,11 +14,15 @@ use App\Models\Book;
 |
 */
 
+
 $factory->define(App\Models\Book::class, function (Faker $faker) {
+    $sentence = $faker->unique()->sentence(rand(1, 5));
+    $title = substr($sentence, 0, strlen($sentence) - 1);
+
     return [
-        'title' => $faker->unique()->name,
-        'isbn' => $faker->unique()->numberBetween(1,999999999), 
-        'publication_year' => $faker->numberBetween(1910,2020),
+        'title' => $title,
+        'isbn' => $faker->unique()->numberBetween(1, 999999999), 
+        'publication_year' => $faker->numberBetween(1910, 2020),
     ];
 });
 

@@ -108,7 +108,7 @@
       queryRecordCount: null,
       page: null,
       perPageDefault: 10,
-      perPageOptions: [10,20,50,100],
+      perPageOptions: [5,10,20,50,100],
       sorts: {},
       sortsKeys: [],
       sortTypes: {},

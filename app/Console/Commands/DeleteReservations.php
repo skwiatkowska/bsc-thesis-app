@@ -7,7 +7,7 @@ use App\Models\Reservation;
 
 use Illuminate\Console\Command;
 
-class DeleteExpiredReservations extends Command {
+class DeleteReservations extends Command {
     /**
      * The name and signature of the console command.
      *

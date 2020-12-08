@@ -11,13 +11,13 @@
             <div class="row px-2">
                 Szczegóły
                 <div class="ml-auto row">
-                    <a href="#" class="btn px-2 my-auto" title="Zmień hasło" data-toggle="modal" data-target="#newPasswordItemModal"><i class="fa fa-key"></i></a>
-                                           
+                    <a href="#" class="btn px-2 my-auto" title="Zmień hasło" data-toggle="modal"
+                        data-target="#newPasswordItemModal"><i class="fa fa-key"></i></a>
+
                     <form action="/pracownik/czytelnicy/{{$user->id}}/usun" method="POST">
                         {{ csrf_field() }}
-                        <button type="submit" title="Usuń konto na stałe"
-                        class="btn" style="background:transparent;"><i
-                            class="fa fa-trash-alt"></i></button>
+                        <button type="submit" title="Usuń konto na stałe" class="btn" style="background:transparent;"><i
+                                class="fa fa-trash-alt"></i></button>
                         <input type="hidden" value="{{$user->id}}" name="id">
                     </form>
                 </div>
@@ -25,30 +25,32 @@
         </div>
 
         <div class="card-body">
-            <div class=card-text">
-                <ul class="list-unstyled">
-                    <li><strong>Imię: </strong><a class="editable-input" id="fname">{{$user->first_name}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Nazwisko: </strong><a class="editable-input" id="lname">{{$user->last_name}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>PESEL: </strong><a class="editable-input" id="pesel">{{$user->pesel}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Telefon: </strong><a class="editable-input" id="phone">{{$user->phone}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>E-mail: </strong><a class="editable-input" id="email">{{$user->email}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Ulica: </strong><a class="editable-input" id="street">{{$user->street}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Numer domu: </strong><a class="editable-input"
-                            id="house_number">{{$user->house_number}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Kod pocztowy: </strong><a class="editable-input" id="zipcode">{{$user->zipcode}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Miasto: </strong><a class="editable-input" id="city">{{$user->city}}<i
-                                class="fa fa-pencil-alt ml-2"></i></a></li>
-                    <li><strong>Data utworzenia konta: </strong>{{date('Y-m-d', strtotime($user->created_at))}}</li>
-
-                </ul>
-            </div>
+            <ul class="list-unstyled row">
+                <li class="list-item col-6 py-2"><strong>Imię: </strong><a class="editable-input"
+                        id="fname">{{$user->first_name}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 py-2"><strong>Nazwisko: </strong><a class="editable-input"
+                        id="lname">{{$user->last_name}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>PESEL: </strong><a class="editable-input"
+                        id="pesel">{{$user->pesel}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>Telefon: </strong><a class="editable-input"
+                        id="phone">{{$user->phone}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>E-mail: </strong><a class="editable-input"
+                        id="email">{{$user->email}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>Ulica: </strong><a class="editable-input"
+                        id="street">{{$user->street}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>Numer domu: </strong><a class="editable-input"
+                        id="house_number">{{$user->house_number}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>Kod pocztowy: </strong><a class="editable-input"
+                        id="zipcode">{{$user->zipcode}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>E-mail: </strong><a class="editable-input"
+                        id="email">{{$user->email}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top py-2"><strong>Ulica: </strong><a class="editable-input"
+                        id="street">{{$user->street}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-top  py-2"><strong>Miasto: </strong><a class="editable-input"
+                        id="city">{{$user->city}}<i class="fa fa-pencil-alt ml-2"></i></a></li>
+                <li class="list-item col-6 border-toppy-2"><strong>Data utworzenia konta:
+                    </strong>{{date('Y-m-d', strtotime($user->created_at))}}</li>
+            </ul>
         </div>
     </div>
     <div class="card my-1">
@@ -94,7 +96,7 @@
                                 @if(!isset($reservation->actual_return_date))
                                 <tr>
                                     <td> <a href="/pracownik/ksiazki/{{$reservation->bookItem->book->id}}"
-                                            class="a-link-navy"><strong>{{$reservation->bookItem->book->title}}</strong></a>
+                                            class="a-link-navy">{{$reservation->bookItem->book->title}}</a>
                                     </td>
                                     <td>
                                         <a href="/pracownik/egzemplarze/{{$reservation->bookItem->id}}"
@@ -221,9 +223,9 @@
                                 @if(!isset($borrowing->actual_return_date))
                                 <tr>
                                     <td> <a href="/pracownik/ksiazki/{{$borrowing->bookItem->book->id}}"
-                                            class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
+                                            class="a-link-navy">{{$borrowing->bookItem->book->title}}</a>
                                         <a href="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}"
-                                            class="a-link-navy">egzemplarz {{$borrowing->bookItem->book_item_id}}</a>
+                                            class="a-link-navy">(egzemplarz {{$borrowing->bookItem->book_item_id}})</a>
                                     </td>
                                     <td>
                                         @foreach ($borrowing->bookItem->book->authors as $author)
@@ -239,8 +241,7 @@
                                     <td>
                                         @if(!$borrowing->was_prolonged)
                                         <form>
-                                            <button type="submit"
-                                                title="Jednorazowo przedłuż czas oddania o 1 miesiąć"
+                                            <button type="submit" title="Jednorazowo przedłuż czas oddania o 1 miesiąć"
                                                 class="btn btn-sm btn-light prolong-book">Prolonguj</button>
                                             <input type="hidden" name="id" value="{{$borrowing->bookItem->id}}">
                                         </form>
@@ -357,9 +358,9 @@
                                 @if(isset($borrowing->actual_return_date))
                                 <tr>
                                     <td> <a href="/pracownik/ksiazki/{{$borrowing->bookItem->book->id}}"
-                                            class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
+                                            class="a-link-navy">{{$borrowing->bookItem->book->title}}</a>
                                         <a href="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}"
-                                            class="a-link-navy">egzemplarz {{$borrowing->bookItem->book_item_id}}</a>
+                                            class="a-link-navy">(egzemplarz {{$borrowing->bookItem->book_item_id}})</a>
                                     </td>
                                     <td>
                                         @foreach ($borrowing->bookItem->book->authors as $author)
@@ -387,8 +388,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="newPasswordItemModal" tabindex="-1" role="dialog" aria-labelledby="newPasswordItemModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="newPasswordItemModal" tabindex="-1" role="dialog"
+    aria-labelledby="newPasswordItemModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form>
@@ -400,7 +401,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label class="col-md-10 col-form-label control-label text-md-right">Czy na pewno chcesz zresetować hasło? Wartością tymczasową będzie numer PESEL.</label>
+                        <label class="col-md-10 col-form-label control-label text-md-right">Czy na pewno chcesz
+                            zresetować hasło? Wartością tymczasową będzie numer PESEL.</label>
                     </div>
                 </div>
                 {{-- <input type="hidden" id="bookId" name="id" value="{{$user->id}}"> --}}

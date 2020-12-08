@@ -40,7 +40,7 @@ class BookController extends Controller {
 
         if ($request->all()) {
             $searchIn = $request->searchIn;
-            $phrase = $request->phrase;
+            $phrase = ucfirst($request->phrase);
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;

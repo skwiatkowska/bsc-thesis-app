@@ -66,6 +66,12 @@ span {
 .btn-primary:hover {
   background: #d90429;
 }
+
+
+.form-control-custom {
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+}
 /* ---------------------------------------------------
     SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -210,9 +216,6 @@ ul.CTAs a {
   transition: all 0.3s;
 }
 
-.container {
-  background-color: white;
-}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -326,7 +329,8 @@ ul.CTAs a {
 }
 
 .container {
-  padding: 30px;
+  padding: 15px;
+  background-color: white;
 }
 
 .modal .modal-header {

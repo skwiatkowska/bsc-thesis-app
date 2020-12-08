@@ -89,7 +89,6 @@
                                     {{ csrf_field() }}
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="newBookingModalLabel">Potwierdź wypożyczenie
-                                            {{$user->pesel}}
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         </button>
@@ -106,7 +105,7 @@
                                                 {{ $loop->last ? '' : ' •' }}
                                                 @endforeach
                                                 <br>
-                                                {{$item->book_item_id}}
+                                                Egzemplarz {{$item->book_item_id}}
                                             </label>
                                         </div>
                                         <div class="form-group row">
@@ -116,6 +115,13 @@
                                                 {{$user->first_name}} {{$user->last_name}}
                                                 <br>
                                                 PESEL: {{$user->pesel}}
+                                            </label>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label
+                                                class="col-md-4 col-form-label control-label text-md-right"><strong>Ważność:</strong></label>
+                                            <label class="col-md-6 col-form-label control-label text-md-left">
+                                                {{date('Y-m-d', strtotime('+1 month'))}} 
                                             </label>
                                         </div>
                                     </div>

@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-borrowing" role="tabpanel"
                                         aria-labelledby="nav-borrowing-tab">
-                                        <div class=" col-md-10 mx-auto mt-5">
+                                        <div class=" col-md-12 mx-auto mt-5">
                                             <table class="table table-bordered text-center">
                                                 <thead>
                                                     <tr>
@@ -100,7 +100,7 @@
                                                     <tr>
                                                         <td> <a href="/ksiazki/{{$borrowing->bookItem->book->id}}"
                                                                 class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
-                                                            <a href="/egzemplarze/{{$borrowing->bookItem->id}}"
+                                                            <br><a href="/egzemplarze/{{$borrowing->bookItem->id}}"
                                                                 class="a-link-navy">egzemplarz
                                                                 {{$borrowing->bookItem->book_item_id}}</a>
                                                         </td>
@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-history" role="tabpanel"
                                         aria-labelledby="nav-history-tab">
-                                        <div class=" col-md-10 mx-auto mt-5">
+                                        <div class=" col-md-12 mx-auto mt-5">
                                             <table class="table table-bordered text-center">
                                                 <thead>
                                                     <tr>

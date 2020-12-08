@@ -78,7 +78,7 @@ class BookController extends Controller {
 
     public function fetchBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
-        return view('/admin/bookInfo', ['book' => $book]);
+                return view('/admin/bookInfo', ['book' => $book]);
     }
 
 
@@ -146,9 +146,9 @@ class BookController extends Controller {
     public function findBook(Request $request) {
         $categories = Category::all();
 
-        if ($request->all()) {
+        if ($request->searchIn && ($request->phrase || $request->searchPhrase)) {
             $searchIn = $request->searchIn;
-            $phrase = $request->phrase;
+            $phrase = ucfirst($request->phrase);
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;

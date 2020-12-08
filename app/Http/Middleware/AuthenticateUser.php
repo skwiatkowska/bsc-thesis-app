@@ -15,7 +15,6 @@ class AuthenticateUser {
      * @return mixed
      */
     public function handle($request, Closure $next) {
-        //Auth::logout();
         if (!Auth::guard('web')->check()) {
             return redirect('/logowanie')->withErrors('Aby uzyskać dostęp do tej strony, musisz się najpierw zalogować');
         }

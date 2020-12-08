@@ -13,7 +13,13 @@ use DateTime;
 class BorrowingController extends Controller {
 
     public function index() {
-        $borrowings = Borrowing::with('user')->with('bookItem.book')->get();
+        $borrowings = Borrowing::all()->filter(function ($value) {
+            return !isset($value->actual_return_date);
+        });
+        // $book = BookItem::where('id',6263)->firstOrFail();
+        // $book->borrowings[0]->update(['due_date' => new DateTime('+14 days')]);
+        // $book->borrowings[0]->update(['borrow_date' => new DateTime('-14 days')]);
+
         return view('/admin/borrowings', ['borrowings' => $borrowings]);
     }
 
