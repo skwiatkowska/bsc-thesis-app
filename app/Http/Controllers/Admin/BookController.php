@@ -220,7 +220,6 @@ class BookController extends Controller {
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {
-
                 $books = collect();
                 return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }

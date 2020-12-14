@@ -243,6 +243,7 @@ class BookControllerTest extends TestCase {
             'categories' => array($book->categories->first()->id),
             'publisher' => $book->publisher->id,
         );
+
         $response = $this->put('/pracownik/ksiazki/' . $book->id, $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();

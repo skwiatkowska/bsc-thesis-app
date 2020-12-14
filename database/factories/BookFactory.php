@@ -14,7 +14,6 @@ use App\Models\Book;
 |
 */
 
-
 $factory->define(App\Models\Book::class, function (Faker $faker) {
     $sentence = $faker->unique()->sentence(rand(1, 5));
     $title = substr($sentence, 0, strlen($sentence) - 1);

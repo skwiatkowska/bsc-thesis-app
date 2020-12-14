@@ -161,6 +161,7 @@ class UserControllerTest extends TestCase {
             'name' => 'phone',
             'value' => $new,
         );
+
         $response = $this->put('/pracownik/czytelnicy/' . $user->id, $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
@@ -224,6 +225,7 @@ class UserControllerTest extends TestCase {
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/czytelnicy');
+
         $userAfter = User::where('id', $user->id)->get();
         $this->assertEquals($userAfter->count(), 0);
 
@@ -330,7 +332,9 @@ class UserControllerTest extends TestCase {
             'searchIn' => 'pesel',
             'phrase' => $user->pesel,
         );
+
         $response = $this->call('GET', '/pracownik/czytelnicy', $data);
+
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');

@@ -157,10 +157,10 @@ class ReservationControllerTest extends TestCase {
         $author->delete();
         $publisher->delete();
         $category->delete();
-        // $bookItem->delete();
+        $bookItem->delete();
         $book->delete();
-        // $reservation->delete();
-        // $user->delete();
+        $reservation->delete();
+        $user->delete();
         $admin->delete();
     }
 

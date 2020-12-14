@@ -124,7 +124,7 @@ class PublisherControllerTest extends TestCase {
         $publisher = factory(Publisher::class)->create();
         $this->assertEquals($publisher->books->count(), 0);
 
-        $response = $this->delete('/pracownik/wydawnictwa/' . $publisher->id . '', []);
+        $response = $this->delete('/pracownik/wydawnictwa/' . $publisher->id, []);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/wydawnictwa');
@@ -143,7 +143,7 @@ class PublisherControllerTest extends TestCase {
         $publisher->books()->save($book);
         $this->assertGreaterThan(0, $publisher->books->count());
 
-        $response = $this->delete('/pracownik/wydawnictwa/' . $publisher->id . '', []);
+        $response = $this->delete('/pracownik/wydawnictwa/' . $publisher->id, []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $publisherAfter = Publisher::where('id', $publisher->id)->get();

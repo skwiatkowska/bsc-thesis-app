@@ -201,7 +201,7 @@ class BorrowingControllerTest extends TestCase {
         $this->assertArrayHasKey('success', $content);
         $borrowingAfter = Borrowing::where('id', $borrowing->id)->firstOrFail();
         $dueDateAfter = $borrowingAfter->due_date;
-        
+ 
         $borrowing->delete();
         $user->delete();
         $bookItem->delete();
@@ -216,6 +216,7 @@ class BorrowingControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
+
         $response = $this->put('/pracownik/egzemplarze/' . $bookItem->id . '/prolonguj', $data);
         $response->assertSessionHasErrors();
         $response->assertStatus(404);
@@ -240,6 +241,7 @@ class BorrowingControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
+
         $response = $this->put('/pracownik/egzemplarze/' . $bookItem->id . '/zwroc', $data);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();

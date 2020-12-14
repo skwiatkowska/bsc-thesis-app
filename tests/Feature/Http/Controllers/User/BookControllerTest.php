@@ -398,6 +398,7 @@ class BookControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
+ 
         $response = $this->put('/prolonguj', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Admin;
+use Illuminate\Support\Facades\Hash;
+
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
