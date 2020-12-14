@@ -55,11 +55,11 @@
             <table id="dynatable" class="table table-striped table-bordered mt-1">
                 <thead>
                     <tr>
-                        <th style="width: 30%">Tytuł</th>
-                        <th style="width: 35%">Autorzy</th>
-                        <th style="width: 15%">Wydawnictwo</th>
+                        <th style="width: 35%">Tytuł</th>
+                        <th style="width: 25%">Autorzy</th>
+                        <th style="width: 18%">Wydawnictwo</th>
                         <th style="width: 10%">ISBN</th>
-                        <th style="width: 10%">Egzemplarze</th>
+                        <th style="width: 7%">Egz.</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -76,8 +76,7 @@
                     @foreach ($books as $index => $book)
                     <tr>
                         <td>
-                            <a href="/pracownik/ksiazki/{{$book->id}}" ><strong
-                                    class="a-link-navy">{{$book->title}}</strong></a>
+                            <a href="/pracownik/ksiazki/{{$book->id}}" class="a-link-navy">{{$book->title}}</a>
                         </td>
                         <td>
                             @foreach ($book->authors as $author)

@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="row">
-        <form class="form-inline col-12 justify-content-center" action="/pracownik/czytelnicy/znajdz" method="GET">
+        <form class="form-inline col-12 justify-content-center" action="/pracownik/czytelnicy" method="GET">
             <div class="input-group mb-2 col-sm-12 col-lg-4 px-1">
                 <div class="input-group-prepend">
                     <div class="input-group-text">Szukaj w:</div>

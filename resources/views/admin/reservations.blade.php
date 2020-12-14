@@ -5,25 +5,23 @@
 @section('content')
 
 <div class="container">
-    <div class="row">
+    {{-- <div class="row">
         <div class="input-group mb-2 col-sm-12 col-lg-10 mx-auto">
             <input type="text" class="form-control search-phrase" name="search-input" id="search">
             <button type="submit" id="find-book-submit-btn" class="btn btn-primary ml-4 px-lg-4">Szukaj</button>
         </div>
-    </div>
+    </div> --}}
     @if($reservations->count() > 0)
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-10 mx-auto">
-            <table id="dynatable-reserved" class="table table-striped table-bordered mt-1">
+            <table id="dynatable-reserved" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Czytelnik</th>
                         <th>Książka</th>
-                        <th>Egzemplarz</th>
-                        <th>Autorzy</th>
-                        <th>Data rezerwacji</th>
-                        <th>Data wygaśnięcia</th>
-                        <th colspan="2"></th>
+                        <th>Szczegóły</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody class="item-table">
@@ -31,27 +29,26 @@
                     @if(!isset($reservation->actual_return_date))
                     <tr>
                         <td> <a href="/pracownik/czytelnicy/{{$reservation->user->id}}"
-                                class="a-link-navy"><strong>{{$reservation->user->first_name.' '.$reservation->user->last_name}}</strong></a>
+                                class="a-link-navy">{{$reservation->user->first_name.' '.$reservation->user->last_name}}</a>
                         </td>
                         <td> <a href="/pracownik/ksiazki/{{$reservation->bookItem->book->id}}"
-                                class="a-link-navy"><strong>{{$reservation->bookItem->book->title}}</strong></a>
+                                class="a-link-navy">{{$reservation->bookItem->book->title}}</a>
                         </td>
                         <td>
-                            <a href="/pracownik/egzemplarze/{{$reservation->bookItem->id}}"
-                                class="a-link-navy">{{$reservation->bookItem->book_item_id}}</a>
+                            <button type="button" class="btn btn-sm btn-light px-3" data-toggle="popover"
+                                title="Informacje o rezerwacji" data-placement="bottom"
+                                data-content="Egzemplarz: <a href='/pracownik/egzemplarze/{{$reservation->bookItem->id}}' class='a-link-navy'>{{$reservation->bookItem->book_item_id}}</a>
+                                <br>
+                                Autorzy:<br>
+                                @foreach ($reservation->bookItem->book->authors as $author)
+                                <a href='/pracownik/autorzy/{{$author->id}}' class='a-link-navy'>
+                                {{$author->last_name.', '.$author->first_names}}<br>
+                                </a>
+                                @endforeach
+                                Data rezerwacji: {{date('Y-m-d', strtotime($reservation->created_at))}}
+                                <br>
+                                Data ważności: {{date('Y-m-d', strtotime($reservation->due_date))}}"><i class="fa fa-info"></i></button>
                         </td>
-                        <td>
-                            @foreach ($reservation->bookItem->book->authors as $author)
-                            <a href="/pracownik/autorzy/{{$author->id}}" class="a-link-navy">
-                                {{$author->last_name.', '.$author->first_names}}
-                            </a>
-                            @endforeach
-                        </td>
-                        <td>{{date('Y-m-d', strtotime($reservation->reservation_date))}}
-                        </td>
-                        <td>{{date('Y-m-d', strtotime($reservation->due_date))}}
-                        </td>
-
 
                         <td>
                             <button type="button" title="Wypożyczenie" class="btn btn-sm btn-primary mb-2"
@@ -150,6 +147,34 @@
 @endsection
 @section('script')
 <script>
+
+    $(function () {
+    $('[data-toggle="popover"]').popover({html:true})
+    });
+
+    $("#search").keyup(function () {
+        var value = this.value.toLowerCase().trim();
+
+        $("table tr").each(function (index) {
+            if (!index) return;
+            $(this).find("td:not(:has(button))").each(function () {
+                var id = $(this).text().toLowerCase().trim();
+                var not_found = (id.indexOf(value) == -1);
+                $(this).closest('tr').toggle(!not_found);
+                return not_found;
+                
+            });
+        });
+    });
+
+    $('#dynatable-reserved').dynatable();
+
+    $("#dynatable-query-search-dynatable-reserved").addClass("form-control-custom");
+    // $(".dynatable-search").hide();
+    $("tfoot").hide();
+    $(".dynatable-per-page-label").css( "margin-right", "8px" );
+    $("th").css( "padding", "5px" );
+
     //cancel a reservation
         $(".cancel-reservation").click(function(e){
         e.preventDefault();
@@ -158,9 +183,9 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'DELETE',
             dataType : 'json',
-            url:'/pracownik/rezerwacje/anuluj',
+            url:'/pracownik/rezerwacje/' + id,
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();

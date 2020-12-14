@@ -109,6 +109,7 @@
                                                         <td>
                                                             <form action="/usun-konto" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć swoje konto na stałe?\nWszystkie Twoje dane i historia zostaną usunięte.\nAkcja jest nieodwracalna.');">
                                                                 {{ csrf_field() }}
+                                                                <input type="hidden" name="_method" value="DELETE">
                                                             <button type="submit" class="btn btn-sm btn-danger">Usuń
                                                                 konto</button>
                                                             </form>
@@ -133,6 +134,7 @@
         <div class="modal-content">
             <form name="changePwdModalForm" action="/zmien-haslo" method="POST">
                 {{ csrf_field() }}
+                <input type="hidden" name="_method" value="PUT">
                 <div class="modal-header">
                     <h5 class="modal-title" id="changePwdModalLabel">Zmień hasło
                     </h5>

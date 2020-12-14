@@ -98,7 +98,7 @@
                             <a class="sidebar-submenu-item" href="/pracownik/czytelnicy/nowy">Dodaj Czytelnika</a>
                         </li>
                         <li>
-                            <a class="sidebar-submenu-item" href="/pracownik/czytelnicy/znajdz">Znajdź Czytelnika</a>
+                            <a class="sidebar-submenu-item" href="/pracownik/czytelnicy">Znajdź Czytelnika</a>
                         </li>
 
                     </ul>

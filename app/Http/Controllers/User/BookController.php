@@ -40,7 +40,7 @@ class BookController extends Controller {
 
         if ($request->all()) {
             $searchIn = $request->searchIn;
-            $phrase = $request->phrase;
+            $phrase = ucfirst($request->phrase);
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;
@@ -108,7 +108,7 @@ class BookController extends Controller {
                 $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('authors')->with('categories')->with('publisher')->get();
                 $searchInMode = "tytuł";
             } elseif ($searchIn == "isbn") {
-                $books = Book::where('isbn', $phrase)->with('authors')->with('categories')->with('publisher')->get();
+                $books = Book::where('isbn', (int)$phrase)->with('authors')->with('categories')->with('publisher')->get();
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {

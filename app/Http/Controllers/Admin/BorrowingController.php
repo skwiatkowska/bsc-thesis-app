@@ -13,7 +13,9 @@ use DateTime;
 class BorrowingController extends Controller {
 
     public function index() {
-        $borrowings = Borrowing::with('user')->with('bookItem.book')->get();
+        $borrowings = Borrowing::all()->filter(function ($value) {
+            return !isset($value->actual_return_date);
+        });
         return view('/admin/borrowings', ['borrowings' => $borrowings]);
     }
 

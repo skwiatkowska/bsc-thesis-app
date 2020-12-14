@@ -45,8 +45,8 @@ class ReservationController extends Controller {
     }
 
 
-    public function cancelReservation(Request $request) {
-        $reservation = Reservation::where('id', $request->id)->firstOrFail();
+    public function cancelReservation($id) {
+        $reservation = Reservation::where('id', $id)->firstOrFail();
         $item = $reservation->bookItem;
         $item->update(['status' => BookItem::AVAILABLE]);
 

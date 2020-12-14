@@ -65,7 +65,7 @@ class AuthorControllerTest extends TestCase {
         $author = factory(Author::class)->create();
         $newName = $this->faker->unique()->name;
 
-        $response = $this->post('/pracownik/autorzy/' . $author->id . '/edycja', [
+        $response = $this->put('/pracownik/autorzy/' . $author->id, [
             'name' => 'fname',
             'value' => $newName
         ]);
@@ -111,7 +111,7 @@ class AuthorControllerTest extends TestCase {
         $author = factory(Author::class)->create();
         $this->assertEquals($author->books->count(), 0);
 
-        $response = $this->post('/pracownik/autorzy/' . $author->id . '/usun', []);
+        $response = $this->delete('/pracownik/autorzy/' . $author->id, []);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/autorzy');
@@ -129,7 +129,7 @@ class AuthorControllerTest extends TestCase {
         $author->books()->save($book);
 
         $this->assertGreaterThan(0, $author->books->count());
-        $response = $this->post('/pracownik/autorzy/' . $author->id . '/usun', []);
+        $response = $this->delete('/pracownik/autorzy/' . $author->id, []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $authorAfter = Author::where('id', $author->id)->get();

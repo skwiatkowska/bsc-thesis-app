@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel {
      * @var array
      */
     protected $commands = [
-        Commands\DeleteExpiredReservations::class,
+        Commands\DeleteReservations::class,
     ];
 
     /**

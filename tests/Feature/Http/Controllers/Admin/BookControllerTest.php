@@ -203,7 +203,7 @@ class BookControllerTest extends TestCase {
             'publisher' => $book->publisher->id,
         );
 
-        $response = $this->post('/pracownik/ksiazki/' . $book->id . '/edycja', $data);
+        $response = $this->put('/pracownik/ksiazki/' . $book->id, $data);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/ksiazki/' . $book->id);
@@ -243,7 +243,8 @@ class BookControllerTest extends TestCase {
             'categories' => array($book->categories->first()->id),
             'publisher' => $book->publisher->id,
         );
-        $response = $this->post('/pracownik/ksiazki/' . $book->id . '/edycja', $data);
+
+        $response = $this->put('/pracownik/ksiazki/' . $book->id, $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $response->assertRedirect('/pracownik/ksiazki/' . $book->id . '/edycja');
@@ -541,7 +542,7 @@ class BookControllerTest extends TestCase {
         $category->books()->save($book);
 
         $bookBefore = Book::all()->count();
-        $response = $this->post('/pracownik/ksiazki/' . $book->id . '/usun', ['id' => $book->id]);
+        $response = $this->delete('/pracownik/ksiazki/' . $book->id . '', ['id' => $book->id]);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/katalog');
@@ -569,7 +570,7 @@ class BookControllerTest extends TestCase {
         $book->bookItems()->save($bookItem);
         $bookBefore = Book::all()->count();
 
-        $response = $this->post('/pracownik/ksiazki/' . $book->id . '/usun', ['id' => $book->id]);
+        $response = $this->delete('/pracownik/ksiazki/' . $book->id . '', ['id' => $book->id]);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $response->assertRedirect('/pracownik/ksiazki/' . $book->id);
@@ -791,7 +792,7 @@ class BookControllerTest extends TestCase {
         $category->books()->save($book);
         $book->bookItems()->save($bookItem);
 
-        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/usun', ['id' => $bookItem->id]);
+        $response = $this->delete('/pracownik/egzemplarze/' . $bookItem->id, ['id' => $bookItem->id]);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
@@ -822,7 +823,7 @@ class BookControllerTest extends TestCase {
 
         $bookItem->update(['status' => BookItem::RESERVED]);
 
-        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/usun', ['id' => $bookItem->id]);
+        $response = $this->delete('/pracownik/egzemplarze/' . $bookItem->id . '', ['id' => $bookItem->id]);
         $response->assertStatus(403);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);

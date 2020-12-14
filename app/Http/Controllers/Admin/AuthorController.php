@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class AuthorController extends Controller {
-    
+
     public function index() {
         $authors = Author::all();
         return view('/admin/authors', ['authors' => $authors]);
@@ -44,20 +44,12 @@ class AuthorController extends Controller {
     }
 
     public function delete($id) {
-        try {
-            $author = Author::where('id', $id)->firstOrFail();
-            $this->checkIfHasAssignedBooks($author);
-            $author->delete();
-        } catch (\Exception $e) {
-            return back()->withErrors($e->getMessage());
-        }
-        return redirect('/pracownik/autorzy')->with(['success' => "Autor " . $author->last_name . " " . $author->first_names . " został usunięty"]);
-    }
-
-    public function checkIfHasAssignedBooks($author) {
+        $author = Author::where('id', $id)->firstOrFail();
         $numberOfBooks = $author->books()->count();
-        if ($numberOfBooks > 0) {
-            throw new \Exception("Nie można usunąć autora z przypisanymi książkami");
+        if ($numberOfBooks) {
+            return back()->withErrors("Nie można usunąć autora z przypisanymi książkami");
         }
+        $author->delete();
+        return redirect('/pracownik/autorzy')->with(['success' => "Autor " . $author->last_name . " " . $author->first_names . " został usunięty"]);
     }
 }

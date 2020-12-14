@@ -11,6 +11,8 @@
                 <div class="card-header">Zmień dane swojego konta</div>
                 <div class="card-body">
                     <form name="newUserForm" action="/zmien-dane" method="POST">
+                        <input type="hidden" name="_method" value="PUT">
+
                         {{ csrf_field() }}
 
                         <div class="form-group row required">

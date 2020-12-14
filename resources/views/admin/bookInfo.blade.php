@@ -13,8 +13,9 @@
                     <a href="{{$book->id}}/edycja" class="btn px-2 my-auto" title="Edytuj"><i
                             class="fa fa-pencil-alt"></i></a>
 
-                    <form action="/pracownik/ksiazki/{{$book->id}}/usun" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć na stałe?');">
+                    <form action="/pracownik/ksiazki/{{$book->id}}" method="POST" onsubmit="return confirm('Czy na pewno chcesz usunąć na stałe?');">
                         {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" title="Usuń książkę na stałe"
                             class="btn delete-book" style="background:transparent;"><i
                                 class="fa fa-trash-alt"></i></button>
@@ -231,9 +232,9 @@ $("#new-item-btn-submit").click(function(e){
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'DELETE',
             dataType : 'json',
-            url:'/pracownik/rezerwacje/anuluj',
+            url:'/pracownik/rezerwacje/' + id,
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();
@@ -271,9 +272,9 @@ $(".delete-item").click(function(e){
       var id = $("input[name=id]", this.form).val();
       console.log(id);
       $.ajax({
-         type:'POST',
+         type:'DELETE',
          dataType : 'json',
-         url:'/pracownik/egzemplarze/'+ id +'/usun',
+         url:'/pracownik/egzemplarze/'+ id,
          data: {_token:"{{csrf_token()}}", id: id},
          success:function(data){
             location.reload();

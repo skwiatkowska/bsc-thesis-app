@@ -33,14 +33,12 @@
                             </label>
                             <div class="col-md-6 col-lg-2">
                                 <input type="text" id="pesel" class="form-control" name="pesel" required>
-
                             </div>
                             <label for="phone"
                                 class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Telefon
                             </label>
                             <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
                                 <input type="text" id="phone" name="phone" class="form-control" required>
-
                             </div>
                         </div>
 
@@ -81,6 +79,20 @@
                             <label for="city" class="col-md-4 col-form-label control-label text-md-right">Miasto</label>
                             <div class="col-md-6">
                                 <input type="text" id="city" class="form-control" name="city" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row required">
+                            <label for="password" class="col-md-4 col-form-label control-label text-md-right">Hasło
+                            </label>
+                            <div class="col-md-6 col-lg-2">
+                                <input type="password" id="password" class="form-control" name="password" required>
+                            </div>
+                            <label for="password2"
+                                class="col-md-4 col-lg-2 mt-md-2 mt-lg-0 mx-md-0 col-form-label control-label text-md-right">Powtórz hasło
+                            </label>
+                            <div class="col-md-6 col-lg-2 mt-md-2 mt-lg-0">
+                                <input type="password" id="password2" name="password2" class="form-control" required>
                             </div>
                         </div>
                         <input type="hidden" name="isModal" value="false">

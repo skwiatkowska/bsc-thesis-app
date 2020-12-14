@@ -15,8 +15,9 @@ use App\Models\BookItem;
 */
 
 $factory->define(App\Models\BookItem::class, function (Faker $faker) {
+    
     return [
-        'book_item_id' => $faker->numberBetween(1, 9999),
+        'book_item_id' => $faker->numberBetween(1, 15),
         'status' => BookItem::AVAILABLE,
         'is_blocked' => false,
     ];

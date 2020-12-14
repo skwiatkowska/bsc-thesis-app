@@ -29,11 +29,10 @@ class BookController extends Controller {
         $categories = $request->categories;
         $items = $request->numberOfItems;
 
-        $categoriesToAssign = array();
         $authorsToAssign = array();
-        $publisherToAssign = Publisher::find($request->publisher);
         $bookItemsToAssign = array();
-
+        $categoriesToAssign = array();
+        $publisherToAssign = Publisher::find($request->publisher);
 
         $isbn = $request->isbn;
         if (Book::where('isbn', $isbn)->count() > 0) {
@@ -77,9 +76,9 @@ class BookController extends Controller {
     }
 
 
-    public function fetchOneBook($id) {
+    public function fetchBook($id) {
         $book = Book::where('id', $id)->with('authors')->with('categories')->with('publisher')->with('bookItems.borrowings.user')->firstOrFail();
-        return view('/admin/bookInfo', ['book' => $book]);
+                return view('/admin/bookInfo', ['book' => $book]);
     }
 
 
@@ -146,10 +145,10 @@ class BookController extends Controller {
 
     public function findBook(Request $request) {
         $categories = Category::all();
-
-        if ($request->all()) {
+        
+        if ($request->searchIn && ($request->phrase || $request->searchPhrase)) {
             $searchIn = $request->searchIn;
-            $phrase = $request->phrase;
+            $phrase = ucfirst($request->phrase);
             $searchInMode = null;
             if ($searchIn == "category") {
                 $phrase = $request->searchPhrase;
@@ -217,7 +216,7 @@ class BookController extends Controller {
                 $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
                 $searchInMode = "tytuł";
             } elseif ($searchIn == "isbn") {
-                $books = Book::where('isbn', $phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                $books = Book::where('isbn', (int)$phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {

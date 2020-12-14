@@ -60,7 +60,7 @@
                                                             {{ $loop->last ? '' : ' •' }}
                                                             @endforeach
                                                         </td>
-                                                        <td>{{date('Y-m-d', strtotime($reservation->reservation_date))}}
+                                                        <td>{{date('Y-m-d', strtotime($reservation->created_at))}}
                                                         </td>
                                                         <td>{{date('Y-m-d', strtotime($reservation->due_date))}}
                                                         </td>
@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-borrowing" role="tabpanel"
                                         aria-labelledby="nav-borrowing-tab">
-                                        <div class=" col-md-10 mx-auto mt-5">
+                                        <div class=" col-md-12 mx-auto mt-5">
                                             <table class="table table-bordered text-center">
                                                 <thead>
                                                     <tr>
@@ -100,7 +100,7 @@
                                                     <tr>
                                                         <td> <a href="/ksiazki/{{$borrowing->bookItem->book->id}}"
                                                                 class="a-link-navy"><strong>{{$borrowing->bookItem->book->title}}</strong></a>
-                                                            <a href="/egzemplarze/{{$borrowing->bookItem->id}}"
+                                                            <br><a href="/egzemplarze/{{$borrowing->bookItem->id}}"
                                                                 class="a-link-navy">egzemplarz
                                                                 {{$borrowing->bookItem->book_item_id}}</a>
                                                         </td>
@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="nav-history" role="tabpanel"
                                         aria-labelledby="nav-history-tab">
-                                        <div class=" col-md-10 mx-auto mt-5">
+                                        <div class=" col-md-12 mx-auto mt-5">
                                             <table class="table table-bordered text-center">
                                                 <thead>
                                                     <tr>
@@ -203,6 +203,7 @@
         <div class="modal-content">
             <form name="changePwdModalForm" action="/zmien-haslo" method="POST">
                 {{ csrf_field() }}
+                <input type="hidden" name="_method" value="PUT">
                 <div class="modal-header">
                     <h5 class="modal-title" id="changePwdModalLabel">Zmień hasło
                     </h5>
@@ -262,7 +263,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'PUT',
             dataType : 'json',
             url:'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
@@ -282,7 +283,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'DELETE',
             dataType : 'json',
             url:'/anuluj-rezerwacje',
             data: {_token:"{{csrf_token()}}", id: id},

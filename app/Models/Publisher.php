@@ -22,9 +22,8 @@ class Publisher extends NeoEloquent {
         'updated_at'
     ];
 
-    
-    public function books(){
-        return $this->hasMany(Book::class,'PUBLISHED');
-    }
 
+    public function books() {
+        return $this->hasMany(Book::class, 'PUBLISHED');
+    }
 }

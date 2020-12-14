@@ -78,7 +78,7 @@ class PublisherControllerTest extends TestCase {
         $publisher = factory(Publisher::class)->create();
         $newName = $this->faker->unique()->name;
 
-        $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/edycja', [
+        $response = $this->put('/pracownik/wydawnictwa/' . $publisher->id, [
             'value' => $newName
         ]);
         $publisherUpdated = Publisher::where('id', $publisher->id)->firstOrFail();
@@ -124,7 +124,7 @@ class PublisherControllerTest extends TestCase {
         $publisher = factory(Publisher::class)->create();
         $this->assertEquals($publisher->books->count(), 0);
 
-        $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/usun', []);
+        $response = $this->delete('/pracownik/wydawnictwa/' . $publisher->id, []);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/pracownik/wydawnictwa');
@@ -143,7 +143,7 @@ class PublisherControllerTest extends TestCase {
         $publisher->books()->save($book);
         $this->assertGreaterThan(0, $publisher->books->count());
 
-        $response = $this->post('/pracownik/wydawnictwa/' . $publisher->id . '/usun', []);
+        $response = $this->delete('/pracownik/wydawnictwa/' . $publisher->id, []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $publisherAfter = Publisher::where('id', $publisher->id)->get();

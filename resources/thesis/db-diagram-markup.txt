@@ -1,22 +1,22 @@
 <ul class="graph-diagram-markup" data-internal-scale="0.33" data-external-scale="1">
   <li class="node" data-node-id="0" data-x="-1730.1813599706732" data-y="-1401.8685805096072">
-    <span class="caption">Author</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>first_names</dt><dd>String</dd><dt>last_name</dt><dd>String</dd></dl></li>
+    <span class="caption">Author</span><dl class="properties"><dt>first_names</dt><dd>String</dd><dt>last_name</dt><dd>String</dd></dl></li>
   <li class="node" data-node-id="1" data-x="-1423.5538763230854" data-y="-1199.642211914062">
-    <span class="caption">Book</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>title</dt><dd>String</dd><dt>isbn</dt><dd>String</dd><dt>publication_year</dt><dd>Integer</dd></dl></li>
+    <span class="caption">Book</span><dl class="properties"><dt>title</dt><dd>String</dd><dt>isbn</dt><dd>String</dd><dt>publication_year</dt><dd>Integer</dd></dl></li>
   <li class="node" data-node-id="2" data-x="-989.2394369802166" data-y="-983.2602814705157">
-    <span class="caption">BookItem</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>book_item_id</dt><dd>Integer</dd><dt>status</dt><dd>String</dd><dt>is_blocked</dt><dd>Boolean</dd></dl></li>
+    <span class="caption">BookItem</span><dl class="properties"><dt>book_item_id</dt><dd>Integer</dd><dt>status</dt><dd>String</dd><dt>is_blocked</dt><dd>Boolean</dd></dl></li>
   <li class="node" data-node-id="3" data-x="-1902.698403635336" data-y="-1067.183514994962">
-    <span class="caption">Publisher</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>name</dt><dd>String</dd></dl></li>
+    <span class="caption">Publisher</span><dl class="properties"><dt>name</dt><dd>String</dd></dl></li>
   <li class="node" data-node-id="4" data-x="-1784.726814516127" data-y="-789.0936141475574">
-    <span class="caption">Category</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>name</dt><dd>String</dd></dl></li>
+    <span class="caption">Category</span><dl class="properties"><dt>name</dt><dd>String</dd></dl></li>
   <li class="node" data-node-id="5" data-x="-132.1091938634073" data-y="-754.6507056451615">
-    <span class="caption">User</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>first_name</dt><dd>String</dd><dt>last_name</dt><dd>String</dd><dt>pesel</dt><dd>String</dd><dt>phone</dt><dd>String</dd><dt>email</dt><dd>String</dd><dt>street</dt><dd>String</dd><dt>house_number</dt><dd>String</dd><dt>zipcode</dt><dd>String</dd><dt>city</dt><dd>String</dd><dt>password</dt><dd>String</dd></dl></li>
+    <span class="caption">User</span><dl class="properties"><dt>first_name</dt><dd>String</dd><dt>last_name</dt><dd>String</dd><dt>pesel</dt><dd>String</dd><dt>phone</dt><dd>String</dd><dt>email</dt><dd>String</dd><dt>street</dt><dd>String</dd><dt>house_number</dt><dd>String</dd><dt>zipcode</dt><dd>String</dd><dt>city</dt><dd>String</dd><dt>password</dt><dd>String</dd></dl></li>
   <li class="node" data-node-id="6" data-x="-1348.5234768775235" data-y="-481.6943585795743">
-    <span class="caption">Admin</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>email</dt><dd>String</dd><dt>password</dt><dd>String</dd></dl></li>
+    <span class="caption">Admin</span><dl class="properties"><dt>email</dt><dd>String</dd><dt>password</dt><dd>String</dd></dl></li>
   <li class="node" data-node-id="7" data-x="-466.40289549673753" data-y="-1153.6835937499995">
-    <span class="caption">Borrowing</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>borrow_date</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd><dt>actual_return_date</dt><dd>Date</dd><dt>was_prolonged'</dt><dd>Boolean</dd><dt>overdue_fee</dt><dd>Integer</dd></dl></li>
+    <span class="caption">Borrowing</span><dl class="properties"><dt>borrow_date</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd><dt>actual_return_date</dt><dd>Date</dd><dt>was_prolonged'</dt><dd>Boolean</dd><dt>overdue_fee</dt><dd>Integer</dd></dl></li>
   <li class="node" data-node-id="8" data-x="-624.4677758678313" data-y="-694.1765825825356">
-    <span class="caption">Reservation</span><dl class="properties"><dt>id</dt><dd>Integer</dd><dt>reservation_date</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd></dl></li>
+    <span class="caption">Reservation</span><dl class="properties"><dt>created_at</dt><dd>Date</dd><dt>due_date</dt><dd>Date</dd></dl></li>
   <li class="relationship" data-from="1" data-to="2">
     <span class="type">HAS_ITEM</span>
   </li>
