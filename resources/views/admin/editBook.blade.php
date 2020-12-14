@@ -10,8 +10,9 @@
             <div class="card mt-0">
                 <div class="card-header">Edycja książki</div>
                 <div class="card-body">
-                    <form name="editBookForm" action="/pracownik/ksiazki/{{$book->id}}/edycja" method="POST">
+                    <form name="editBookForm" action="/pracownik/ksiazki/{{$book->id}}" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="PUT">
                         <div class="form-group row required">
                             <label for="title"
                                 class="col-md-4 col-form-label  control-label text-md-right">Tytuł</label>

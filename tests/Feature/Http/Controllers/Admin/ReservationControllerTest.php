@@ -56,7 +56,7 @@ class ReservationControllerTest extends TestCase {
         $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
 
-        $response = $this->post('/pracownik/rezerwacje/anuluj', ['id' => $reservation->id]);
+        $response = $this->delete('/pracownik/rezerwacje/'.$reservation->id, []);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);

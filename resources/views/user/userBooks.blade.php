@@ -203,6 +203,7 @@
         <div class="modal-content">
             <form name="changePwdModalForm" action="/zmien-haslo" method="POST">
                 {{ csrf_field() }}
+                <input type="hidden" name="_method" value="PUT">
                 <div class="modal-header">
                     <h5 class="modal-title" id="changePwdModalLabel">Zmień hasło
                     </h5>
@@ -262,7 +263,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'PUT',
             dataType : 'json',
             url:'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
@@ -282,7 +283,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'DELETE',
             dataType : 'json',
             url:'/anuluj-rezerwacje',
             data: {_token:"{{csrf_token()}}", id: id},

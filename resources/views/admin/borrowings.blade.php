@@ -28,7 +28,7 @@
                 <tbody class="item-table">
                     @foreach ($borrowings as $borrowing)
                     @if(!isset($borrowing->actual_return_date) && $borrowing->bookItem->status == "Wypożyczone")
-                    
+
                     <tr>
                         <td> <a href="/pracownik/czytelnicy/{{$borrowing->user->id}}"
                                 class="a-link-navy">{{$borrowing->user->first_name.' '.$borrowing->user->last_name}}</a>
@@ -38,8 +38,7 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-sm btn-light px-3" data-toggle="popover"
-                                title="Informacje o wypożyczeniu" data-placement="bottom"
-                                data-content="Egzemplarz: <a href='/pracownik/egzemplarze/{{$borrowing->bookItem->id}}' class='a-link-navy'>{{$borrowing->bookItem->book_item_id}}</a>
+                                title="Informacje o wypożyczeniu" data-placement="bottom" data-content="Egzemplarz: <a href='/pracownik/egzemplarze/{{$borrowing->bookItem->id}}' class='a-link-navy'>{{$borrowing->bookItem->book_item_id}}</a>
                                 <br>
                                 Autorzy:<br>
                                 @foreach ($borrowing->bookItem->book->authors as $author)
@@ -49,7 +48,8 @@
                                 @endforeach
                                 Data wypożyczenia: {{date('Y-m-d', strtotime($borrowing->borrow_date))}}
                                 <br>
-                                Data ważności: {{date('Y-m-d', strtotime($borrowing->due_date))}}"><i class="fa fa-info"></i></button>
+                                Data ważności: {{date('Y-m-d', strtotime($borrowing->due_date))}}"><i
+                                    class="fa fa-info"></i></button>
                         </td>
                         <td>
                             @if(!$borrowing->was_prolonged)
@@ -75,7 +75,9 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <form action="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}/zwroc" method="POST">
-                                    {{ csrf_field() }}<div class="modal-header">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <div class="modal-header">
                                         <h5 class="modal-title" id="returnBookItemModalLabel">Potwierdź
                                             zwrot
                                         </h5>
@@ -87,7 +89,7 @@
                                             <label
                                                 class="col-md-4 col-form-label control-label text-md-right"><strong>Książka:</strong></label>
                                             <label class="col-md-6 col-form-label control-label text-md-left">
-                                                "{{$borrowing->bookItem->book->title}}" , 
+                                                "{{$borrowing->bookItem->book->title}}" ,
                                                 <br>
                                                 egzemplarz:
                                                 {{$borrowing->bookItem->book_item_id}}
@@ -124,7 +126,8 @@
                                                 <br>
                                                 Opłata:
                                                 @if(new \DateTime($borrowing->due_date)< new \DateTime()) <strong>
-                                                    {{ (int)date_diff(new \DateTime($borrowing->due_date), new \DateTime())->format("%d")*0.5}} zł</strong>
+                                                    {{ (int)date_diff(new \DateTime($borrowing->due_date), new \DateTime())->format("%d")*0.5}}
+                                                    zł</strong>
                                                     @else
                                                     -
                                                     @endif
@@ -157,7 +160,6 @@
 @endsection
 @section('script')
 <script>
-
     $(function () {
     $('[data-toggle="popover"]').popover({html:true})
     });
@@ -196,7 +198,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'PUT',
             dataType : 'json',
             url:'/pracownik/egzemplarze/'+id+'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},

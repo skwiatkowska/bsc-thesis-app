@@ -183,9 +183,9 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'DELETE',
             dataType : 'json',
-            url:'/pracownik/rezerwacje/anuluj',
+            url:'/pracownik/rezerwacje/' + id,
             data: {_token:"{{csrf_token()}}", id: id},
             success:function(data){
                 location.reload();

@@ -144,6 +144,7 @@ class UserControllerTest extends TestCase {
     /** @test */
     public function userInfoWrongId() {
         $admin = $this->logIn();
+        $this->assertEquals(User::where('id', -1)->get()->count(), 0);
         $response = $this->get('/pracownik/czytelnicy/-1');
         $response->assertStatus(404);
         $response->assertNotFound();
@@ -160,7 +161,7 @@ class UserControllerTest extends TestCase {
             'name' => 'phone',
             'value' => $new,
         );
-        $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
+        $response = $this->put('/pracownik/czytelnicy/' . $user->id, $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
@@ -182,7 +183,7 @@ class UserControllerTest extends TestCase {
             'name' => 'pesel',
             'value' => $anotherUser->pesel,
         );
-        $response =  $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
+        $response =  $this->put('/pracownik/czytelnicy/' . $user->id, $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
 
@@ -202,7 +203,7 @@ class UserControllerTest extends TestCase {
             'name' => 'email',
             'value' => $anotherUser->email,
         );
-        $response =  $this->post('/pracownik/czytelnicy/' . $user->id . '/edycja', $data);
+        $response =  $this->put('/pracownik/czytelnicy/' . $user->id, $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
 
@@ -219,10 +220,10 @@ class UserControllerTest extends TestCase {
         $this->assertEquals($user->borrowings->count(), 0);
         $this->assertEquals($user->reservations->count(), 0);
 
-        $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/usun', []);
+        $response = $this->delete('/pracownik/czytelnicy/' . $user->id . '', []);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
-        $response->assertRedirect('/pracownik/czytelnicy/znajdz');
+        $response->assertRedirect('/pracownik/czytelnicy');
         $userAfter = User::where('id', $user->id)->get();
         $this->assertEquals($userAfter->count(), 0);
 
@@ -239,7 +240,7 @@ class UserControllerTest extends TestCase {
         $user->borrowings($bookItem)->save($borrowing);
         $this->assertGreaterThan(0, $user->borrowings->count());
 
-        $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/usun', []);
+        $response = $this->delete('/pracownik/czytelnicy/' . $user->id . '', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
@@ -260,7 +261,7 @@ class UserControllerTest extends TestCase {
         $user->reservations($bookItem)->save($reservation);
         $this->assertGreaterThan(0, $user->reservations->count());
 
-        $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/usun', []);
+        $response = $this->delete('/pracownik/czytelnicy/' . $user->id . '', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
@@ -278,7 +279,7 @@ class UserControllerTest extends TestCase {
         $admin = $this->logIn();
         $user = factory(User::class)->create();
 
-        $response = $this->post('/pracownik/czytelnicy/' . $user->id . '/resetuj-haslo', []);
+        $response = $this->put('/pracownik/czytelnicy/' . $user->id . '/resetuj-haslo', []);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
@@ -308,7 +309,7 @@ class UserControllerTest extends TestCase {
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
 
-        $response = $this->get('/pracownik/czytelnicy/znajdz', []);
+        $response = $this->get('/pracownik/czytelnicy', []);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');
@@ -329,7 +330,7 @@ class UserControllerTest extends TestCase {
             'searchIn' => 'pesel',
             'phrase' => $user->pesel,
         );
-        $response = $this->call('GET', '/pracownik/czytelnicy/znajdz', $data);
+        $response = $this->call('GET', '/pracownik/czytelnicy', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');
@@ -351,7 +352,7 @@ class UserControllerTest extends TestCase {
             'searchIn' => 'pesel',
             'phrase' => -1,
         );
-        $response = $this->call('GET', '/pracownik/czytelnicy/znajdz', $data);
+        $response = $this->call('GET', '/pracownik/czytelnicy', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');
@@ -373,7 +374,7 @@ class UserControllerTest extends TestCase {
             'searchIn' => 'lname',
             'phrase' => $user->last_name,
         );
-        $response = $this->call('GET', '/pracownik/czytelnicy/znajdz', $data);
+        $response = $this->call('GET', '/pracownik/czytelnicy', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');
@@ -395,7 +396,7 @@ class UserControllerTest extends TestCase {
             'searchIn' => 'lname',
             'phrase' => -1,
         );
-        $response = $this->call('GET', '/pracownik/czytelnicy/znajdz', $data);
+        $response = $this->call('GET', '/pracownik/czytelnicy', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $response->assertViewIs('.admin.findUser');

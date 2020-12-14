@@ -145,7 +145,7 @@ class BookController extends Controller {
 
     public function findBook(Request $request) {
         $categories = Category::all();
-
+        
         if ($request->searchIn && ($request->phrase || $request->searchPhrase)) {
             $searchIn = $request->searchIn;
             $phrase = ucfirst($request->phrase);
@@ -216,10 +216,11 @@ class BookController extends Controller {
                 $books = Book::where('title', '=~', '.*' . $phrase . '.*')->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
                 $searchInMode = "tytuł";
             } elseif ($searchIn == "isbn") {
-                $books = Book::where('isbn', $phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
+                $books = Book::where('isbn', (int)$phrase)->with('bookItems')->with('authors')->with('categories')->with('publisher')->get();
                 $searchInMode = "ISBN";
             }
             if (!$books->count()) {
+
                 $books = collect();
                 return view('/admin/catalog', ['categories' => $categories, 'books' => $books])->withErrors("Nie znaleziono książek spełniających podane kryterium wyszukiwania: " . $phrase . " (" . $searchInMode . ")");
             }

@@ -133,7 +133,7 @@ class UserController extends Controller {
             }
         }
         $user->delete();
-        return redirect('/pracownik/czytelnicy/znajdz')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
+        return redirect('/pracownik/czytelnicy')->with("success", "Czytelnik " . $user->first_name . " " . $user->last_name . " został usunięty na stałe");
     }
 
     public function resetPassword($id) {

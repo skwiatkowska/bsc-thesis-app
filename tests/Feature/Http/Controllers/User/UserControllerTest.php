@@ -81,7 +81,7 @@ class UserControllerTest extends TestCase {
             'pesel' => $user->pesel,
             'phone' => $new,
         );
-        $response = $this->post('/zmien-dane', $data);
+        $response = $this->put('/zmien-dane', $data);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $userUpdated = User::where('id', $user->id)->firstOrFail();
@@ -103,7 +103,7 @@ class UserControllerTest extends TestCase {
             'pesel' => $anotherUser->pesel,
             'phone' => $user->phone,
         );
-        $response = $this->post('/zmien-dane', $data);
+        $response = $this->put('/zmien-dane', $data);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
 
@@ -118,7 +118,7 @@ class UserControllerTest extends TestCase {
         $this->assertEquals($user->borrowings->count(), 0);
         $this->assertEquals($user->reservations->count(), 0);
 
-        $response = $this->post('/usun-konto', []);
+        $response = $this->delete('/usun-konto', []);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $response->assertRedirect('/');
@@ -135,7 +135,7 @@ class UserControllerTest extends TestCase {
         $user->borrowings($bookItem)->save($borrowing);
         $this->assertGreaterThan(0, $user->borrowings->count());
 
-        $response = $this->post('/usun-konto', []);
+        $response = $this->delete('/usun-konto', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();
@@ -154,7 +154,7 @@ class UserControllerTest extends TestCase {
         $user->reservations($bookItem)->save($reservation);
         $this->assertGreaterThan(0, $user->reservations->count());
 
-        $response = $this->post('/usun-konto', []);
+        $response = $this->delete('/usun-konto', []);
         $response->assertStatus(302);
         $response->assertSessionHasErrors();
         $userAfter = User::where('id', $user->id)->get();

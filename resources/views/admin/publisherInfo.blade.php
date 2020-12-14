@@ -11,8 +11,9 @@
             <div class="row px-2">
                 Szczegóły
                 <div class="ml-auto">
-                    <form action="/pracownik/wydawnictwa/{{$publisher->id}}/usun" method="POST">
+                    <form action="/pracownik/wydawnictwa/{{$publisher->id}}" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" id="delete-publisher-btn-submit"
                             class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
                         <input type="hidden" value="{{$publisher->id}}" name="id">
@@ -69,10 +70,10 @@
                 placement: 'right',
                 send:'always',
                 pk: id,
-                url: '/pracownik/wydawnictwa/'+ id + '/edycja',
+                url: '/pracownik/wydawnictwa/'+ id,
                 ajaxOptions: {
                     dataType: 'json',
-                    type: 'post'
+                    type: 'put'
                 },
                 success:function(data){
             location.reload();
@@ -88,7 +89,7 @@
 //       $.ajax({
 //          type:'POST',
 //          dataType : 'json',
-//          url:'/pracownik/wydawnictwa/'+id+'/usun',
+//          url:'/pracownik/wydawnictwa/'+id,
 //          data: {_token:"{{csrf_token()}}", id: id},
 //         //  success:function(data){
 //         //      console.log(data);

@@ -14,8 +14,9 @@
                     <a href="#" class="btn px-2 my-auto" title="Zmień hasło" data-toggle="modal"
                         data-target="#newPasswordItemModal"><i class="fa fa-key"></i></a>
 
-                    <form action="/pracownik/czytelnicy/{{$user->id}}/usun" method="POST">
+                    <form action="/pracownik/czytelnicy/{{$user->id}}" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" title="Usuń konto na stałe" class="btn" style="background:transparent;"><i
                                 class="fa fa-trash-alt"></i></button>
                         <input type="hidden" value="{{$user->id}}" name="id">
@@ -265,7 +266,9 @@
                                         <div class="modal-content">
                                             <form action="/pracownik/egzemplarze/{{$borrowing->bookItem->id}}/zwroc"
                                                 method="POST">
-                                                {{ csrf_field() }}<div class="modal-header">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="_method" value="PUT">
+                                                <div class="modal-header">
                                                     <h5 class="modal-title" id="returnBookItemModalLabel">Potwierdź
                                                         zwrot
                                                     </h5>
@@ -432,7 +435,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'PUT',
             dataType : 'json',
             url:'/pracownik/egzemplarze/'+id+'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},
@@ -453,7 +456,7 @@
         e.preventDefault();
         var id = {!! json_encode($user->id) !!};
         $.ajax({
-            type:'POST',
+            type:'PUT',
             dataType : 'json',
             url:'/pracownik/czytelnicy/'+id+'/resetuj-haslo',
             data: {_token:"{{csrf_token()}}"},
@@ -484,10 +487,10 @@
                 placement: 'right',
                 send:'always',
                 pk: id,
-                url: '/pracownik/czytelnicy/'+ id + '/edycja',
+                url: '/pracownik/czytelnicy/'+ id,
                 ajaxOptions: {
                     dataType: 'json',
-                    type: 'post'
+                    type: 'put'
                 },
                 success:function(data){
             location.reload();

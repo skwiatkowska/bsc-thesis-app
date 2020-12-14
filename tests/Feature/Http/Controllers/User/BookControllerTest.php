@@ -398,7 +398,7 @@ class BookControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
-        $response = $this->post('/prolonguj', $data);
+        $response = $this->put('/prolonguj', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
@@ -417,7 +417,7 @@ class BookControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
-        $response = $this->post('/prolonguj', $data);
+        $response = $put->post('/prolonguj', $data);
         $response->assertSessionHasErrors();
         $response->assertStatus(404);
         $content = json_decode($response->getContent(), true);

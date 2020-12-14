@@ -172,7 +172,7 @@
         if (confirmed) {
         var id = $("input[name=id]", this.form).val();
         $.ajax({
-            type:'POST',
+            type:'PUT',
             dataType : 'json',
             url:'/pracownik/egzemplarze/'+id+'/prolonguj',
             data: {_token:"{{csrf_token()}}", id: id},

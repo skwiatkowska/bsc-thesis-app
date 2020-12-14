@@ -188,20 +188,23 @@ class BorrowingControllerTest extends TestCase {
         $bookItem = factory(BookItem::class)->create();
         $borrowing =  new Borrowing(['borrow_date' => new DateTime(), 'due_date' => new DateTime("+1 month"), 'was_prolonged' => false]);
         $user->borrowings($bookItem)->save($borrowing);
+        $dueDateBefore = $borrowing->due_date;
         $this->assertEquals($user->borrowings->count(), 1);
 
         $data = array(
             'id' => $bookItem->id,
         );
-        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/prolonguj', $data);
+        $response = $this->put('/pracownik/egzemplarze/' . $bookItem->id . '/prolonguj', $data);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('success', $content);
-
-        // $borrowing->delete();
-        // $user->delete();
-        // $bookItem->delete();
+        $borrowingAfter = Borrowing::where('id', $borrowing->id)->firstOrFail();
+        $dueDateAfter = $borrowingAfter->due_date;
+        
+        $borrowing->delete();
+        $user->delete();
+        $bookItem->delete();
         $admin->delete();
     }
 
@@ -213,7 +216,7 @@ class BorrowingControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
-        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/prolonguj', $data);
+        $response = $this->put('/pracownik/egzemplarze/' . $bookItem->id . '/prolonguj', $data);
         $response->assertSessionHasErrors();
         $response->assertStatus(404);
         $content = json_decode($response->getContent(), true);
@@ -237,7 +240,7 @@ class BorrowingControllerTest extends TestCase {
         $data = array(
             'id' => $bookItem->id,
         );
-        $response = $this->post('/pracownik/egzemplarze/' . $bookItem->id . '/zwroc', $data);
+        $response = $this->put('/pracownik/egzemplarze/' . $bookItem->id . '/zwroc', $data);
         $response->assertStatus(302);
         $response->assertSessionHasNoErrors();
         $borrowingsAfter = $user->borrowings()->count();

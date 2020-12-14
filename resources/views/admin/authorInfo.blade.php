@@ -11,8 +11,9 @@
             <div class="row px-2">
                 Szczegóły
                 <div class="ml-auto">
-                    <form action="/pracownik/autorzy/{{$author->id}}/usun" method="POST">
+                    <form action="/pracownik/autorzy/{{$author->id}}" method="POST">
                         {{ csrf_field() }}
+                        <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" id="delete-publisher-btn-submit"
                             class="btn btn-sm btn-secondary delete"><i class="fa fa-trash-alt"></i></button>
                         <input type="hidden" value="{{$author->id}}" name="id">
@@ -67,10 +68,10 @@
                 placement: 'right',
                 send:'always',
                 pk: id,
-                url: '/pracownik/autorzy/'+ id + '/edycja',
+                url: '/pracownik/autorzy/'+ id,
                 ajaxOptions: {
                     dataType: 'json',
-                    type: 'post'
+                    type: 'put'
                 },
                 success:function(data){
             location.reload();

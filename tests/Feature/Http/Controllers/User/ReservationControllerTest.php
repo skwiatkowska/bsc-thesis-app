@@ -45,7 +45,7 @@ class ReservationControllerTest extends TestCase {
         $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user->reservations($bookItem)->save($reservation);
 
-        $response = $this->post('/anuluj-rezerwacje', ['id' => $reservation->id]);
+        $response = $this->delete('/anuluj-rezerwacje', ['id' => $reservation->id]);
         $response->assertStatus(200);
         $response->assertSessionHasNoErrors();
         $content = json_decode($response->getContent(), true);
@@ -78,7 +78,7 @@ class ReservationControllerTest extends TestCase {
         $reservation =  new Reservation(['due_date' =>  new DateTime("+3 days")]);
         $user2->reservations($bookItem)->save($reservation);
 
-        $response = $this->post('/anuluj-rezerwacje', ['id' => $reservation->id]);
+        $response = $this->delete('/anuluj-rezerwacje', ['id' => $reservation->id]);
         $response->assertStatus(403);
         $content = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('error', $content);
